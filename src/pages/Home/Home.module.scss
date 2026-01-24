@@ -161,6 +161,9 @@
     font-weight: 300;
     background: #feeef3;
     color: #71103e;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
 }
 
 .servicesPreview__controls {
@@ -197,18 +200,12 @@
     }
 
     .servicesPreview__title {
-        font-size: 20px;
+        font-size: 28px;
         letter-spacing: 1px;
     }
 
     .servicesPreview__subtitle {
-        font-size: 12px;
-    }
-
-    .servicesPreview__line span {
-        padding: 6px 10px;
-        font-size: 11px;
-        letter-spacing: 0.8px;
+        font-size: 14px;
     }
 
     .servicesPreview__header {
