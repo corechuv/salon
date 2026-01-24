@@ -51,6 +51,7 @@
     line-height: 1.6;
     font-weight: 300;
 }
+
 .hero__panel {
     max-width: 300px;
     min-width: 300px;
@@ -151,8 +152,10 @@
     display: flex;
     gap: 10px;
     overflow-x: auto;
-    padding-bottom: 6px;
+    padding: 10px 0;
     scrollbar-width: none;
+    margin-top: 20px;
+    border-top: 1px solid #eaeaea;
     border-bottom: 1px solid #eaeaea;
 }
 
@@ -344,6 +347,8 @@
     display: grid;
     gap: 18px;
     z-index: 1;
+    max-height: min(92vh, 860px);
+    overflow-y: auto;
 }
 
 .modal__head {
@@ -371,12 +376,19 @@
 }
 
 .modal__close {
-    border: none;
-    background: transparent;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    font-size: 11px;
+    border: 0;
+    background: rgba(255, 255, 255, 0.12);
+    color: #111;
+    width: 38px;
+    height: 38px;
     cursor: pointer;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 12px;
+    right: 12px;
 }
 
 .form {
@@ -528,6 +540,7 @@
     .categoryNav__item {
         white-space: nowrap;
     }
+
     .hero {
         grid-template-columns: 1fr;
     }

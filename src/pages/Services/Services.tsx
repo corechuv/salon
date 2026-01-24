@@ -263,20 +263,33 @@ export function Services() {
     setSelectedTime(null);
   }, [selectedDate]);
 
+  useEffect(() => {
+    if (!isModalOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isModalOpen]);
+
   const activeHours = useMemo(() => getHoursForDate(selectedDate, hours), [selectedDate, hours]);
 
   const masterActiveHours = useMemo(() => {
-    if (!selectedMaster) return null;
+    if (!selectedMaster) return [];
     const date = new Date(selectedDate);
     const weekday = date.getDay();
-    return masterHours.find(
+    return masterHours.filter(
       (entry) => entry.masterId === selectedMaster && entry.weekday === weekday
     );
   }, [masterHours, selectedDate, selectedMaster]);
 
   const slots = useMemo(() => {
-    if (!masterActiveHours) return [];
-    return buildSlots(masterActiveHours.start, masterActiveHours.end, 30);
+    if (masterActiveHours.length === 0) return [];
+    const all = masterActiveHours.flatMap((interval) =>
+      buildSlots(interval.start, interval.end, 30)
+    );
+    const unique = Array.from(new Set(all));
+    return unique.sort((a, b) => parseTime(a) - parseTime(b));
   }, [masterActiveHours]);
 
   const availableMasters = useMemo(() => {
@@ -307,8 +320,8 @@ export function Services() {
   }, [bookings, selectedDate, selectedMaster, services]);
 
   const closedAfter = useMemo(() => {
-    if (!masterActiveHours) return null;
-    return masterActiveHours.end;
+    if (masterActiveHours.length === 0) return null;
+    return masterActiveHours.map((interval) => interval.end);
   }, [masterActiveHours]);
 
   const openModal = (service: Service) => {
@@ -521,8 +534,8 @@ export function Services() {
                   ab {formatCurrency(selectedService.priceFrom)} · {selectedService.durationMin} min
                 </p>
               </div>
-              <button type="button" className={styles.modal__close} onClick={closeModal}>
-                Schliessen
+              <button type="button" className={styles.modal__close} onClick={closeModal} aria-label="Schliessen">
+                ✕
               </button>
             </div>
 
@@ -565,7 +578,7 @@ export function Services() {
                   <p className={styles.slots__closed}>
                     Bitte zuerst einen Meister waehlen.
                   </p>
-                ) : !masterActiveHours ? (
+                ) : masterActiveHours.length === 0 ? (
                   <p className={styles.slots__closed}>
                     Dieser Meister arbeitet an diesem Tag nicht.
                   </p>
@@ -575,7 +588,11 @@ export function Services() {
                       const duration = selectedService?.durationMin ?? 0;
                       const slotEnd = addMinutes(slot, duration);
                       const exceedsClosing = closedAfter
-                        ? parseTime(slotEnd) > parseTime(closedAfter)
+                        ? !masterActiveHours.some(
+                            (interval) =>
+                              parseTime(slot) >= parseTime(interval.start) &&
+                              parseTime(slotEnd) <= parseTime(interval.end)
+                          )
                         : false;
                       const isBusy = bookedRanges.some((range) =>
                         isOverlap(slot, slotEnd, range.start, range.end)

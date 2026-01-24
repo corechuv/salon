@@ -166,6 +166,14 @@
     max-width: 220px;
 }
 
+@media (min-width: 900px) {
+    .servicesPreview__line span {
+        max-width: none;
+        overflow: visible;
+        text-overflow: unset;
+    }
+}
+
 .servicesPreview__controls {
     display: flex;
     align-items: center;
