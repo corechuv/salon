@@ -230,10 +230,17 @@
 .card__meta {
     display: flex;
     gap: 12px;
+    justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+}
+
+.card__durationMin {
+    font-size: 16px;
+    font-weight: 300;
 }
 
 .card__action {
@@ -430,6 +437,24 @@
 .form__wide {
     display: grid;
     gap: 6px;
+}
+
+.form__consent {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 12px;
+    font-weight: 300;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #5b5b5b;
+}
+
+.form__consent input {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
 }
 
 .slots {

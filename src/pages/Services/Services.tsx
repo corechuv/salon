@@ -47,6 +47,8 @@ type Booking = {
   email: string;
   phone: string;
   notes: string;
+  consentName?: string;
+  consentAccepted?: boolean;
 };
 
 const apiBase = import.meta.env.VITE_API_URL as string | undefined;
@@ -190,6 +192,8 @@ export function Services() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [consent, setConsent] = useState(false);
+  const [consentName, setConsentName] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -348,6 +352,8 @@ export function Services() {
     }
     setError(null);
     setSuccess(null);
+    setConsent(false);
+    setConsentName("");
   };
 
   const closeModal = () => {
@@ -362,6 +368,14 @@ export function Services() {
       setError("Bitte Service, Datum, Uhrzeit und Meister waehlen.");
       return;
     }
+    if (!consent) {
+      setError("Bitte die Zustimmung zur Behandlung bestaetigen.");
+      return;
+    }
+    if (!consentName.trim()) {
+      setError("Bitte den Namen fuer die Zustimmung eingeben.");
+      return;
+    }
     const form = new FormData(event.currentTarget);
     const payload: Booking = {
       id: crypto.randomUUID(),
@@ -373,6 +387,8 @@ export function Services() {
       email: String(form.get("email") || ""),
       phone: String(form.get("phone") || ""),
       notes: String(form.get("notes") || ""),
+      consentName: consentName.trim(),
+      consentAccepted: consent,
     };
 
     if (!payload.name || !payload.email || !payload.phone) {
@@ -385,7 +401,7 @@ export function Services() {
 
     try {
       await sendBooking(payload);
-      setSuccess("Termin wurde gesendet. Wir bestaetigen per E-Mail.");
+      setSuccess("Termin gesendet. Bitte bestaetige ueber den Link in deiner E-Mail.");
     } catch (_err) {
       setError("Versand fehlgeschlagen. Bitte spaeter erneut versuchen.");
     }
@@ -495,8 +511,8 @@ export function Services() {
                   </div>
                   <p className={styles.card__desc}>{service.short}</p>
                   <div className={styles.card__meta}>
-                    <span>{service.durationMin} min</span>
                     <span>Individuell anpassbar</span>
+                    <span className={styles.card__durationMin}>{service.durationMin} min</span>
                   </div>
                   <button
                     className={styles.card__action}
@@ -660,6 +676,28 @@ export function Services() {
               <label className={styles.form__wide}>
                 Notiz
                 <textarea name="notes" placeholder="Wunsch oder Hinweis" rows={3} />
+              </label>
+              <label className={styles.form__wide}>
+                Unterschrift (vollstaendiger Name)
+                <input
+                  type="text"
+                  value={consentName}
+                  onChange={(event) => setConsentName(event.target.value)}
+                  placeholder="Vor- und Nachname"
+                  required
+                />
+              </label>
+              <label className={styles.form__consent}>
+                <input
+                  type="checkbox"
+                  checked={consent}
+                  onChange={(event) => setConsent(event.target.checked)}
+                  required
+                />
+                <span>
+                  Ich bestaetige, dass ich mit den Bedingungen und dem
+                  Behandlungsvertrag einverstanden bin.
+                </span>
               </label>
 
               {error ? <p className={styles.form__error}>{error}</p> : null}
