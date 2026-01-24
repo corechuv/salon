@@ -8,11 +8,20 @@ export function Gift() {
   const { search } = useLocation();
   const giftStatus = new URLSearchParams(search).get("gift");
   const [email, setEmail] = useState("");
-  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalAmount, setModalAmount] = useState<number | null>(null);
+  const [, setSelectedAmount] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const apiBase = import.meta.env.VITE_API_URL as string | undefined;
+
+  const openModal = (amount: number) => {
+    setSelectedAmount(amount);
+    setModalAmount(amount);
+    setIsModalOpen(true);
+    setError(null);
+  };
 
   const startCheckout = async (amount: number) => {
     if (!apiBase) {
@@ -72,12 +81,15 @@ export function Gift() {
         {PRESETS.map((value) => (
           <article key={value} className={styles.card}>
             <div>
+              <div className={styles.cardLogo}>
+                <img src="/logo.png" alt="MIRA" />
+              </div>
               <h3>{value} €</h3>
               <p>Gutschein fuer Behandlungen bei Mira Studio</p>
             </div>
             <div className={styles.cardFooter}>
               <span>Gültig 12 Monate</span>
-              <button type="button" onClick={() => setSelectedAmount(value)}>
+              <button type="button" onClick={() => openModal(value)}>
                 Kaufen
               </button>
             </div>
@@ -86,6 +98,9 @@ export function Gift() {
 
         <article className={`${styles.card} ${styles.cardCustom}`}>
           <div>
+            <div className={styles.cardLogo}>
+              <img src="/logo.png" alt="MIRA" />
+            </div>
             <h3>Eigener Betrag</h3>
             <p>Wähle einen Betrag zwischen 50€ und 500€.</p>
           </div>
@@ -106,8 +121,8 @@ export function Gift() {
               type="button"
               onClick={() => {
                 const val = Number(customAmount);
-                if (!Number.isFinite(val)) return;
-                setSelectedAmount(val);
+                if (!Number.isFinite(val) || val < 50 || val > 500) return;
+                openModal(val);
               }}
             >
               Kaufen
@@ -116,29 +131,38 @@ export function Gift() {
         </article>
       </section>
 
-      <section className={styles.checkout}>
-        <div>
-          <h2>Empfänger E‑Mail</h2>
-          <p>Wir senden den Gutschein-Code direkt an die angegebene Adresse.</p>
+      {isModalOpen && modalAmount ? (
+        <div className={styles.modal} role="dialog" aria-modal="true">
+          <div className={styles.modalOverlay} onClick={() => setIsModalOpen(false)} />
+          <div className={styles.modalPanel}>
+            <button
+              type="button"
+              className={styles.modalClose}
+              onClick={() => setIsModalOpen(false)}
+              aria-label="Schliessen"
+            >
+              ✕
+            </button>
+            <h2>Gutschein {modalAmount} €</h2>
+            <p>Wir senden den Gutschein-Code per E‑Mail.</p>
+            <input
+              type="email"
+              placeholder="name@mail.de"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+            <button
+              type="button"
+              disabled={loading}
+              onClick={() => startCheckout(modalAmount)}
+            >
+              {loading ? "Bitte warten..." : "Zur Zahlung"}
+            </button>
+            {error ? <p className={styles.modalNote}>{error}</p> : null}
+            <p className={styles.modalNote}>Zahlung per Stripe.</p>
+          </div>
         </div>
-        <div className={styles.checkoutForm}>
-          <input
-            type="email"
-            placeholder="name@mail.de"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-          <button
-            type="button"
-            disabled={loading || !selectedAmount}
-            onClick={() => selectedAmount && startCheckout(selectedAmount)}
-          >
-            {loading ? "Bitte warten..." : "Zur Zahlung"}
-          </button>
-        </div>
-        {error ? <p className={styles.note}>{error}</p> : null}
-        <p className={styles.note}>Zahlung per Stripe.</p>
-      </section>
+      ) : null}
     </div>
   );
 }

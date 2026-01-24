@@ -77,25 +77,46 @@
 }
 
 .card {
-    background: black;
-    padding: 16px 25px;
+    background: #4e3141;
+    padding: 72px 25px;
     display: grid;
     gap: 16px;
+    position: relative;
 }
 
 .card h3 {
-    margin: 0;
-    font-size: 34px;
+    padding: 10px 0;
+    font-size: 30px;
     font-weight: 100;
-    color: #ffbde1d9;
+    color: #c87575b0;
     text-transform: uppercase;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    left: 0;
 }
 
 .card p {
     margin: 6px 0 0;
     font-size: 14px;
     font-weight: 300;
-    color: #69556094;
+    color: #665c4e;
+}
+
+.cardLogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+    margin-bottom: 50px;
+}
+
+.cardLogo img {
+    height: 34px;
+    opacity: 0.1;
 }
 
 .cardFooter {
@@ -103,7 +124,8 @@
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    font-size: 10px;
+    font-size: 9px;
+    color: #665c4e;
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
@@ -182,6 +204,81 @@
 }
 
 .note {
+    margin: 0;
+    font-size: 12px;
+    color: #6b5a57;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: 50;
+}
+
+.modalOverlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.modalPanel {
+    position: relative;
+    background: #fff;
+    width: min(420px, 92vw);
+    padding: 24px;
+    display: grid;
+    gap: 12px;
+    box-shadow: 0 30px 60px rgba(10, 8, 12, 0.3);
+    z-index: 1;
+}
+
+.modalPanel h2 {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.modalPanel p {
+    margin: 0;
+    font-size: 14px;
+    color: #5b5b5b;
+}
+
+.modalPanel input {
+    border: 1px solid rgba(21, 19, 27, 0.2);
+    padding: 10px 12px;
+    font-size: 14px;
+}
+
+.modalPanel button {
+    border: none;
+    background: #15131b;
+    color: #fff;
+    padding: 10px 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.modalClose {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: 0;
+    background: rgba(0, 0, 0, 0.08);
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modalNote {
     margin: 0;
     font-size: 12px;
     color: #6b5a57;
