@@ -17,13 +17,26 @@ export function MainLayout() {
 
         fetch(`${apiBase}/hours`)
             .then((res) => (res.ok ? res.json() : Promise.reject()))
-            .then((data: Array<{ start: string; end: string }>) => {
+            .then((data: Array<{ start: string; end: string; weekday: number }>) => {
                 if (!Array.isArray(data) || data.length === 0) return;
                 const starts = data.map((item) => item.start);
                 const ends = data.map((item) => item.end);
                 const minStart = starts.sort()[0];
                 const maxEnd = ends.sort().slice(-1)[0];
-                setHours(`Mo–Sa ${formatTime(minStart)}–${formatTime(maxEnd)}`);
+                const weekdays = data.map((item) => item.weekday).sort((a, b) => a - b);
+                const firstDay = weekdays[0];
+                const lastDay = weekdays[weekdays.length - 1];
+                const dayMap: Record<number, string> = {
+                    1: "Mo",
+                    2: "Di",
+                    3: "Mi",
+                    4: "Do",
+                    5: "Fr",
+                    6: "Sa",
+                    0: "So",
+                };
+                const dayRange = firstDay === lastDay ? dayMap[firstDay] : `${dayMap[firstDay]}–${dayMap[lastDay]}`;
+                setHours(`${dayRange} ${formatTime(minStart)}–${formatTime(maxEnd)}`);
             })
             .catch(() => undefined);
     }, [apiBase]);

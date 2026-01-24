@@ -319,6 +319,20 @@ export function Services() {
       });
   }, [bookings, selectedDate, selectedMaster, services]);
 
+  const masterHoursByDay = useMemo(() => {
+    if (!selectedMaster) return new Map<number, MasterHour[]>();
+    const map = new Map<number, MasterHour[]>();
+    masterHours
+      .filter((entry) => entry.masterId === selectedMaster)
+      .sort((a, b) => parseTime(a.start) - parseTime(b.start))
+      .forEach((entry) => {
+        const list = map.get(entry.weekday) ?? [];
+        list.push(entry);
+        map.set(entry.weekday, list);
+      });
+    return map;
+  }, [masterHours, selectedMaster]);
+
   const closedAfter = useMemo(() => {
     if (masterActiveHours.length === 0) return null;
     return masterActiveHours.map((interval) => interval.end);
@@ -400,14 +414,24 @@ export function Services() {
           <div>
             <p className={styles.hero__panelTitle}>Oeffnungszeiten</p>
             <ul className={styles.hours}>
-              {hours.map((day) => (
-                <li key={day.day}>
-                  <span>{day.label}</span>
-                  <span>
-                    {formatTimeLabel(day.start)} - {formatTimeLabel(day.end)}
-                  </span>
-                </li>
-              ))}
+              {hours.map((day) => {
+                const intervals = masterHoursByDay.get(day.weekday) ?? [];
+                return (
+                  <li key={day.day}>
+                    <span>{day.label}</span>
+                    <span>
+                      {intervals.length > 0
+                        ? intervals
+                            .map(
+                              (entry) =>
+                                `${formatTimeLabel(entry.start)} - ${formatTimeLabel(entry.end)}`
+                            )
+                            .join(" / ")
+                        : `${formatTimeLabel(day.start)} - ${formatTimeLabel(day.end)}`}
+                    </span>
+                  </li>
+                );
+              })}
               <li className={styles.hours__closed}>
                 <span>Sonntag</span>
                 <span>geschlossen</span>
