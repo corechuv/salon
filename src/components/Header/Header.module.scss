@@ -1,0 +1,152 @@
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #0b0b0b;
+    padding: 17px 0;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.headerServices {
+    background: rgba(11, 11, 11, 0);
+    box-shadow: none;
+    position: fixed;
+    left: 0;
+    width: 100%;
+}
+
+.headerScrolled {
+    background: rgba(11, 11, 11, 0.92);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+}
+
+.inner {
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    max-width: 1120px;
+    padding: 0 clamp(16px, 4vw, 32px);
+}
+
+.logo {
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    color: whitesmoke;
+
+    img {
+        height: 28px;
+        display: flex;
+    }
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.burger {
+    display: none;
+    background: transparent;
+    border: none;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+.burger svg {
+    width: 30px;
+    height: 30px;
+}
+
+.burgerOpen svg {
+    transform: rotate(90deg);
+    transition: transform 0.2s ease;
+}
+
+.link {
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #a98899;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-weight: 300;
+
+    :hover {
+        color: white;
+    }
+}
+
+.linkActive {
+    color: whitesmoke;
+}
+
+.headerServices .link {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.headerServices .link:hover,
+.headerServices .linkActive {
+    color: #ffffff;
+}
+
+.backdrop {
+    display: none;
+}
+
+@media (max-width: 820px) {
+    .burger {
+        display: inline-flex;
+    }
+
+    .nav {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: min(72vw, 320px);
+        background: rgba(11, 11, 11, 0.96);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 80px 20px 24px;
+        gap: 10px;
+        transform: translateX(110%);
+        transition: transform 0.25s ease;
+        z-index: 12;
+    }
+
+    .nav.navOpen {
+        transform: translateX(0);
+    }
+
+    .backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        display: block;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+        z-index: 11;
+    }
+
+    .backdropOpen {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .link {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 15px;
+    }
+}

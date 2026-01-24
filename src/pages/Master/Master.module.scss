@@ -1,0 +1,372 @@
+:root {
+    --mira-ink: #15131b;
+    --mira-sand: #e7d5c7;
+    --mira-cream: #f6efe9;
+    --mira-rose: #b1666d;
+    --mira-olive: #6f6a5a;
+    --mira-milk: #fbf8f5;
+}
+
+.page {
+    color: var(--mira-ink);
+    background:
+        radial-gradient(circle at 15% 10%, rgba(246, 239, 233, 0.9), transparent 55%),
+        radial-gradient(circle at 85% 5%, rgba(231, 213, 199, 0.7), transparent 60%),
+        linear-gradient(180deg, #ffffff 0%, var(--mira-milk) 45%, var(--mira-cream) 100%);
+    padding: clamp(24px, 4vw, 56px) 0 clamp(40px, 6vw, 90px);
+}
+
+.hero {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 clamp(16px, 4vw, 40px);
+    display: grid;
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+}
+
+.hero__left {
+    display: grid;
+    gap: 18px;
+}
+
+.hero__eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 12px;
+    color: #6b5a57;
+}
+
+.hero__title {
+    margin: 0;
+    font-size: clamp(34px, 7vw, 80px);
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.hero__subtitle {
+    margin: 0;
+    font-size: clamp(14px, 1.6vw, 18px);
+    line-height: 1.6;
+}
+
+.hero__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.hero__stats div {
+    padding: 12px 14px;
+    display: grid;
+    gap: 4px;
+}
+
+.hero__statValue {
+    font-size: 40px;
+    font-weight: 400;
+}
+
+.hero__statLabel {
+    font-size: 12px;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+}
+
+.hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.hero__primary,
+.hero__ghost {
+    border: none;
+    padding: 12px 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.hero__primary {
+    background: var(--mira-ink);
+    color: #fff;
+}
+
+.hero__ghost {
+    background: transparent;
+    border: 1px solid rgba(21, 19, 27, 0.4);
+    color: var(--mira-ink);
+}
+
+.hero__right {
+    position: relative;
+    display: grid;
+    justify-items: center;
+}
+
+.hero__card {
+    background: rgba(255, 255, 255, 0.92);
+    padding: clamp(18px, 3vw, 32px);
+    max-width: 360px;
+    box-shadow: 0 24px 40px rgba(46, 35, 33, 0.16);
+    display: grid;
+    gap: 12px;
+}
+
+.hero__cardTitle {
+    margin: 0;
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 12px;
+    color: #6b5a57;
+}
+
+.hero__list {
+    margin: 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 6px;
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.hero__cardFooter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: #6b5a57;
+}
+
+.hero__badge {
+    position: absolute;
+    bottom: -20px;
+    background: var(--mira-rose);
+    color: #fff;
+    padding: 10px 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    font-size: 10px;
+}
+
+.gallery {
+    max-width: 1160px;
+    margin: clamp(48px, 8vw, 96px) auto 0;
+    padding: 0 clamp(16px, 4vw, 40px);
+    display: grid;
+    gap: 28px;
+}
+
+.gallery__header {
+    display: grid;
+    gap: 8px;
+}
+
+.gallery__title {
+    margin: 0;
+    font-size: clamp(28px, 3.6vw, 46px);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.gallery__text {
+    margin: 0;
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    font-size: clamp(14px, 1.4vw, 18px);
+    line-height: 1.6;
+    max-width: 680px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 18px 36px rgba(46, 35, 33, 0.14);
+    display: grid;
+    grid-template-rows: 180px 1fr;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.card__media {
+    background: linear-gradient(135deg, rgba(177, 102, 109, 0.2), rgba(231, 213, 199, 0.5));
+    display: grid;
+    place-items: center;
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #3a2a33;
+}
+
+.card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.card__body {
+    padding: 18px;
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+    background-color: white;
+}
+
+.card__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.card__name {
+    margin: 0;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    word-break: break-word;
+}
+
+.card__role {
+    margin: 4px 0 0;
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #6b5a57;
+    word-break: break-word;
+}
+
+.card__exp {
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #6b5a57;
+    background: rgba(231, 213, 199, 0.8);
+    padding: 6px 10px;
+    height: fit-content;
+    white-space: nowrap;
+}
+
+.card__focus {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.card__desc {
+    margin: 0;
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tag {
+    padding: 6px 10px;
+    background: rgba(177, 102, 109, 0.12);
+    border: none;
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    word-break: break-word;
+}
+
+.spotlight {
+    max-width: 1160px;
+    margin: clamp(40px, 8vw, 90px) auto 0;
+    padding: clamp(20px, 3vw, 32px) clamp(16px, 4vw, 40px);
+    background: var(--mira-ink);
+    color: #fff;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 18px;
+}
+
+.spotlight__content h3 {
+    margin: 0 0 8px;
+    font-size: clamp(22px, 3vw, 36px);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.spotlight__content p {
+    margin: 0;
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.spotlight__cta {
+    background: #fff;
+    color: var(--mira-ink);
+    border: none;
+    padding: 12px 22px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-family: "Space Grotesk", "Helvetica Neue", sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .hero {
+        grid-template-columns: 1fr;
+    }
+
+    .hero__right {
+        justify-items: start;
+    }
+
+    .hero__badge {
+        position: static;
+        justify-self: start;
+    }
+
+    .hero__stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .spotlight {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .hero__stats {
+        grid-template-columns: 1fr;
+    }
+
+    .hero__actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .card {
+        grid-template-rows: 160px 1fr;
+    }
+}

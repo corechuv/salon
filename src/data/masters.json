@@ -1,0 +1,42 @@
+[
+  {
+    "id": "eva",
+    "name": "Eva Lorenz",
+    "role": "Kosmetologin",
+    "experienceYears": 9,
+    "services": ["hautdiagnostik", "tiefenreinigung", "enzympeeling", "fruchtsaeure", "microneedling"],
+    "photo": "/masters/iryna.jpeg"
+  },
+  {
+    "id": "lina",
+    "name": "Lina Kramer",
+    "role": "Skin Care Specialist",
+    "experienceYears": 7,
+    "services": ["hautdiagnostik", "augenpflege", "ultraschall", "tiefenreinigung"],
+    "photo": "/masters/iryna marinina.jpeg"
+  },
+  {
+    "id": "nora",
+    "name": "Nora Weiss",
+    "role": "Brow Artist",
+    "experienceYears": 6,
+    "services": ["brauen"],
+    "photo": ""
+  },
+  {
+    "id": "adele",
+    "name": "Adele Richter",
+    "role": "Apparative Methoden",
+    "experienceYears": 10,
+    "services": ["rf-lifting", "ultraschall", "microneedling"],
+    "photo": ""
+  },
+  {
+    "id": "mira",
+    "name": "Mira Hoffmann",
+    "role": "Depilation",
+    "experienceYears": 8,
+    "services": ["depilation"],
+    "photo": ""
+  }
+]

@@ -1,0 +1,246 @@
+/* Footer.module.scss */
+.footer {
+  --bg: #181818;
+  --card: rgba(255, 255, 255, 0.06);
+  --card2: rgba(255, 255, 255, 0.09);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.68);
+  --line: rgba(255, 255, 255, 0.12);
+  --accent: #ff5aa5;
+  --accent2: #8a5bff;
+
+  background: var(--bg);
+  color: var(--text);
+  padding: 40px 0 24px;
+}
+
+.container {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.brandBlock {
+  padding: 18px;
+}
+
+.brandRow {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.logo {
+  height: 30px;
+}
+
+.subtitle {
+  margin: 0 0 14px;
+  color: #ff2583ad;
+  font-size: 22px;
+  font-weight: 200;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.meta {
+  display: grid;
+  gap: 10px;
+}
+
+.metaItem {
+  display: grid;
+  gap: 4px;
+}
+
+.metaLabel {
+  font-size: 16px;
+  color: whitesmoke;
+  font-weight: 400;
+}
+
+.metaValue {
+  font-size: 14px;
+  color: rgb(255 255 255);
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.col {
+  padding: 18px;
+}
+
+.heading {
+  font-size: 16x;
+  font-weight: 300;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+  letter-spacing: 1.2px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+  display: grid;
+  gap: 8px;
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inline {
+  margin-top: 8px;
+}
+
+.link {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.booking {
+  margin-top: 14px;
+}
+
+.bookingNote {
+  font-size: 80px;
+  font-weight: 100;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: whitesmoke;
+}
+
+.btn {
+  appearance: none;
+  text-transform: uppercase;
+  border: 0;
+  padding: 10px 26px;
+  border-radius: 0;
+  letter-spacing: 1.6px;
+  font-size: 26px;
+  font-weight: 300;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.9);
+  color: #111;
+  outline: none;
+  font-family: "Roboto", sans-serif;
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 1);
+}
+
+.btnPrimary {
+  background: rgba(188, 66, 99, 0.9);
+  color: #fff;
+}
+
+.btnPrimary:hover {
+  background: rgba(188, 66, 99, 1);
+}
+
+.socials {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 40px;
+
+  li {
+    display: flex;
+  }
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.instagram {
+  width: 24px;
+}
+
+.tiktok {
+  width: 80px;
+}
+
+.youtube {
+  width: 44px;
+}
+
+.whatsapp {
+  width: 25px;
+}
+
+
+.icon {
+  color: rgba(255, 255, 255, 0.88);
+  flex: 0 0 auto;
+}
+
+.socialText {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.90);
+  display: none;
+}
+
+.muted {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.bottom {
+  margin-top: 16px;
+  padding-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.copy {
+  color: whitesmoke;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.bottomLinks {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.bottomLink {
+  color: rgba(255, 255, 255, 0.70);
+  font-size: 14px;
+  font-weight: 300;
+  text-decoration: none;
+}
+
+@media (max-width: 920px) {
+  .top {
+    grid-template-columns: 1fr;
+  }
+}

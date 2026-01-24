@@ -1,0 +1,50 @@
+[
+  {
+    "day": "monday",
+    "label": "Montag",
+    "weekday": 1,
+    "start": "09:00",
+    "end": "18:00",
+    "slotMinutes": 30
+  },
+  {
+    "day": "tuesday",
+    "label": "Dienstag",
+    "weekday": 2,
+    "start": "09:00",
+    "end": "18:00",
+    "slotMinutes": 30
+  },
+  {
+    "day": "wednesday",
+    "label": "Mittwoch",
+    "weekday": 3,
+    "start": "10:00",
+    "end": "19:00",
+    "slotMinutes": 30
+  },
+  {
+    "day": "thursday",
+    "label": "Donnerstag",
+    "weekday": 4,
+    "start": "10:00",
+    "end": "19:00",
+    "slotMinutes": 30
+  },
+  {
+    "day": "friday",
+    "label": "Freitag",
+    "weekday": 5,
+    "start": "09:00",
+    "end": "17:00",
+    "slotMinutes": 30
+  },
+  {
+    "day": "saturday",
+    "label": "Samstag",
+    "weekday": 6,
+    "start": "10:00",
+    "end": "15:00",
+    "slotMinutes": 30
+  }
+]

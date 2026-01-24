@@ -1,0 +1,82 @@
+[
+  {
+    "id": "hautdiagnostik",
+    "title": "Hautanalyse + Beratung",
+    "category": "Gesicht",
+    "priceFrom": 45,
+    "durationMin": 30,
+    "short": "Individuelle Analyse, Pflegeplan, Produktempfehlungen."
+  },
+  {
+    "id": "tiefenreinigung",
+    "title": "Tiefenreinigung",
+    "category": "Gesicht",
+    "priceFrom": 79,
+    "durationMin": 75,
+    "short": "Manuelle und sanfte Reinigung, Porenpflege, Maske."
+  },
+  {
+    "id": "enzympeeling",
+    "title": "Enzym-Peeling",
+    "category": "Peelings",
+    "priceFrom": 59,
+    "durationMin": 45,
+    "short": "Mildes Peeling fuer empfindliche Haut, sofortiges Glow."
+  },
+  {
+    "id": "fruchtsaeure",
+    "title": "Fruchtsaeure-Peeling",
+    "category": "Peelings",
+    "priceFrom": 89,
+    "durationMin": 60,
+    "short": "Erneuerung der Hautoberflaeche, Anti-Akne, Anti-Aging."
+  },
+  {
+    "id": "microneedling",
+    "title": "Microneedling",
+    "category": "Anti-Aging",
+    "priceFrom": 129,
+    "durationMin": 75,
+    "short": "Regeneration und Straffung, Struktur und Ebenheit."
+  },
+  {
+    "id": "rf-lifting",
+    "title": "RF-Lifting",
+    "category": "Apparative",
+    "priceFrom": 119,
+    "durationMin": 60,
+    "short": "Tonus und Kontur, sichtbar straffer."
+  },
+  {
+    "id": "ultraschall",
+    "title": "Ultraschall-Behandlung",
+    "category": "Apparative",
+    "priceFrom": 99,
+    "durationMin": 50,
+    "short": "Tiefenwirkung, Wirkstoffschleuse, Beruhigung."
+  },
+  {
+    "id": "augenpflege",
+    "title": "Augenpflege Intensiv",
+    "category": "Pflege",
+    "priceFrom": 39,
+    "durationMin": 25,
+    "short": "Abschwellung, Feuchtigkeit, glaettender Effekt."
+  },
+  {
+    "id": "brauen",
+    "title": "Brow Styling + Lamination",
+    "category": "Brows",
+    "priceFrom": 55,
+    "durationMin": 45,
+    "short": "Form, Farbe, Definition - natuerlich und sauber."
+  },
+  {
+    "id": "depilation",
+    "title": "Waxing / Sugaring",
+    "category": "Koerper",
+    "priceFrom": 35,
+    "durationMin": 30,
+    "short": "Sanfte Haarentfernung, schnelle und saubere Technik."
+  }
+]
