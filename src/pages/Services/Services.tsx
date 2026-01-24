@@ -574,8 +574,9 @@ export function Services() {
                     {slots.map((slot) => {
                       const duration = selectedService?.durationMin ?? 0;
                       const slotEnd = addMinutes(slot, duration);
-                      const exceedsClosing =
-                        closedAfter && parseTime(slotEnd) > parseTime(closedAfter);
+                      const exceedsClosing = closedAfter
+                        ? parseTime(slotEnd) > parseTime(closedAfter)
+                        : false;
                       const isBusy = bookedRanges.some((range) =>
                         isOverlap(slot, slotEnd, range.start, range.end)
                       );
