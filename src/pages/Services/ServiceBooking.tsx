@@ -40,6 +40,9 @@ type Booking = {
   email: string;
   phone: string;
   notes: string;
+  durationMin?: number;
+  status?: string;
+  createdAt?: string;
   giftCodes?: string[];
   consentName?: string;
   consentAccepted?: boolean;
@@ -99,12 +102,21 @@ const buildSlots = (start: string, end: string, step: number) => {
 };
 
 const storageKey = "mira_bookings";
+const PENDING_TTL_MINUTES = 30;
+
+const isRecentBooking = (createdAt?: string) => {
+  if (!createdAt) return true;
+  const created = new Date(createdAt).getTime();
+  if (Number.isNaN(created)) return true;
+  return Date.now() - created < PENDING_TTL_MINUTES * 60_000;
+};
 
 const readLocalBookings = (): Booking[] => {
   const raw = localStorage.getItem(storageKey);
   if (!raw) return [];
   try {
-    return JSON.parse(raw) as Booking[];
+    const items = JSON.parse(raw) as Booking[];
+    return items.filter((item) => isRecentBooking(item.createdAt));
   } catch {
     return [];
   }
@@ -114,17 +126,39 @@ const writeLocalBookings = (bookings: Booking[]) => {
   localStorage.setItem(storageKey, JSON.stringify(bookings));
 };
 
+const mergeBookings = (prev: Booking[], incoming: Booking[]) => {
+  const next = [...prev];
+  incoming.forEach((item) => {
+    const index = next.findIndex((entry) => entry.id === item.id);
+    if (index >= 0) {
+      next[index] = { ...next[index], ...item };
+    } else {
+      next.push(item);
+    }
+  });
+  return next.filter((item) => isRecentBooking(item.createdAt));
+};
+
 async function fetchBookings(date: string): Promise<Booking[]> {
   if (!apiBase) return [];
   const response = await fetch(`${apiBase}/bookings?date=${date}`);
   if (!response.ok) return [];
   const data = (await response.json()) as Array<
-    Booking & { service_id?: string; master_id?: string }
+    Booking & {
+      service_id?: string;
+      master_id?: string;
+      duration_min?: number;
+      status?: string;
+      created_at?: string;
+    }
   >;
   return data.map((item) => ({
     ...item,
     serviceId: item.serviceId ?? item.service_id ?? "",
     masterId: item.masterId ?? item.master_id ?? "",
+    durationMin: item.durationMin ?? item.duration_min ?? undefined,
+    createdAt: item.createdAt ?? item.created_at ?? undefined,
+    status: item.status ?? undefined,
   }));
 }
 
@@ -250,15 +284,7 @@ export function ServiceBooking() {
     fetchBookings(selectedDate)
       .then((remote) => {
         if (active && remote.length > 0) {
-          setBookings((prev) => {
-            const merged = [...prev];
-            remote.forEach((item) => {
-              if (!merged.find((b) => b.id === item.id)) {
-                merged.push(item);
-              }
-            });
-            return merged;
-          });
+          setBookings((prev) => mergeBookings(prev, remote));
         }
       })
       .catch(() => undefined);
@@ -300,7 +326,7 @@ export function ServiceBooking() {
       .filter((item) => item.date === selectedDate)
       .filter((item) => (selectedMaster ? item.masterId === selectedMaster : true))
       .map((item) => {
-        const duration = serviceMap.get(item.serviceId) ?? 0;
+        const duration = item.durationMin ?? serviceMap.get(item.serviceId) ?? 0;
         const end = addMinutes(item.time, duration);
         return { start: item.time, end };
       });
@@ -362,7 +388,13 @@ export function ServiceBooking() {
       await sendBooking(payload);
       setSuccess("Termin gesendet. Bitte bestaetige ueber den Link in deiner E-Mail.");
       setBookings((prev) => {
-        const next = [...prev, payload];
+        const next = mergeBookings(prev, [
+          {
+            ...payload,
+            status: "pending",
+            createdAt: new Date().toISOString(),
+          },
+        ]);
         writeLocalBookings(next);
         return next;
       });
@@ -376,6 +408,15 @@ export function ServiceBooking() {
         setError("Gutschein hat kein Guthaben mehr.");
       } else if (message === "gift currency mismatch") {
         setError("Gutschein-Währung passt nicht.");
+      } else if (message === "slot overlaps") {
+        setError("Dieser Termin ist bereits belegt. Bitte eine andere Zeit waehlen.");
+        fetchBookings(selectedDate)
+          .then((remote) => {
+            if (remote.length > 0) {
+              setBookings((prev) => mergeBookings(prev, remote));
+            }
+          })
+          .catch(() => undefined);
       } else if (message === "rate_limited") {
         setError("Zu viele Versuche. Bitte spaeter versuchen.");
       } else {
