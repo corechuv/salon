@@ -98,7 +98,7 @@ export function Gift() {
               <img src="/logo.png" alt="MIRA" />
             </div>
             <h3 className={styles.customTitle}>Eigener Betrag</h3>
-            <p className={styles.customText}>Wähle einen Betrag zwischen 50€ und 500€.</p>
+            <p className={styles.customText}>Wähle einen Betrag zwischen 50€ und 1000€.</p>
           </div>
           <div className={styles.customRow}>
             <input

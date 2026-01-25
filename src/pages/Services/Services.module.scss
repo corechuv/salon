@@ -10,6 +10,7 @@
     color: var(--srv-ink);
     padding: clamp(24px, 4vw, 56px) 0 clamp(40px, 6vw, 90px);
     padding-top: 0;
+    --page-pad: clamp(16px, 4vw, 40px);
 }
 
 .banner {
@@ -24,7 +25,7 @@
 .hero {
     max-width: 1160px;
     margin: 0 auto;
-    padding: clamp(18px, 3vw, 32px) clamp(16px, 4vw, 40px);
+    padding: clamp(18px, 3vw, 32px) var(--page-pad);
     display: grid;
     grid-template-columns: 1fr auto;
     gap: clamp(24px, 4vw, 56px);
@@ -90,7 +91,7 @@
 .services {
     max-width: 1120px;
     margin: clamp(48px, 8vw, 96px) auto 0;
-    padding: 0 clamp(16px, 4vw, 40px);
+    padding: 0 var(--page-pad);
     display: grid;
     gap: 22px;
 }
@@ -322,44 +323,28 @@
     padding: 20px;
 }
 
-.modal__overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(18, 14, 20, 0.55);
-}
-
-.modal__panel {
-    position: relative;
-    background: #fff;
-    max-width: 720px;
-    width: 100%;
-    padding: clamp(20px, 3vw, 32px);
-    display: grid;
-    gap: 18px;
-    z-index: 1;
-    max-height: min(92vh, 860px);
-    overflow-y: auto;
-}
-
 .bookingPage {
-    max-width: 1120px;
+    max-width: 1160px;
     margin: clamp(20px, 5vw, 48px) auto 0;
-    padding: 0 clamp(16px, 4vw, 40px);
+    padding: 0 var(--page-pad);
 }
 
 .booking__panel {
-    max-width: 760px;
+    position: relative;
     margin: 0 auto;
+    width: 100%;
+    display: grid;
+    gap: 18px;
 }
 
-.modal__head {
+.booking__head {
     display: flex;
     justify-content: space-between;
     gap: 12px;
     align-items: center;
 }
 
-.modal__title {
+.booking__title {
     margin: 0;
     font-size: 23px;
     font-weight: 300;
@@ -367,29 +352,13 @@
     letter-spacing: 0.06em;
 }
 
-.modal__subtitle {
+.booking__subtitle {
     margin: 4px 0 0;
     font-size: 22px;
     font-weight: 300;
     color: #5b5b5b;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-}
-
-.modal__close {
-    border: 0;
-    background: rgba(255, 255, 255, 0.12);
-    color: #111;
-    width: 38px;
-    height: 38px;
-    cursor: pointer;
-    font-size: 16px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 12px;
-    right: 12px;
 }
 
 .form {
@@ -400,12 +369,14 @@
 
 .form label {
     display: grid;
-    gap: 6px;
+    gap: 12px;
     font-size: 12px;
+    align-items: center;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-family: "Roboto", "Helvetica Neue", sans-serif;
     color: rgb(89, 89, 89);
+    padding-bottom: 10px;
 }
 
 .form input,
@@ -643,7 +614,7 @@
         padding: 16px;
     }
 
-    .modal__head {
+    .booking__head {
         flex-direction: column;
         align-items: flex-start;
     }

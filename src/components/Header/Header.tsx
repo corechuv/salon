@@ -47,7 +47,7 @@ export function Header() {
         >
             <div className={styles.inner}>
                 <NavLink to="/" className={styles.logo}>
-                    <img src="./logo.png" />
+                    <img src="/logo.png" />
                 </NavLink>
 
                 <button

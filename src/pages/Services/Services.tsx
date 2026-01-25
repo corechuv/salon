@@ -472,7 +472,10 @@ export function Services() {
           const response = await fetch(
             `${apiBase}/gift/validate?code=${encodeURIComponent(code)}`
           );
-          const data = await response.json();
+          const data = await response.json().catch(() => null);
+          if (response.status === 429) {
+            return { code, reason: "rate_limited" };
+          }
           if (!data?.valid) {
             return { code, reason: data?.reason || "not_found" };
           }
@@ -534,35 +537,37 @@ export function Services() {
             </>
           )}
         </div>
-        <div className={styles.hero__panel}>
-          <div>
-            <p className={styles.hero__panelTitle}>Oeffnungszeiten</p>
-            <ul className={styles.hours}>
-              {hours.map((day) => {
-                const intervals = masterHoursByDay.get(day.weekday) ?? [];
-                return (
-                  <li key={day.day}>
-                    <span>{day.label}</span>
-                    <span>
-                      {intervals.length > 0
-                        ? intervals
-                            .map(
-                              (entry) =>
-                                `${formatTimeLabel(entry.start)} - ${formatTimeLabel(entry.end)}`
-                            )
-                            .join(" / ")
-                        : `${formatTimeLabel(day.start)} - ${formatTimeLabel(day.end)}`}
-                    </span>
-                  </li>
-                );
-              })}
-              <li className={styles.hours__closed}>
-                <span>Sonntag</span>
-                <span>geschlossen</span>
-              </li>
-            </ul>
+        {!isBookingPage ? (
+          <div className={styles.hero__panel}>
+            <div>
+              <p className={styles.hero__panelTitle}>Oeffnungszeiten</p>
+              <ul className={styles.hours}>
+                {hours.map((day) => {
+                  const intervals = masterHoursByDay.get(day.weekday) ?? [];
+                  return (
+                    <li key={day.day}>
+                      <span>{day.label}</span>
+                      <span>
+                        {intervals.length > 0
+                          ? intervals
+                              .map(
+                                (entry) =>
+                                  `${formatTimeLabel(entry.start)} - ${formatTimeLabel(entry.end)}`
+                              )
+                              .join(" / ")
+                          : `${formatTimeLabel(day.start)} - ${formatTimeLabel(day.end)}`}
+                      </span>
+                    </li>
+                  );
+                })}
+                <li className={styles.hours__closed}>
+                  <span>Sonntag</span>
+                  <span>geschlossen</span>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
+        ) : null}
       </section>
 
       {!isBookingPage ? (
@@ -672,11 +677,11 @@ export function Services() {
 
       {isBookingPage && selectedService ? (
         <section className={styles.bookingPage}>
-          <div className={`${styles.modal__panel} ${styles.booking__panel}`}>
-            <div className={styles.modal__head}>
+          <div className={styles.booking__panel}>
+            <div className={styles.booking__head}>
               <div>
-                <p className={styles.modal__title}>{selectedService.title}</p>
-                <p className={styles.modal__subtitle}>
+                <p className={styles.booking__title}>{selectedService.title}</p>
+                <p className={styles.booking__subtitle}>
                   ab {formatCurrency(selectedService.priceFrom)} · {selectedService.durationMin} min
                 </p>
               </div>
@@ -808,7 +813,9 @@ export function Services() {
                           </span>
                         ) : item?.reason ? (
                           <span className={styles.form__giftError}>
-                            {item.reason === "not_found"
+                            {item.reason === "rate_limited"
+                              ? "Zu viele Versuche. Bitte spaeter versuchen."
+                              : item.reason === "not_found"
                               ? "Nicht gefunden"
                               : item.reason === "not_available"
                                 ? "Nicht gültig"
@@ -830,7 +837,12 @@ export function Services() {
                   >
                     {giftValidation.status === "checking" ? "Prüfen..." : "Prüfen"}
                   </button>
-                  <button type="button" className={styles.form__giftAdd} onClick={addGiftCode}>
+                  <button
+                    type="button"
+                    className={styles.form__giftAdd}
+                    onClick={addGiftCode}
+                    disabled={!giftCodes[giftCodes.length - 1]?.trim()}
+                  >
                     + Code
                   </button>
                 </div>
