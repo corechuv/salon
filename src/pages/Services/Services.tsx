@@ -183,6 +183,14 @@ async function sendBooking(payload: Booking): Promise<void> {
   }
 }
 
+type GiftValidation = {
+  status: "idle" | "checking" | "valid" | "invalid";
+  code: string;
+  balance?: number;
+  currency?: string;
+  reason?: string;
+};
+
 export function Services() {
   const [services, setServices] = useState<Service[]>([]);
   const [masters, setMasters] = useState<Master[]>([]);
@@ -198,6 +206,11 @@ export function Services() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [consent, setConsent] = useState(false);
   const [consentName, setConsentName] = useState("");
+  const [giftCode, setGiftCode] = useState("");
+  const [giftValidation, setGiftValidation] = useState<GiftValidation>({
+    status: "idle",
+    code: "",
+  });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -358,6 +371,8 @@ export function Services() {
     setSuccess(null);
     setConsent(false);
     setConsentName("");
+    setGiftCode("");
+    setGiftValidation({ status: "idle", code: "" });
   };
 
   const closeModal = () => {
@@ -381,6 +396,11 @@ export function Services() {
       return;
     }
     const form = new FormData(event.currentTarget);
+    if (giftCode.trim() && giftValidation.status !== "valid") {
+      setError("Bitte Gutschein-Code zuerst prüfen.");
+      return;
+    }
+
     const payload: Booking = {
       id: crypto.randomUUID(),
       date: selectedDate,
@@ -391,7 +411,7 @@ export function Services() {
       email: String(form.get("email") || ""),
       phone: String(form.get("phone") || ""),
       notes: String(form.get("notes") || ""),
-      giftCode: String(form.get("giftCode") || "").trim(),
+      giftCode: giftValidation.status === "valid" ? giftValidation.code : undefined,
       consentName: consentName.trim(),
       consentAccepted: consent,
     };
@@ -427,6 +447,35 @@ export function Services() {
       }
     }
     setIsSubmitting(false);
+  };
+
+  const handleCheckGift = async () => {
+    const code = giftCode.trim().toUpperCase();
+    if (!code) {
+      setGiftValidation({ status: "invalid", code, reason: "missing" });
+      return;
+    }
+    if (!apiBase) {
+      setGiftValidation({ status: "invalid", code, reason: "error" });
+      return;
+    }
+    setGiftValidation({ status: "checking", code });
+    try {
+      const response = await fetch(`${apiBase}/gift/validate?code=${encodeURIComponent(code)}`);
+      const data = await response.json();
+      if (!data?.valid) {
+        setGiftValidation({ status: "invalid", code, reason: data?.reason || "not_found" });
+        return;
+      }
+      setGiftValidation({
+        status: "valid",
+        code,
+        balance: data.balance,
+        currency: data.currency,
+      });
+    } catch {
+      setGiftValidation({ status: "invalid", code, reason: "error" });
+    }
   };
 
   return (
@@ -686,8 +735,69 @@ export function Services() {
 
               <label className={styles.form__wide}>
                 Gutschein-Code (optional)
-                <input name="giftCode" type="text" placeholder="GIFT-XXXX-XXX" />
+                <div className={styles.form__gift}>
+                  <input
+                    name="giftCode"
+                    type="text"
+                    placeholder="GIFT-XXXX-XXX"
+                    value={giftCode}
+                    onChange={(event) => setGiftCode(event.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className={styles.form__giftBtn}
+                    onClick={handleCheckGift}
+                    disabled={giftValidation.status === "checking"}
+                  >
+                    {giftValidation.status === "checking" ? "Prüfen..." : "Prüfen"}
+                  </button>
+                </div>
+                {giftValidation.status === "valid" ? (
+                  <span className={styles.form__giftOk}>
+                    Gutschein gültig. Guthaben: {giftValidation.balance} EUR.
+                  </span>
+                ) : null}
+                {giftValidation.status === "invalid" ? (
+                  <span className={styles.form__giftError}>
+                    {giftValidation.reason === "not_found"
+                      ? "Gutschein-Code nicht gefunden."
+                      : giftValidation.reason === "not_available"
+                        ? "Gutschein ist nicht mehr gültig."
+                        : giftValidation.reason === "empty"
+                          ? "Gutschein hat kein Guthaben mehr."
+                          : "Gutschein konnte nicht geprüft werden."}
+                  </span>
+                ) : null}
               </label>
+
+              {selectedService ? (
+                <div className={styles.form__price}>
+                  <span>Preis: {formatCurrency(selectedService.priceFrom)}</span>
+                  {giftValidation.status === "valid" ? (
+                    <>
+                      <span>
+                        Gutschein: -
+                        {formatCurrency(
+                          Math.min(
+                            giftValidation.balance || 0,
+                            selectedService.priceFrom
+                          )
+                        )}
+                      </span>
+                      <span className={styles.form__priceStrong}>
+                        Zu zahlen:{" "}
+                        {formatCurrency(
+                          Math.max(
+                            0,
+                            selectedService.priceFrom -
+                              (giftValidation.balance || 0)
+                          )
+                        )}
+                      </span>
+                    </>
+                  ) : null}
+                </div>
+              ) : null}
 
               <label className={styles.form__wide}>
                 Notiz

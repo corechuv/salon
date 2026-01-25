@@ -423,6 +423,46 @@
     gap: 6px;
 }
 
+.form__gift {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+}
+
+.form__giftBtn {
+    border: none;
+    background: #15131b;
+    color: #fff;
+    padding: 10px 16px;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+}
+
+.form__giftOk {
+    font-size: 12px;
+    color: #1e7d4f;
+}
+
+.form__giftError {
+    font-size: 12px;
+    color: #b24a4a;
+}
+
+.form__price {
+    display: grid;
+    gap: 6px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.form__priceStrong {
+    font-weight: 500;
+}
+
 .form__consent {
     display: grid;
     grid-template-columns: 18px 1fr;
