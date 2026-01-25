@@ -64,6 +64,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 22px;
+    padding: 0 16px;
 }
 
 .card {
@@ -297,5 +298,25 @@
 @media (max-width: 820px) {
     .hero {
         grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 520px) {
+    .grid {
+        padding: 0;
+    }
+
+    .giftCard {
+        border-radius: 0;
+        aspect-ratio: 1.9 / 1;
+    }
+
+    .customRow {
+        padding: 0 16px;
+    }
+
+    .cardFooter {
+        padding: 0 16px;
     }
 }
