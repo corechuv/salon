@@ -1,12 +1,17 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styles from "./MainLayout.module.scss";
 import { Header } from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 
 export function MainLayout() {
+    const location = useLocation();
     const apiBase = import.meta.env.VITE_API_URL as string | undefined;
     const [hours, setHours] = useState<string>("Mo–Sa 10:00–20:00");
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+    }, [location.pathname]);
 
     useEffect(() => {
         if (!apiBase) return;

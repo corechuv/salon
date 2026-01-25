@@ -233,6 +233,7 @@ export function ServiceBooking() {
 
   useEffect(() => {
     if (!id || services.length === 0) return;
+    window.scrollTo({ top: 0, behavior: "smooth" });
     const matched = services.find((service) => service.id === id);
     setSelectedService(matched ?? null);
     setSelectedTime(null);
