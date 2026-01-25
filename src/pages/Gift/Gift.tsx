@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import styles from "./Gift.module.scss";
 
-const PRESETS = [50, 100, 150, 200];
+const PRESETS = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
 
 export function Gift() {
   const { search } = useLocation();
