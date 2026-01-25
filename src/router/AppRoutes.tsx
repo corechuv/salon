@@ -16,6 +16,7 @@ export function AppRoutes() {
         <Route path="/education" element={<Education />} />
         <Route path="/masters" element={<Master />} />
         <Route path="/services" element={<Services />} />
+        <Route path="/services/:id" element={<Services />} />
         <Route path="/confirm" element={<Confirm />} />
         <Route path="/gift" element={<Gift />} />
         <Route path="/about" element={<About />} />

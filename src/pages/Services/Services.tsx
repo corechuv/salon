@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect, type FormEvent } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./Services.module.scss";
 import { SectionShell } from "../../components/SectionShell/SectionShell";
 
@@ -192,6 +193,9 @@ type GiftValidation = {
 };
 
 export function Services() {
+  const navigate = useNavigate();
+  const { id: serviceIdParam } = useParams();
+  const isBookingPage = Boolean(serviceIdParam);
   const [services, setServices] = useState<Service[]>([]);
   const [masters, setMasters] = useState<Master[]>([]);
   const [hours, setHours] = useState<Hours[]>([]);
@@ -201,7 +205,6 @@ export function Services() {
   const [selectedDate, setSelectedDate] = useState(formatDateInput(new Date()));
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedMaster, setSelectedMaster] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [consent, setConsent] = useState(false);
@@ -220,6 +223,23 @@ export function Services() {
     const local = readLocalBookings();
     setBookings(local);
   }, []);
+
+  useEffect(() => {
+    if (!serviceIdParam || services.length === 0) return;
+    const matched = services.find((service) => service.id === serviceIdParam);
+    setSelectedService(matched ?? null);
+    setSelectedTime(null);
+    setError(null);
+    setSuccess(null);
+    setConsent(false);
+    setConsentName("");
+    setGiftCode("");
+    setGiftValidation({ status: "idle", code: "" });
+    if (!selectedMaster) {
+      const iryna = masters.find((master) => master.name.toLowerCase() === "iryna marinina");
+      setSelectedMaster(iryna ? iryna.id : masters[0]?.id ?? null);
+    }
+  }, [serviceIdParam, services, masters, selectedMaster]);
 
   useEffect(() => {
     let active = true;
@@ -283,15 +303,6 @@ export function Services() {
   useEffect(() => {
     setSelectedTime(null);
   }, [selectedDate]);
-
-  useEffect(() => {
-    if (!isModalOpen) return;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prevOverflow;
-    };
-  }, [isModalOpen]);
 
   const activeHours = useMemo(() => getHoursForDate(selectedDate, hours), [selectedDate, hours]);
 
@@ -360,25 +371,7 @@ export function Services() {
   }, [masterActiveHours]);
 
   const openModal = (service: Service) => {
-    setSelectedService(service);
-    setIsModalOpen(true);
-    setSelectedTime(null);
-    if (!selectedMaster) {
-      const iryna = masters.find((master) => master.name.toLowerCase() === "iryna marinina");
-      setSelectedMaster(iryna ? iryna.id : masters[0]?.id ?? null);
-    }
-    setError(null);
-    setSuccess(null);
-    setConsent(false);
-    setConsentName("");
-    setGiftCode("");
-    setGiftValidation({ status: "idle", code: "" });
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setError(null);
-    setSuccess(null);
+    navigate(`/services/${service.id}`);
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -483,11 +476,23 @@ export function Services() {
       <div className={styles.banner} role="presentation" aria-hidden="true" />
       <section className={styles.hero}>
         <div className={styles.hero__content}>
-          <h1 className={styles.hero__title}>Unsere Services</h1>
-          <p className={styles.hero__text}>
-            Transparente Preise, klare Ablaufe und persoenliche Betreuung. Waehlen
-            Sie eine Leistung und buchen Sie Ihren Termin.
-          </p>
+          {isBookingPage && selectedService ? (
+            <>
+              <h1 className={styles.hero__title}>Termin buchen</h1>
+              <p className={styles.hero__text}>
+                {selectedService.title} · {formatCurrency(selectedService.priceFrom)} ·{" "}
+                {selectedService.durationMin} мин
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className={styles.hero__title}>Unsere Services</h1>
+              <p className={styles.hero__text}>
+                Transparente Preise, klare Ablaufe und persoenliche Betreuung. Waehlen
+                Sie eine Leistung und buchen Sie Ihren Termin.
+              </p>
+            </>
+          )}
         </div>
         <div className={styles.hero__panel}>
           <div>
@@ -520,6 +525,7 @@ export function Services() {
         </div>
       </section>
 
+      {!isBookingPage ? (
       <section className={styles.services}>
         {isLoading ? (
           <p className={styles.slots__closed}>Lade Daten...</p>
@@ -590,6 +596,7 @@ export function Services() {
           </div>
         </div>
       </section>
+      ) : null}
 
       <SectionShell
         className={styles.team}
@@ -623,10 +630,9 @@ export function Services() {
         </div>
       </SectionShell>
 
-      {isModalOpen && selectedService ? (
-        <div className={styles.modal} role="dialog" aria-modal="true">
-          <div className={styles.modal__overlay} onClick={closeModal} />
-          <div className={styles.modal__panel}>
+      {isBookingPage && selectedService ? (
+        <section className={styles.bookingPage}>
+          <div className={`${styles.modal__panel} ${styles.booking__panel}`}>
             <div className={styles.modal__head}>
               <div>
                 <p className={styles.modal__title}>{selectedService.title}</p>
@@ -634,7 +640,12 @@ export function Services() {
                   ab {formatCurrency(selectedService.priceFrom)} · {selectedService.durationMin} min
                 </p>
               </div>
-              <button type="button" className={styles.modal__close} onClick={closeModal} aria-label="Schliessen">
+              <button
+                type="button"
+                className={styles.modal__close}
+                onClick={() => navigate("/services")}
+                aria-label="Schliessen"
+              >
                 ✕
               </button>
             </div>
@@ -839,7 +850,7 @@ export function Services() {
               </div>
             </form>
           </div>
-        </div>
+        </section>
       ) : null}
     </div>
   );
