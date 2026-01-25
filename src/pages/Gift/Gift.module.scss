@@ -59,12 +59,21 @@
 }
 
 .grid {
-    max-width: 1120px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(240px, 1fr));
-    gap: 36px 22px;
-    padding: 0 16px;
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  gap: 36px 22px;
+  padding: 0 16px;
+
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 520px) {
+  .grid { grid-template-columns: repeat(2, minmax(240px, 1fr)); }
+}
+
+@media (min-width: 820px) {
+  .grid { grid-template-columns: repeat(3, minmax(240px, 1fr)); }
 }
 
 .card {
