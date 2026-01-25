@@ -63,6 +63,10 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
+
+    button {
+        zoom: 1.2;
+    }
 }
 
 /* на очень узких экранах чуть более «высокий» баннер */
