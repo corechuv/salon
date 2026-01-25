@@ -8,6 +8,7 @@ export function Confirm() {
   const apiBase = import.meta.env.VITE_API_URL as string | undefined;
 
   const [status, setStatus] = useState<"idle" | "loading" | "ok" | "error">("idle");
+  const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
     if (!token || !apiBase) {
@@ -16,12 +17,20 @@ export function Confirm() {
     }
     setStatus("loading");
     fetch(`${apiBase}/confirm?token=${encodeURIComponent(token)}`)
-      .then((res) => {
-        if (!res.ok) throw new Error();
-        return res.text();
+      .then(async (res) => {
+        const data = await res.json().catch(() => null);
+        if (!res.ok) {
+          throw new Error(data?.message || "error");
+        }
+        setMessage(data?.already ? "Bereits bestätigt." : "");
+        return;
       })
       .then(() => setStatus("ok"))
-      .catch(() => setStatus("error"));
+      .catch((err) => {
+        const msg = err instanceof Error ? err.message : "error";
+        setMessage(msg);
+        setStatus("error");
+      });
   }, [token, apiBase]);
 
   return (
@@ -36,13 +45,21 @@ export function Confirm() {
         {status === "ok" && (
           <>
             <h1>Termin bestätigt</h1>
-            <p>Vielen Dank! Ihre Buchung wurde bestätigt.</p>
+            <p>{message || "Vielen Dank! Ihre Buchung wurde bestätigt."}</p>
           </>
         )}
         {status === "error" && (
           <>
             <h1>Bestätigung fehlgeschlagen</h1>
-            <p>Der Link ist ungültig oder abgelaufen.</p>
+            <p>
+              {message === "gift not found"
+                ? "Gutschein-Code nicht gefunden. Bitte kontaktieren Sie uns."
+                : message === "gift not available"
+                  ? "Gutschein ist nicht mehr gültig."
+                  : message === "gift empty"
+                    ? "Gutschein hat kein Guthaben mehr."
+                    : "Der Link ist ungültig oder abgelaufen."}
+            </p>
           </>
         )}
         <Link to="/" className={styles.back}>
