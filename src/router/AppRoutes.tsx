@@ -4,7 +4,8 @@ import { Home } from "../pages/Home/Home";
 import { Education } from "../pages/Education/Education";
 import { About } from "../pages/About/About";
 import { Master } from "../pages/Master/Master";
-import { Services } from "../pages/Services/Services";
+import { ServicesList } from "../pages/Services/ServicesList";
+import { ServiceBooking } from "../pages/Services/ServiceBooking";
 import { Confirm } from "../pages/Confirm/Confirm";
 import { Gift } from "../pages/Gift/Gift";
 
@@ -15,8 +16,8 @@ export function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/education" element={<Education />} />
         <Route path="/masters" element={<Master />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/services/:id" element={<Services />} />
+        <Route path="/services" element={<ServicesList />} />
+        <Route path="/services/:id" element={<ServiceBooking />} />
         <Route path="/confirm" element={<Confirm />} />
         <Route path="/gift" element={<Gift />} />
         <Route path="/about" element={<About />} />
