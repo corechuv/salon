@@ -518,6 +518,10 @@
     color: black;
     font-weight: 300;
     cursor: pointer;
+    display: grid;
+    gap: 2px;
+    justify-items: center;
+    line-height: 1.1;
 }
 
 .slot__active {
@@ -527,10 +531,22 @@
 }
 
 .slot__busy {
-    background: transparent;
-    border: none;
-    color: #525252;
+    background: #f1f1f1;
+    border-color: #e0e0e0;
+    color: #6b5a57;
     cursor: not-allowed;
+}
+
+.slot__time {
+    display: block;
+    font-weight: 300;
+}
+
+.slot__label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #8a7a77;
 }
 
 .slots__closed {

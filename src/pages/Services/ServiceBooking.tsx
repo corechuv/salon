@@ -328,7 +328,7 @@ export function ServiceBooking() {
       .map((item) => {
         const duration = item.durationMin ?? serviceMap.get(item.serviceId) ?? 0;
         const end = addMinutes(item.time, duration);
-        return { start: item.time, end };
+        return { start: item.time, end, status: item.status ?? "confirmed" };
       });
   }, [bookings, selectedDate, selectedMaster, services]);
 
@@ -573,9 +573,17 @@ export function ServiceBooking() {
                               parseTime(slotEnd) <= parseTime(interval.end)
                           )
                         : false;
-                      const isBusy = bookedRanges.some((range) =>
+                      const overlapEntry = bookedRanges.find((range) =>
                         isOverlap(slot, slotEnd, range.start, range.end)
                       );
+                      const isBusy = Boolean(overlapEntry);
+                      const statusLabel = exceedsClosing
+                        ? "Nicht verfügbar"
+                        : overlapEntry?.status === "pending"
+                          ? "Reserviert"
+                          : overlapEntry
+                            ? "Belegt"
+                            : "";
                       return (
                         <button
                           key={slot}
@@ -588,8 +596,12 @@ export function ServiceBooking() {
                             setSelectedTime(slot);
                           }}
                           disabled={isBusy || exceedsClosing}
+                          title={statusLabel ? `${slot} · ${statusLabel}` : slot}
                         >
-                          {slot}
+                          <span className={styles.slot__time}>{slot}</span>
+                          {statusLabel ? (
+                            <span className={styles.slot__label}>{statusLabel}</span>
+                          ) : null}
                         </button>
                       );
                     })}
