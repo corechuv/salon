@@ -1,49 +1,8 @@
-.wrap {
+.section {
   width: 100%;
-  max-width: 1120px;
-  margin: clamp(28px, 4vw, 46px) auto 0;
-  padding: 0 clamp(16px, 3vw, 28px);
   overflow: hidden;
-  box-sizing: border-box;
   margin-bottom: 50px;
-}
-
-.header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 26px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.heading {
-  display: grid;
-  gap: 6px;
-}
-
-.title {
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 1.6px;
-  font-weight: 500;
-  font-size: clamp(20px, 4vw, 82px);
-}
-
-.subtitle {
-  margin: 0;
-  font-size: clamp(12px, 1.2vw, 16px);
-  font-weight: 300;
-  color: #6b5a57;
-}
-
-.controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  justify-self: end;
-  max-width: 100%;
+  margin-top: clamp(28px, 4vw, 46px);
 }
 
 .navBtn {
@@ -67,20 +26,34 @@
   }
 }
 
-@media (max-width: 520px) {
-  .header {
-    align-items: flex-start;
-    gap: 12px;
-  }
+.line {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 0;
+  scrollbar-width: none;
+  border-top: 1px solid #eaeaea;
+  border-bottom: 1px solid #eaeaea;
+}
 
-  .title {
-    font-size: 28px;
-    letter-spacing: 1px;
-  }
+.line::-webkit-scrollbar {
+  display: none;
+}
 
-  .subtitle {
-    font-size: 14px;
-  }
+.lineItem {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 13px;
+  font-weight: 300;
+  color: #15131b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: clamp(160px, 30vw, 340px);
+  flex: 0 0 auto;
 }
 
 .viewport {
@@ -119,7 +92,6 @@
   -webkit-user-drag: none;
 }
 
-/* Modal */
 .modalBackdrop {
   position: fixed;
   inset: 0;

@@ -52,6 +52,7 @@ export function Gift() {
 
   return (
     <div className={styles.page}>
+      <div className={styles.banner} role="presentation" aria-hidden="true" />
       <section className={styles.hero}>
         <div>
           <h1 className={styles.title}>Geschenkgutscheine</h1>
@@ -92,12 +93,12 @@ export function Gift() {
         ))}
 
         <article className={`${styles.card} ${styles.cardCustom}`}>
-          <div>
+          <div className={`${styles.giftCard} ${styles.giftCardCustom}`}>
             <div className={styles.cardLogo}>
               <img src="/logo.png" alt="MIRA" />
             </div>
-            <h3>Eigener Betrag</h3>
-            <p>Wähle einen Betrag zwischen 50€ und 500€.</p>
+            <h3 className={styles.customTitle}>Eigener Betrag</h3>
+            <p className={styles.customText}>Wähle einen Betrag zwischen 50€ und 500€.</p>
           </div>
           <div className={styles.customRow}>
             <input

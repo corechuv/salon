@@ -1,5 +1,6 @@
 import { useMemo, useState, useEffect, type FormEvent } from "react";
 import styles from "./Services.module.scss";
+import { SectionShell } from "../../components/SectionShell/SectionShell";
 
 type Service = {
   id: string;
@@ -528,14 +529,11 @@ export function Services() {
         </div>
       </section>
 
-      <section className={styles.team}>
-        <div className={styles.team__header}>
-          <h2>Unsere Meister</h2>
-          <p>
-            Alle Spezialistinnen sind handverlesen und arbeiten nach klaren
-            Standards.
-          </p>
-        </div>
+      <SectionShell
+        className={styles.team}
+        title="Unsere Meister"
+        subtitle="Alle Spezialistinnen sind handverlesen und arbeiten nach klaren Standards."
+      >
         <div className={styles.team__grid}>
           {masters.map((master) => (
             <article key={master.id} className={styles.master}>
@@ -559,9 +557,9 @@ export function Services() {
                 <p className={styles.master__exp}>{master.experienceYears} Jahre Erfahrung</p>
               </div>
             </article>
-          ))}
+            ))}
         </div>
-      </section>
+      </SectionShell>
 
       {isModalOpen && selectedService ? (
         <div className={styles.modal} role="dialog" aria-modal="true">

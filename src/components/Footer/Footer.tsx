@@ -138,7 +138,7 @@ export function Footer(props: BeautyFooterProps) {
                         <div className={styles.bookingNote}>24/7</div>
                         <div className={styles.booking}>{BookingAction}</div>
                     </div>
-                    
+
                     <div className={styles.col}>
                         <div className={styles.meta}>
                             <div className={styles.metaItem}>
@@ -201,6 +201,7 @@ export function Footer(props: BeautyFooterProps) {
                     <div className={styles.bottomLinks}>
                         <a className={styles.bottomLink} href="/education">Ausbildung</a>
                         <a className={styles.bottomLink} href="/masters">Meister</a>
+                        <a className={styles.bottomLink} href="/gift">Geschenkgutschein</a>
                         <a className={styles.bottomLink} href="/contacts">Kontakte</a>
                         <a className={styles.bottomLink} href="/about">Über uns</a>
                     </div>

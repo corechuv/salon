@@ -1,4 +1,5 @@
 import styles from "./Master.module.scss";
+import { SectionShell } from "../../components/SectionShell/SectionShell";
 
 const masters = [
   {
@@ -78,14 +79,13 @@ export function Master() {
         </div>
       </section>
 
-      <section className={styles.gallery}>
-        <div className={styles.gallery__header}>
-          <h2 className={styles.gallery__title}>Команда</h2>
-          <p className={styles.gallery__text}>
-            Каждый мастер — отдельный характер и стиль работы. Выбирайте по задаче
-            и ощущению.
-          </p>
-        </div>
+      <SectionShell
+        className={styles.gallery}
+          title="Команда"
+          subtitle="Каждый мастер — отдельный характер и стиль работы. Выбирайте по задаче и ощущению."
+          titleClassName={styles.gallery__title}
+          subtitleClassName={styles.gallery__text}
+        >
 
         <div className={styles.cards}>
           {masters.map((master) => (
@@ -116,9 +116,9 @@ export function Master() {
                 </div>
               </div>
             </article>
-          ))}
+            ))}
         </div>
-      </section>
+      </SectionShell>
 
       <section className={styles.spotlight}>
         <div className={styles.spotlight__content}>

@@ -1,6 +1,15 @@
 .page {
     color: #15131b;
-    padding: clamp(28px, 4vw, 60px) clamp(16px, 4vw, 40px) clamp(60px, 8vw, 120px);
+    padding: 0 0 clamp(60px, 8vw, 120px);
+}
+
+.banner {
+    width: 100%;
+    height: clamp(200px, 30vw, 380px);
+    background:
+        linear-gradient(90deg, rgba(18, 14, 20, 0.55), rgba(18, 14, 20, 0)),
+        url("/ba/IMG_2.png") center/cover no-repeat;
+    margin-bottom: clamp(20px, 4vw, 40px);
 }
 
 .hero {
@@ -10,6 +19,9 @@
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 24px;
     align-items: center;
+    padding: clamp(20px, 3vw, 32px);
+    padding-left: clamp(16px, 4vw, 40px);
+    padding-right: clamp(16px, 4vw, 40px);
 }
 
 .title {
@@ -50,60 +62,76 @@
     max-width: 1120px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 22px;
 }
 
 .card {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    position: relative;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    gap: 14px;
 }
 
 .giftCard {
-    background: #be1171;
-    border-radius: 10px;
-    width: 266px;
-    height: 167px;
     position: relative;
+    aspect-ratio: 1.6 / 1;
+    border-radius: 16px;
+    padding: 18px;
+    background: linear-gradient(135deg, #15131b 0%, #6a2a4a 55%, #be1171 100%);
+    box-shadow: 0 20px 40px rgba(20, 10, 20, 0.2);
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 6px;
+    overflow: hidden;
 }
 
-.card h3 {
-    font-size: 28px;
-    font-weight: 100;
-    color: rgba(207, 207, 207, 0.8705882353);
-    text-transform: uppercase;
-    text-align: center;
-    padding: 0;
-    margin: 0;
+.giftCard::after {
+    content: "";
     position: absolute;
-    top: 0;
-    right: 10px;
+    inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.15), transparent 55%);
+    pointer-events: none;
 }
 
-.card p {
+.giftCard h3 {
     margin: 0;
-    font-size: 10px;
-    font-weight: 300;
-    color: #ff83c4;
-    padding: 10px;
+    font-size: clamp(24px, 2.6vw, 32px);
+    font-weight: 600;
+    line-height: 1.8;
+    color: #fff;
     text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.giftCard .customTitle {
+    font-size: 22px;
+}
+
+.giftCard .customText {
+    line-height: 1.8;
+    font-size: 11px;
 }
 
 .cardLogo {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 66px;
-    margin-bottom: 32px;
+    margin-bottom: 4px;
 }
 
 .cardLogo img {
-    height: 34px;
-    opacity: 0.1;
+    height: 26px;
+    opacity: 0.75;
+}
+
+.giftCard p {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: center;
 }
 
 .cardFooter {
@@ -111,8 +139,8 @@
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    font-size: 10px;
-    color: #000000;
+    font-size: 11px;
+    color: #5b5b5b;
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
@@ -121,22 +149,17 @@
     border: none;
     background: #15131b;
     color: #fff;
-    padding: 8px 16px;
+    padding: 8px 14px;
     text-transform: uppercase;
     font-family: "Roboto", sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 300;
     letter-spacing: 0.1em;
     cursor: pointer;
 }
 
-.cardCustom {
-    background: lblack;
-    color: #fff;
-}
-
-.cardCustom p {
-    color: rgba(255, 255, 255, 0.75);
+.giftCardCustom {
+    background: linear-gradient(135deg, #0b0b0b 0%, #3d3342 55%, #0e4d6a 100%);
 }
 
 .customRow {
@@ -148,9 +171,9 @@
 
 .customRow input {
     border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(21, 19, 27, 0.4);
     background: transparent;
-    color: #fff;
+    color: #15131b;
     font-size: 18px;
     padding: 4px 0;
     width: 100px;

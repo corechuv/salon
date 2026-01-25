@@ -1,21 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { CertificatesMarquee } from "../../components/CertificatesMarquee/CertificatesMarquee";
-import ChevronLeftIcon from "../../components/Icons/ChevronLeftIcon";
-import ChevronRightIcon from "../../components/Icons/ChevronRightIcon";
+import { CarouselSection } from "../../components/CarouselSection/CarouselSection";
 import styles from "./Home.module.scss";
 
 export function Home() {
-  const servicesLineRef = useRef<HTMLDivElement | null>(null);
   const [serviceTitles, setServiceTitles] = useState<string[]>([]);
   const apiBase = import.meta.env.VITE_API_URL as string | undefined;
-
-  const scrollServices = (dir: -1 | 1) => {
-    const el = servicesLineRef.current;
-    if (!el) return;
-    const step = Math.max(160, el.clientWidth * 0.6);
-    el.scrollBy({ left: dir * step, behavior: "smooth" });
-  };
 
   useEffect(() => {
     if (!apiBase) return;
@@ -33,7 +23,6 @@ export function Home() {
     "/certificates/Grundlagen der Haut und deren Anhangsgebilde_page-0001.jpg",
     "/certificates/Ultraschall_page-0001.jpg",
   ];
-
   return <div>
     <div className={styles.ba}>
       <img src="/ba/IMG_2.png" className={styles.ba__image} alt="Banner" />
@@ -52,44 +41,18 @@ export function Home() {
         </div>
       </div>
     </div>
-    <section className={styles.servicesPreview}>
-      <div className={styles.servicesPreview__header}>
-        <div>
-          <h2 className={styles.servicesPreview__title}>Leistungen</h2>
-          <p className={styles.servicesPreview__subtitle}>
-            Kurzer Überblick über die beliebtesten Services.
-          </p>
-        </div>
-        <div className={styles.servicesPreview__controls}>
-          <button
-            type="button"
-            className={styles.servicesPreview__navBtn}
-            onClick={() => scrollServices(-1)}
-            aria-label="Nach links"
-          >
-            <ChevronLeftIcon />
-          </button>
-          <button
-            type="button"
-            className={styles.servicesPreview__navBtn}
-            onClick={() => scrollServices(1)}
-            aria-label="Nach rechts"
-          >
-            <ChevronRightIcon />
-          </button>
-        </div>
-      </div>
-      <div className={styles.servicesPreview__line} ref={servicesLineRef}>
-        {serviceTitles.length > 0
-          ? serviceTitles.map((title) => <span key={title}>{title}</span>)
-          : null}
-      </div>
-    </section>
-      <CertificatesMarquee
-        images={certificateImages}
-        perView={3.5}
-        speedPxPerSec={28}  // ещё медленнее => меньше число
-        title="Zertifikate"
-      />
+    <CarouselSection
+      variant="line"
+      title="Leistungen"
+      subtitle="Kurzer Überblick über die beliebtesten Services."
+      items={serviceTitles}
+    />
+    <CarouselSection
+      variant="marquee"
+      title="Zertifikate"
+      images={certificateImages}
+      perView={3.5}
+      speedPxPerSec={28}
+    />
   </div>;
 }
