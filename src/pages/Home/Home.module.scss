@@ -101,7 +101,7 @@
 /* на очень узких экранах чуть более «высокий» баннер */
 @media (max-width: 768px) {
     .ba {
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 16 / 14;
     }
 
     .ba::before {
