@@ -50,6 +50,7 @@ type Booking = {
   phone: string;
   notes: string;
   giftCode?: string;
+  giftCodes?: string[];
   consentName?: string;
   consentAccepted?: boolean;
 };
@@ -186,10 +187,12 @@ async function sendBooking(payload: Booking): Promise<void> {
 
 type GiftValidation = {
   status: "idle" | "checking" | "valid" | "invalid";
-  code: string;
-  balance?: number;
-  currency?: string;
-  reason?: string;
+  items: Array<{
+    code: string;
+    balance?: number;
+    currency?: string;
+    reason?: string;
+  }>;
 };
 
 export function Services() {
@@ -209,10 +212,10 @@ export function Services() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [consent, setConsent] = useState(false);
   const [consentName, setConsentName] = useState("");
-  const [giftCode, setGiftCode] = useState("");
+  const [giftCodes, setGiftCodes] = useState<string[]>([""]);
   const [giftValidation, setGiftValidation] = useState<GiftValidation>({
     status: "idle",
-    code: "",
+    items: [],
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -233,8 +236,8 @@ export function Services() {
     setSuccess(null);
     setConsent(false);
     setConsentName("");
-    setGiftCode("");
-    setGiftValidation({ status: "idle", code: "" });
+    setGiftCodes([""]);
+    setGiftValidation({ status: "idle", items: [] });
     if (!selectedMaster) {
       const iryna = masters.find((master) => master.name.toLowerCase() === "iryna marinina");
       setSelectedMaster(iryna ? iryna.id : masters[0]?.id ?? null);
@@ -389,7 +392,8 @@ export function Services() {
       return;
     }
     const form = new FormData(event.currentTarget);
-    if (giftCode.trim() && giftValidation.status !== "valid") {
+    const normalizedCodes = giftCodes.map((code) => code.trim()).filter(Boolean);
+    if (normalizedCodes.length > 0 && giftValidation.status !== "valid") {
       setError("Bitte Gutschein-Code zuerst prüfen.");
       return;
     }
@@ -404,7 +408,10 @@ export function Services() {
       email: String(form.get("email") || ""),
       phone: String(form.get("phone") || ""),
       notes: String(form.get("notes") || ""),
-      giftCode: giftValidation.status === "valid" ? giftValidation.code : undefined,
+      giftCodes:
+        giftValidation.status === "valid"
+          ? giftValidation.items.map((item) => item.code)
+          : undefined,
       consentName: consentName.trim(),
       consentAccepted: consent,
     };
@@ -443,32 +450,65 @@ export function Services() {
   };
 
   const handleCheckGift = async () => {
-    const code = giftCode.trim().toUpperCase();
-    if (!code) {
-      setGiftValidation({ status: "invalid", code, reason: "missing" });
+    const codes = giftCodes
+      .map((value) => value.trim().toUpperCase())
+      .filter(Boolean);
+    const uniqueCodes = Array.from(new Set(codes));
+    if (uniqueCodes.length === 0) {
+      setGiftValidation({ status: "invalid", items: [] });
       return;
     }
     if (!apiBase) {
-      setGiftValidation({ status: "invalid", code, reason: "error" });
+      setGiftValidation({
+        status: "invalid",
+        items: uniqueCodes.map((code) => ({ code, reason: "error" })),
+      });
       return;
     }
-    setGiftValidation({ status: "checking", code });
+    setGiftValidation({ status: "checking", items: [] });
     try {
-      const response = await fetch(`${apiBase}/gift/validate?code=${encodeURIComponent(code)}`);
-      const data = await response.json();
-      if (!data?.valid) {
-        setGiftValidation({ status: "invalid", code, reason: data?.reason || "not_found" });
-        return;
-      }
+      const results = await Promise.all(
+        uniqueCodes.map(async (code) => {
+          const response = await fetch(
+            `${apiBase}/gift/validate?code=${encodeURIComponent(code)}`
+          );
+          const data = await response.json();
+          if (!data?.valid) {
+            return { code, reason: data?.reason || "not_found" };
+          }
+          return { code, balance: data.balance, currency: data.currency };
+        })
+      );
+      const invalid = results.filter((item) => item.reason);
       setGiftValidation({
-        status: "valid",
-        code,
-        balance: data.balance,
-        currency: data.currency,
+        status: invalid.length === 0 ? "valid" : "invalid",
+        items: results,
       });
     } catch {
-      setGiftValidation({ status: "invalid", code, reason: "error" });
+      setGiftValidation({
+        status: "invalid",
+        items: uniqueCodes.map((code) => ({ code, reason: "error" })),
+      });
     }
+  };
+
+  const updateGiftCode = (index: number, value: string) => {
+    setGiftCodes((prev) => {
+      const next = [...prev];
+      next[index] = value;
+      return next;
+    });
+    setGiftValidation({ status: "idle", items: [] });
+  };
+
+  const addGiftCode = () => {
+    setGiftCodes((prev) => [...prev, ""]);
+    setGiftValidation({ status: "idle", items: [] });
+  };
+
+  const removeGiftCode = (index: number) => {
+    setGiftCodes((prev) => prev.filter((_, idx) => idx !== index));
+    setGiftValidation({ status: "idle", items: [] });
   };
 
   return (
@@ -640,14 +680,6 @@ export function Services() {
                   ab {formatCurrency(selectedService.priceFrom)} · {selectedService.durationMin} min
                 </p>
               </div>
-              <button
-                type="button"
-                className={styles.modal__close}
-                onClick={() => navigate("/services")}
-                aria-label="Schliessen"
-              >
-                ✕
-              </button>
             </div>
 
             <form className={styles.form} onSubmit={handleSubmit}>
@@ -745,15 +777,51 @@ export function Services() {
               </div>
 
               <label className={styles.form__wide}>
-                Gutschein-Code (optional)
-                <div className={styles.form__gift}>
-                  <input
-                    name="giftCode"
-                    type="text"
-                    placeholder="GIFT-XXXX-XXX"
-                    value={giftCode}
-                    onChange={(event) => setGiftCode(event.target.value)}
-                  />
+                Gutschein-Codes (optional)
+                <div className={styles.form__giftList}>
+                  {giftCodes.map((code, index) => {
+                    const normalized = code.trim().toUpperCase();
+                    const item = giftValidation.items.find(
+                      (entry) => entry.code === normalized
+                    );
+                    return (
+                      <div key={`${index}-${code}`} className={styles.form__giftRow}>
+                        <input
+                          type="text"
+                          placeholder="GIFT-XXXX-XXX"
+                          value={code}
+                          onChange={(event) => updateGiftCode(index, event.target.value)}
+                        />
+                        {giftCodes.length > 1 ? (
+                          <button
+                            type="button"
+                            className={styles.form__giftRemove}
+                            onClick={() => removeGiftCode(index)}
+                            aria-label="Entfernen"
+                          >
+                            ✕
+                          </button>
+                        ) : null}
+                        {item?.balance ? (
+                          <span className={styles.form__giftOk}>
+                            Guthaben: {item.balance} EUR
+                          </span>
+                        ) : item?.reason ? (
+                          <span className={styles.form__giftError}>
+                            {item.reason === "not_found"
+                              ? "Nicht gefunden"
+                              : item.reason === "not_available"
+                                ? "Nicht gültig"
+                                : item.reason === "empty"
+                                  ? "Kein Guthaben"
+                                  : "Fehler"}
+                          </span>
+                        ) : null}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className={styles.form__giftActions}>
                   <button
                     type="button"
                     className={styles.form__giftBtn}
@@ -762,23 +830,10 @@ export function Services() {
                   >
                     {giftValidation.status === "checking" ? "Prüfen..." : "Prüfen"}
                   </button>
+                  <button type="button" className={styles.form__giftAdd} onClick={addGiftCode}>
+                    + Code
+                  </button>
                 </div>
-                {giftValidation.status === "valid" ? (
-                  <span className={styles.form__giftOk}>
-                    Gutschein gültig. Guthaben: {giftValidation.balance} EUR.
-                  </span>
-                ) : null}
-                {giftValidation.status === "invalid" ? (
-                  <span className={styles.form__giftError}>
-                    {giftValidation.reason === "not_found"
-                      ? "Gutschein-Code nicht gefunden."
-                      : giftValidation.reason === "not_available"
-                        ? "Gutschein ist nicht mehr gültig."
-                        : giftValidation.reason === "empty"
-                          ? "Gutschein hat kein Guthaben mehr."
-                          : "Gutschein konnte nicht geprüft werden."}
-                  </span>
-                ) : null}
               </label>
 
               {selectedService ? (
@@ -790,7 +845,10 @@ export function Services() {
                         Gutschein: -
                         {formatCurrency(
                           Math.min(
-                            giftValidation.balance || 0,
+                            giftValidation.items.reduce(
+                              (sum, item) => sum + (item.balance || 0),
+                              0
+                            ),
                             selectedService.priceFrom
                           )
                         )}
@@ -801,7 +859,10 @@ export function Services() {
                           Math.max(
                             0,
                             selectedService.priceFrom -
-                              (giftValidation.balance || 0)
+                              giftValidation.items.reduce(
+                                (sum, item) => sum + (item.balance || 0),
+                                0
+                              )
                           )
                         )}
                       </span>

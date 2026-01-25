@@ -334,7 +334,6 @@
     max-width: 720px;
     width: 100%;
     padding: clamp(20px, 3vw, 32px);
-    box-shadow: 0 30px 60px rgba(10, 8, 12, 0.3);
     display: grid;
     gap: 18px;
     z-index: 1;
@@ -434,11 +433,32 @@
     gap: 6px;
 }
 
-.form__gift {
+.form__giftList {
+    display: grid;
+    gap: 10px;
+}
+
+.form__giftRow {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 10px;
     align-items: center;
+}
+
+.form__giftRemove {
+    border: 0;
+    background: #ececec;
+    color: #333;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.form__giftActions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .form__giftBtn {
@@ -446,6 +466,17 @@
     background: #15131b;
     color: #fff;
     padding: 10px 16px;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+}
+
+.form__giftAdd {
+    border: 1px solid #15131b;
+    background: transparent;
+    color: #15131b;
+    padding: 9px 16px;
     text-transform: uppercase;
     font-size: 12px;
     letter-spacing: 0.1em;

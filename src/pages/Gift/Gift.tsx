@@ -104,8 +104,8 @@ export function Gift() {
             <input
               type="number"
               min={50}
-              max={500}
-              placeholder="50–500"
+              max={1000}
+              placeholder="50–1000"
               value={customAmount}
               onChange={(event) => setCustomAmount(event.target.value)}
             />
