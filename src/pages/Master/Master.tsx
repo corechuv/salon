@@ -1,4 +1,5 @@
 import styles from "./Master.module.scss";
+import { Button } from "../../components/UI/Button/Button";
 import { SectionShell } from "../../components/SectionShell/SectionShell";
 
 const masters = [
@@ -58,7 +59,7 @@ export function Master() {
             </div>
           </div>
           <div className={styles.hero__actions}>
-            <button className={styles.hero__primary}>Termin</button>
+            <Button type="button">Termin</Button>
             <button className={styles.hero__ghost}>Wählen Sie einen Master aus</button>
           </div>
         </div>

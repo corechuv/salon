@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
+import { Button } from "../../components/UI/Button/Button";
 import styles from "./Gift.module.scss";
 
 const PRESETS = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
@@ -85,9 +86,9 @@ export function Gift() {
             </div>
             <div className={styles.cardFooter}>
               <span>Gültig 12 Monate</span>
-              <button type="button" onClick={() => openModal(value)}>
+              <Button type="button" onClick={() => openModal(value)}>
                 Kaufen
-              </button>
+              </Button>
             </div>
           </article>
         ))}
@@ -113,7 +114,7 @@ export function Gift() {
           </div>
           <div className={styles.cardFooter}>
             <span>Gültig 12 Monate</span>
-            <button
+            <Button
               type="button"
               onClick={() => {
                 const val = Number(customAmount);
@@ -122,7 +123,7 @@ export function Gift() {
               }}
             >
               Kaufen
-            </button>
+            </Button>
           </div>
         </article>
       </section>
@@ -147,13 +148,13 @@ export function Gift() {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
-            <button
+            <Button
               type="button"
               disabled={loading}
               onClick={() => startCheckout(modalAmount)}
             >
               {loading ? "Bitte warten..." : "Zur Zahlung"}
-            </button>
+            </Button>
             {error ? <p className={styles.modalNote}>{error}</p> : null}
             <p className={styles.modalNote}>Zahlung per Stripe.</p>
           </div>

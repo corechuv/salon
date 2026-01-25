@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./Services.module.scss";
 import { SectionShell } from "../../components/SectionShell/SectionShell";
+import { Button } from "../../components/UI/Button/Button";
 
 type Service = {
   id: string;
@@ -628,13 +629,9 @@ export function Services() {
                     <span>Individuell anpassbar</span>
                     <span className={styles.card__durationMin}>{service.durationMin} min</span>
                   </div>
-                  <button
-                    className={styles.card__action}
-                    type="button"
-                    onClick={() => openModal(service)}
-                  >
+                  <Button type="button" onClick={() => openModal(service)}>
                     Buchen
-                  </button>
+                  </Button>
                 </article>
               ))}
             </div>
@@ -829,22 +826,20 @@ export function Services() {
                   })}
                 </div>
                 <div className={styles.form__giftActions}>
-                  <button
+                  <Button
                     type="button"
-                    className={styles.form__giftBtn}
                     onClick={handleCheckGift}
                     disabled={giftValidation.status === "checking"}
                   >
                     {giftValidation.status === "checking" ? "Prüfen..." : "Prüfen"}
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
-                    className={styles.form__giftAdd}
                     onClick={addGiftCode}
                     disabled={!giftCodes[giftCodes.length - 1]?.trim()}
                   >
                     + Code
-                  </button>
+                  </Button>
                 </div>
               </label>
 
@@ -914,9 +909,9 @@ export function Services() {
               {success ? <p className={styles.form__success}>{success}</p> : null}
 
               <div className={styles.form__actions}>
-                <button type="submit" disabled={isSubmitting}>
+                <Button type="submit" disabled={isSubmitting}>
                   {isSubmitting ? "Senden..." : "Termin anfragen"}
-                </button>
+                </Button>
                 <span className={styles.form__hint}>
                   Bestaetigung erfolgt per E-Mail.
                 </span>

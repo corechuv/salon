@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CarouselSection } from "../../components/CarouselSection/CarouselSection";
+import { Button } from "../../components/UI/Button/Button";
 import styles from "./Home.module.scss";
 
 export function Home() {
+  const navigate = useNavigate();
   const [serviceTitles, setServiceTitles] = useState<string[]>([]);
   const apiBase = import.meta.env.VITE_API_URL as string | undefined;
 
@@ -34,9 +36,9 @@ export function Home() {
           </p>
 
           <div className={styles.ba__actions}>
-            <Link to="/services" className={`${styles.ba__btn} ${styles.ba__btnPrimary}`}>
+            <Button type="button" onClick={() => navigate("/services")}>
               Termin
-            </Link>
+            </Button>
           </div>
         </div>
       </div>
