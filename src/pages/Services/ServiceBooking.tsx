@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Button } from "../../components/UI/Button/Button";
 import styles from "./Services.module.scss";
 
@@ -168,7 +168,6 @@ async function sendBooking(payload: Booking): Promise<void> {
 }
 
 export function ServiceBooking() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const [services, setServices] = useState<Service[]>([]);
   const [masters, setMasters] = useState<Master[]>([]);
@@ -441,10 +440,6 @@ export function ServiceBooking() {
     setGiftValidation({ status: "idle", items: [] });
   };
 
-  const addGiftCode = () => {
-    setGiftCodes((prev) => [...prev, ""]);
-    setGiftValidation({ status: "idle", items: [] });
-  };
 
   const removeGiftCode = (index: number) => {
     setGiftCodes((prev) => prev.filter((_, idx) => idx !== index));
@@ -631,13 +626,6 @@ export function ServiceBooking() {
                   >
                     {giftValidation.status === "checking" ? "Prüfen..." : "Prüfen"}
                   </Button>
-                  <Button
-                    type="button"
-                    onClick={addGiftCode}
-                    disabled={!giftCodes[giftCodes.length - 1]?.trim()}
-                  >
-                    + Code
-                  </Button>
                 </div>
               </label>
 
@@ -697,17 +685,11 @@ export function ServiceBooking() {
                 </span>
               </div>
             </form>
-+            <div className={styles.form__actions}>
-+              <Button type="button" onClick={() => navigate("/services")}>Zurueck zu Services</Button>
-+            </div>
           </div>
         </section>
       ) : (
         <section className={styles.bookingPage}>
           <p className={styles.form__error}>Service nicht gefunden.</p>
-          <Button type="button" onClick={() => navigate("/services")}>
-            Zurueck zu Services
-          </Button>
         </section>
       )}
     </div>

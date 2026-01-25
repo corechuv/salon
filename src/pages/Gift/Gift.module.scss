@@ -62,7 +62,7 @@
     max-width: 1120px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(3, minmax(240px, 1fr));
     gap: 36px 22px;
     padding: 0 16px;
 }
@@ -75,7 +75,6 @@
 .giftCard {
     position: relative;
     aspect-ratio: 1.6 / 1;
-    border-radius: 16px;
     padding: 18px;
     background: linear-gradient(135deg, #15131b 0%, #6a2a4a 55%, #be1171 100%);
     box-shadow: 0 20px 40px rgba(20, 10, 20, 0.2);
