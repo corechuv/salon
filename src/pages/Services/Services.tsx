@@ -48,6 +48,7 @@ type Booking = {
   email: string;
   phone: string;
   notes: string;
+  giftCode?: string;
   consentName?: string;
   consentAccepted?: boolean;
 };
@@ -176,7 +177,9 @@ async function sendBooking(payload: Booking): Promise<void> {
     body: JSON.stringify(payload),
   });
   if (!response.ok) {
-    throw new Error("Failed to send booking");
+    const data = await response.json().catch(() => null);
+    const message = data?.error || "Failed to send booking";
+    throw new Error(message);
   }
 }
 
@@ -388,6 +391,7 @@ export function Services() {
       email: String(form.get("email") || ""),
       phone: String(form.get("phone") || ""),
       notes: String(form.get("notes") || ""),
+      giftCode: String(form.get("giftCode") || "").trim(),
       consentName: consentName.trim(),
       consentAccepted: consent,
     };
@@ -403,16 +407,25 @@ export function Services() {
     try {
       await sendBooking(payload);
       setSuccess("Termin gesendet. Bitte bestaetige ueber den Link in deiner E-Mail.");
-    } catch (_err) {
-      setError("Versand fehlgeschlagen. Bitte spaeter erneut versuchen.");
+      setBookings((prev) => {
+        const next = [...prev, payload];
+        writeLocalBookings(next);
+        return next;
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Versand fehlgeschlagen.";
+      if (message === "gift not found") {
+        setError("Gutschein-Code nicht gefunden.");
+      } else if (message === "gift not available") {
+        setError("Gutschein ist bereits vollständig eingelöst.");
+      } else if (message === "gift empty") {
+        setError("Gutschein hat kein Guthaben mehr.");
+      } else if (message === "gift currency mismatch") {
+        setError("Gutschein-Währung passt nicht.");
+      } else {
+        setError("Versand fehlgeschlagen. Bitte spaeter erneut versuchen.");
+      }
     }
-
-    setBookings((prev) => {
-      const next = [...prev, payload];
-      writeLocalBookings(next);
-      return next;
-    });
-
     setIsSubmitting(false);
   };
 
@@ -670,6 +683,11 @@ export function Services() {
                   <input name="email" type="email" placeholder="name@mail.de" required />
                 </label>
               </div>
+
+              <label className={styles.form__wide}>
+                Gutschein-Code (optional)
+                <input name="giftCode" type="text" placeholder="GIFT-XXXX-XXX" />
+              </label>
 
               <label className={styles.form__wide}>
                 Notiz
