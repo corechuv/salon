@@ -54,16 +54,11 @@ export function Gift() {
     <div className={styles.page}>
       <section className={styles.hero}>
         <div>
-          <p className={styles.eyebrow}>GUTSCHEIN</p>
           <h1 className={styles.title}>Geschenkgutscheine</h1>
           <p className={styles.subtitle}>
             Schenke Schoenheit, Pflege und Zeit fuer sich selbst. Gutschein wird per
             E‑Mail verschickt.
           </p>
-        </div>
-        <div className={styles.logoCard}>
-          <img src="/logo.png" alt="MIRA" />
-          <p>Digitaler Gutschein</p>
         </div>
       </section>
       {giftStatus === "success" ? (
@@ -80,7 +75,7 @@ export function Gift() {
       <section className={styles.grid}>
         {PRESETS.map((value) => (
           <article key={value} className={styles.card}>
-            <div>
+            <div className={styles.giftCard}>
               <div className={styles.cardLogo}>
                 <img src="/logo.png" alt="MIRA" />
               </div>

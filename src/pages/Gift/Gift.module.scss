@@ -1,7 +1,6 @@
 .page {
     color: #15131b;
     padding: clamp(28px, 4vw, 60px) clamp(16px, 4vw, 40px) clamp(60px, 8vw, 120px);
-    background: linear-gradient(180deg, #ffffff 0%, #f6efe9 100%);
 }
 
 .hero {
@@ -11,14 +10,6 @@
     grid-template-columns: minmax(0, 1fr) auto;
     gap: 24px;
     align-items: center;
-}
-
-.eyebrow {
-    margin: 0 0 6px;
-    text-transform: uppercase;
-    letter-spacing: 0.24em;
-    font-size: 12px;
-    color: #6b5a57;
 }
 
 .title {
@@ -33,19 +24,6 @@
     font-size: 16px;
     font-weight: 300;
     max-width: 560px;
-}
-
-.logoCard {
-    background: #fff;
-    padding: 20px 24px;
-    display: grid;
-    gap: 10px;
-    justify-items: center;
-    box-shadow: 0 18px 36px rgba(20, 10, 20, 0.12);
-}
-
-.logoCard img {
-    height: 36px;
 }
 
 .noticeSuccess,
@@ -77,41 +55,50 @@
 }
 
 .card {
-    background: #4e3141;
-    padding: 72px 25px;
-    display: grid;
-    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+}
+
+.giftCard {
+    background: #be1171;
+    border-radius: 10px;
+    width: 266px;
+    height: 167px;
     position: relative;
 }
 
 .card h3 {
-    padding: 10px 0;
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 100;
-    color: #c87575b0;
+    color: rgba(207, 207, 207, 0.8705882353);
     text-transform: uppercase;
     text-align: center;
     padding: 0;
     margin: 0;
     position: absolute;
-    top: 20px;
-    right: 0;
-    left: 0;
+    top: 0;
+    right: 10px;
 }
 
 .card p {
-    margin: 6px 0 0;
-    font-size: 14px;
+    margin: 0;
+    font-size: 10px;
     font-weight: 300;
-    color: #665c4e;
+    color: #ff83c4;
+    padding: 10px;
+    text-transform: uppercase;
 }
 
 .cardLogo {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 60px;
-    margin-bottom: 50px;
+    margin-top: 66px;
+    margin-bottom: 32px;
 }
 
 .cardLogo img {
@@ -124,8 +111,8 @@
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    font-size: 9px;
-    color: #665c4e;
+    font-size: 10px;
+    color: #000000;
     text-transform: uppercase;
     letter-spacing: 0.1em;
 }
