@@ -7,6 +7,7 @@ import { Master } from "../pages/Master/Master";
 import { ServicesList } from "../pages/Services/ServicesList";
 import { ServiceBooking } from "../pages/Services/ServiceBooking";
 import { Confirm } from "../pages/Confirm/Confirm";
+import { Cancel } from "../pages/Cancel/Cancel";
 import { Gift } from "../pages/Gift/Gift";
 
 export function AppRoutes() {
@@ -19,6 +20,7 @@ export function AppRoutes() {
         <Route path="/services" element={<ServicesList />} />
         <Route path="/services/:id" element={<ServiceBooking />} />
         <Route path="/confirm" element={<Confirm />} />
+        <Route path="/cancel" element={<Cancel />} />
         <Route path="/gift" element={<Gift />} />
         <Route path="/about" element={<About />} />
       </Route>
