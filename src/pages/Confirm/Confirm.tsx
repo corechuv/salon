@@ -58,6 +58,8 @@ export function Confirm() {
                   ? "Gutschein ist nicht mehr gültig."
                   : message === "gift empty"
                     ? "Gutschein hat kein Guthaben mehr."
+                    : message === "expired"
+                      ? "Der Link ist abgelaufen. Bitte buchen Sie erneut."
                     : "Der Link ist ungültig oder abgelaufen."}
             </p>
           </>
