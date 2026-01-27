@@ -97,6 +97,7 @@ export function ServicesList() {
   const [selectedMaster, setSelectedMaster] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -203,9 +204,41 @@ export function ServicesList() {
       <section className={styles.services}>
         {isLoading ? <p className={styles.slots__closed}>Lade Daten...</p> : null}
         {loadError ? <p className={styles.form__error}>{loadError}</p> : null}
+        <div className={styles.categoryMobileBar}>
+          <button
+            type="button"
+            className={styles.categoryToggle}
+            onClick={() => setIsCategoryOpen(true)}
+          >
+            Kategorien
+          </button>
+          <span className={styles.categoryCurrent}>{selectedCategory}</span>
+        </div>
         <div className={styles.services__layout}>
-          <aside className={styles.categoryNav}>
-            <p className={styles.categoryNav__title}>Kategorien</p>
+          {isCategoryOpen ? (
+            <button
+              type="button"
+              className={styles.categoryOverlay}
+              onClick={() => setIsCategoryOpen(false)}
+              aria-label="Close categories"
+            />
+          ) : null}
+          <aside
+            className={`${styles.categoryNav} ${
+              isCategoryOpen ? styles.categoryNav__open : ""
+            }`}
+          >
+            <div className={styles.categoryNav__head}>
+              <p className={styles.categoryNav__title}>Kategorien</p>
+              <button
+                type="button"
+                className={styles.categoryNav__close}
+                onClick={() => setIsCategoryOpen(false)}
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
             <div className={styles.categoryNav__list}>
               {categories.map((cat) => (
                 <button
@@ -214,7 +247,10 @@ export function ServicesList() {
                   className={`${styles.categoryNav__item} ${
                     selectedCategory === cat ? styles.categoryNav__itemActive : ""
                   }`}
-                  onClick={() => setSelectedCategory(cat)}
+                  onClick={() => {
+                    setSelectedCategory(cat);
+                    setIsCategoryOpen(false);
+                  }}
                 >
                   {cat}
                 </button>
