@@ -655,6 +655,7 @@
         box-shadow: 20px 0 40px rgba(20, 10, 20, 0.15);
         overflow-y: auto;
         overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
     }
 
     .categoryNav__open {
@@ -666,6 +667,11 @@
         align-items: center;
         justify-content: space-between;
         gap: 12px;
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 1;
+        padding-bottom: 12px;
     }
 
     .categoryNav__close {
