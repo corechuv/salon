@@ -39,58 +39,77 @@ export function Header() {
         setIsMenuOpen(false);
     }, [location.pathname]);
 
+    useEffect(() => {
+        if (!isMenuOpen) return;
+        const original = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                setIsMenuOpen(false);
+            }
+        };
+        window.addEventListener("keydown", onKeyDown);
+        return () => {
+            document.body.style.overflow = original;
+            window.removeEventListener("keydown", onKeyDown);
+        };
+    }, [isMenuOpen]);
+
     return (
-        <header
-            className={`${styles.header} ${
-                isServices ? styles.headerServices : ""
-            } ${isServices && isScrolled ? styles.headerScrolled : ""}`}
-        >
-            <div className={styles.inner}>
-                <NavLink to="/" className={styles.logo}>
-                    <img src="/logo.png" />
-                </NavLink>
+        <>
+            <header
+                className={`${styles.header} ${
+                    isServices ? styles.headerServices : ""
+                } ${isServices && isScrolled ? styles.headerScrolled : ""} ${
+                    isMenuOpen ? styles.headerMenuOpen : ""
+                }`}
+            >
+                <div className={styles.inner}>
+                    <NavLink to="/" className={styles.logo}>
+                        <img src="/logo.png" />
+                    </NavLink>
 
-                <button
-                    type="button"
-                    className={`${styles.burger} ${isMenuOpen ? styles.burgerOpen : ""}`}
-                    aria-label="Toggle menu"
-                    aria-expanded={isMenuOpen}
-                    onClick={() => setIsMenuOpen((prev) => !prev)}
-                >
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                            d="M4 6h16M4 12h16M4 18h16"
-                            stroke="currentColor"
-                            strokeWidth="1"
-                            strokeLinecap="round"
-                        />
-                    </svg>
-                </button>
+                    <button
+                        type="button"
+                        className={`${styles.burger} ${isMenuOpen ? styles.burgerOpen : ""}`}
+                        aria-label="Toggle menu"
+                        aria-expanded={isMenuOpen}
+                        onClick={() => setIsMenuOpen((prev) => !prev)}
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M4 6h16M4 12h16M4 18h16"
+                                stroke="currentColor"
+                                strokeWidth="1"
+                                strokeLinecap="round"
+                            />
+                        </svg>
+                    </button>
 
-                <div
-                    className={`${styles.backdrop} ${isMenuOpen ? styles.backdropOpen : ""}`}
-                    onClick={() => setIsMenuOpen(false)}
-                    aria-hidden="true"
-                />
-
-                <nav
-                    className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}
-                    aria-label="Main navigation"
-                >
-                    {NAV.map((item) => (
-                        <NavLink
-                            key={item.to}
-                            to={item.to}
-                            className={({ isActive }) =>
-                                isActive ? `${styles.link} ${styles.linkActive}` : styles.link
-                            }
-                            end={item.to === "/"}
-                        >
-                            {item.label}
-                        </NavLink>
-                    ))}
-                </nav>
-            </div>
-        </header>
+                    <nav
+                        className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}
+                        aria-label="Main navigation"
+                    >
+                        {NAV.map((item) => (
+                            <NavLink
+                                key={item.to}
+                                to={item.to}
+                                className={({ isActive }) =>
+                                    isActive ? `${styles.link} ${styles.linkActive}` : styles.link
+                                }
+                                end={item.to === "/"}
+                            >
+                                {item.label}
+                            </NavLink>
+                        ))}
+                    </nav>
+                </div>
+            </header>
+            <div
+                className={`${styles.backdrop} ${isMenuOpen ? styles.backdropOpen : ""}`}
+                onClick={() => setIsMenuOpen(false)}
+                aria-hidden="true"
+            />
+        </>
     );
 }

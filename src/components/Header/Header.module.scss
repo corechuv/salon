@@ -21,6 +21,10 @@
     backdrop-filter: blur(10px);
 }
 
+.headerMenuOpen {
+    z-index: 30;
+}
+
 .inner {
     margin: 0 auto;
 
@@ -122,7 +126,7 @@
         gap: 10px;
         transform: translateX(110%);
         transition: transform 0.25s ease;
-        z-index: 12;
+        z-index: 32;
     }
 
     .nav.navOpen {
@@ -137,7 +141,7 @@
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.2s ease;
-        z-index: 11;
+        z-index: 20;
     }
 
     .backdropOpen {

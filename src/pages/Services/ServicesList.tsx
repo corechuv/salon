@@ -100,6 +100,15 @@ export function ServicesList() {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
   useEffect(() => {
+    if (!isCategoryOpen) return;
+    const original = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = original;
+    };
+  }, [isCategoryOpen]);
+
+  useEffect(() => {
     let active = true;
     if (!apiBase) {
       setLoadError("API URL ist nicht konfiguriert.");
