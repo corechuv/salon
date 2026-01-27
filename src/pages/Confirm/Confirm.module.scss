@@ -43,3 +43,10 @@
     letter-spacing: 0.16em;
     font-size: 12px;
 }
+
+.actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}

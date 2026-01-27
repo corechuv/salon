@@ -9,12 +9,14 @@ export function Cancel() {
 
   const [status, setStatus] = useState<"idle" | "loading" | "ok" | "error">("idle");
   const [message, setMessage] = useState<string>("");
+  const [confirm, setConfirm] = useState(false);
 
   useEffect(() => {
     if (!token || !apiBase) {
       setStatus("error");
       return;
     }
+    if (!confirm) return;
     setStatus("loading");
     fetch(`${apiBase}/cancel?token=${encodeURIComponent(token)}`)
       .then(async (res) => {
@@ -31,11 +33,29 @@ export function Cancel() {
         setMessage(msg);
         setStatus("error");
       });
-  }, [token, apiBase]);
+  }, [token, apiBase, confirm]);
 
   return (
     <div className={styles.page}>
       <div className={styles.card}>
+        {status === "idle" && (
+          <>
+            <h1>Termin stornieren</h1>
+            <p>Möchten Sie den Termin wirklich stornieren?</p>
+            <div className={styles.actions}>
+              <button
+                type="button"
+                className={styles.back}
+                onClick={() => setConfirm(true)}
+              >
+                Ja, stornieren
+              </button>
+              <Link to="/" className={styles.back}>
+                Nein, zurück
+              </Link>
+            </div>
+          </>
+        )}
         {status === "loading" && (
           <>
             <h1>Stornierung läuft…</h1>

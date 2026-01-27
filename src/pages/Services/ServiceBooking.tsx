@@ -104,7 +104,8 @@ const buildSlots = (start: string, end: string, step: number) => {
 const storageKey = "mira_bookings";
 const PENDING_TTL_MINUTES = 30;
 
-const isRecentBooking = (createdAt?: string) => {
+const isRecentBooking = (createdAt?: string, status?: string) => {
+  if (status && status !== "pending") return true;
   if (!createdAt) return true;
   const created = new Date(createdAt).getTime();
   if (Number.isNaN(created)) return true;
@@ -116,7 +117,7 @@ const readLocalBookings = (): Booking[] => {
   if (!raw) return [];
   try {
     const items = JSON.parse(raw) as Booking[];
-    return items.filter((item) => isRecentBooking(item.createdAt));
+    return items.filter((item) => isRecentBooking(item.createdAt, item.status));
   } catch {
     return [];
   }
@@ -136,7 +137,7 @@ const mergeBookings = (prev: Booking[], incoming: Booking[]) => {
       next.push(item);
     }
   });
-  return next.filter((item) => isRecentBooking(item.createdAt));
+  return next.filter((item) => isRecentBooking(item.createdAt, item.status));
 };
 
 async function fetchBookings(date: string): Promise<Booking[]> {
@@ -309,7 +310,7 @@ export function ServiceBooking() {
   const slots = useMemo(() => {
     if (masterActiveHours.length === 0) return [];
     const all = masterActiveHours.flatMap((interval) =>
-      buildSlots(interval.start, interval.end, 30)
+      buildSlots(interval.start, interval.end, 15)
     );
     const unique = Array.from(new Set(all));
     return unique.sort((a, b) => parseTime(a) - parseTime(b));
@@ -325,6 +326,8 @@ export function ServiceBooking() {
     return bookings
       .filter((item) => item.date === selectedDate)
       .filter((item) => (selectedMaster ? item.masterId === selectedMaster : true))
+      .filter((item) => !item.status || item.status === "pending" || item.status === "confirmed")
+      .filter((item) => isRecentBooking(item.createdAt, item.status))
       .map((item) => {
         const duration = item.durationMin ?? serviceMap.get(item.serviceId) ?? 0;
         const end = addMinutes(item.time, duration);
@@ -481,6 +484,10 @@ export function ServiceBooking() {
     setGiftValidation({ status: "idle", items: [] });
   };
 
+  const addGiftCode = () => {
+    setGiftCodes((prev) => [...prev, ""]);
+    setGiftValidation({ status: "idle", items: [] });
+  };
 
   const removeGiftCode = (index: number) => {
     setGiftCodes((prev) => prev.filter((_, idx) => idx !== index));
@@ -566,6 +573,10 @@ export function ServiceBooking() {
                     {slots.map((slot) => {
                       const duration = selectedService?.durationMin ?? 0;
                       const slotEnd = addMinutes(slot, duration);
+                      const isToday = selectedDate === formatDateInput(new Date());
+                      const nowMinutes =
+                        new Date().getHours() * 60 + new Date().getMinutes();
+                      const isPastToday = isToday && parseTime(slot) <= nowMinutes;
                       const exceedsClosing = closedAfter
                         ? !masterActiveHours.some(
                             (interval) =>
@@ -576,8 +587,10 @@ export function ServiceBooking() {
                       const overlapEntry = bookedRanges.find((range) =>
                         isOverlap(slot, slotEnd, range.start, range.end)
                       );
-                      const isBusy = Boolean(overlapEntry);
-                      const statusLabel = exceedsClosing
+                      const isBusy = Boolean(overlapEntry) || isPastToday;
+                      const statusLabel = isPastToday
+                        ? "Vergangen"
+                        : exceedsClosing
                         ? "Nicht verfügbar"
                         : overlapEntry?.status === "pending"
                           ? "Reserviert"
@@ -679,6 +692,11 @@ export function ServiceBooking() {
                   >
                     {giftValidation.status === "checking" ? "Prüfen..." : "Prüfen"}
                   </Button>
+                  {giftCodes[giftCodes.length - 1]?.trim() ? (
+                    <Button type="button" onClick={addGiftCode}>
+                      Weiterer Code
+                    </Button>
+                  ) : null}
                 </div>
               </label>
 
