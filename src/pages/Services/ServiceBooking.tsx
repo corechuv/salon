@@ -502,11 +502,6 @@ export function ServiceBooking() {
     setGiftValidation({ status: "idle", items: [] });
   };
 
-  const addGiftCode = () => {
-    setGiftCodes((prev) => [...prev, ""]);
-    setGiftValidation({ status: "idle", items: [] });
-  };
-
   const removeGiftCode = (index: number) => {
     setGiftCodes((prev) => prev.filter((_, idx) => idx !== index));
     setGiftValidation({ status: "idle", items: [] });
