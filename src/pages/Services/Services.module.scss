@@ -653,6 +653,8 @@
         transition: transform 0.2s ease;
         z-index: 50;
         box-shadow: 20px 0 40px rgba(20, 10, 20, 0.15);
+        overflow-y: auto;
+        overscroll-behavior: contain;
     }
 
     .categoryNav__open {
@@ -676,6 +678,7 @@
 
     .categoryNav__list {
         display: grid;
+        padding-bottom: 24px;
     }
 
     .categoryNav__item {
