@@ -73,6 +73,19 @@ const formatDateInput = (date: Date) => {
   return local.toISOString().split("T")[0];
 };
 
+const normalizeDateValue = (value: string) => {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) {
+    return value.split("T")[0];
+  }
+  return formatDateInput(parsed);
+};
+
+const normalizeTimeValue = (value: string) => {
+  if (!value) return value;
+  return value.slice(0, 5);
+};
+
 const parseTime = (time: string) => {
   const [h, m] = time.split(":").map(Number);
   return h * 60 + m;
@@ -155,6 +168,8 @@ async function fetchBookings(date: string): Promise<Booking[]> {
   >;
   return data.map((item) => ({
     ...item,
+    date: item.date ? normalizeDateValue(String(item.date)) : item.date,
+    time: item.time ? normalizeTimeValue(String(item.time)) : item.time,
     serviceId: item.serviceId ?? item.service_id ?? "",
     masterId: item.masterId ?? item.master_id ?? "",
     durationMin: item.durationMin ?? item.duration_min ?? undefined,
