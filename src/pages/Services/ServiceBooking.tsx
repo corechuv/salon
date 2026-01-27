@@ -482,6 +482,9 @@ export function ServiceBooking() {
         status: invalid.length === 0 ? "valid" : "invalid",
         items: results,
       });
+      if (uniqueCodes.length > 0 && giftCodes[giftCodes.length - 1]?.trim()) {
+        setGiftCodes((prev) => [...prev, ""]);
+      }
     } catch {
       setGiftValidation({
         status: "invalid",
@@ -707,11 +710,6 @@ export function ServiceBooking() {
                   >
                     {giftValidation.status === "checking" ? "Prüfen..." : "Prüfen"}
                   </Button>
-                  {giftCodes[giftCodes.length - 1]?.trim() ? (
-                    <Button type="button" onClick={addGiftCode}>
-                      Weiterer Code
-                    </Button>
-                  ) : null}
                 </div>
               </label>
 
