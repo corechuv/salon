@@ -77,10 +77,19 @@
 
 .location__map {
     position: relative;
-    height: 400px;
+    height: 520px;
     width: 100%;
     overflow: hidden;
     background: transparent;
+}
+
+.location__map::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, #ffedf599, transparent);
+    z-index: 2;
+    pointer-events: none;
 }
 
 .location__map iframe {
@@ -114,16 +123,19 @@
     align-items: stretch;
     pointer-events: none;
     z-index: 5;
+    width: min(1120px, 100%);
+    margin: 0 auto;
+    padding: 32px clamp(16px, 4vw, 32px);
+    box-sizing: border-box;
 }
 
 .location__info {
-    width: 40%;
-    background: linear-gradient(90deg, rgb(210 245 255 / 52%), transparent);
-    color: #000;
-    padding: 32px clamp(18px, 4vw, 36px);
+    color: black;
     display: grid;
-    gap: 16px;
+    gap: 14px;
     pointer-events: auto;
+    width: 50%;
+    align-items: center;
 }
 
 .location__title {
@@ -132,7 +144,7 @@
     font-weight: 800;
     font-size: clamp(22px, 5vw, 72px);
     text-transform: uppercase;
-    color: #000;
+    color: black;
 }
 
 .location__address {
@@ -140,7 +152,7 @@
     font-size: 14px;
     letter-spacing: 0.12em;
     text-transform: none;
-    color: #000;
+    color: black;
 }
 
 .location__hours p {
@@ -148,7 +160,7 @@
     font-size: 12px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #000;
+    color: black;
 }
 
 .location__hours ul {
@@ -157,14 +169,15 @@
     margin: 0;
     display: grid;
     gap: 6px;
-    font-size: 13px;
+    font-size: 16px;
+    font-weight: 300;
 }
 
 .location__hours li {
     display: flex;
     justify-content: space-between;
     gap: 12px;
-    color: #000;
+    color: black;
 }
 
 .location__cta {
@@ -198,6 +211,10 @@
         height: 520px;
     }
 
+    .location__map::before {
+        background: linear-gradient(180deg, #ffedf599, #ffedf599);
+    }
+
     .location__overlay {
         align-items: flex-start;
         position: absolute;
@@ -206,12 +223,7 @@
 
     .location__info {
         width: 100%;
-        background: linear-gradient(180deg, rgb(210 245 255 / 52%), rgb(210 245 255 / 22%));
-        padding: 18px 16px;
-        max-height: 100%;
-        min-height: 100%;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        height: 100%;
     }
 
 }

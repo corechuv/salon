@@ -73,13 +73,7 @@ const formatDateInput = (date: Date) => {
   return local.toISOString().split("T")[0];
 };
 
-const normalizeDateValue = (value: string) => {
-  const parsed = new Date(value);
-  if (Number.isNaN(parsed.getTime())) {
-    return value.split("T")[0];
-  }
-  return formatDateInput(parsed);
-};
+const normalizeDateValue = (value: string) => value.split("T")[0];
 
 const normalizeTimeValue = (value: string) => {
   if (!value) return value;
@@ -351,15 +345,59 @@ export function ServiceBooking() {
       });
   }, [bookings, selectedDate, selectedMaster, services]);
 
-  const closedAfter = useMemo(() => {
-    if (masterActiveHours.length === 0) return null;
-    return masterActiveHours.map((interval) => interval.end);
-  }, [masterActiveHours]);
+  const getSlotState = (slot: string) => {
+    const duration = selectedService?.durationMin ?? 0;
+    const slotEnd = addMinutes(slot, duration);
+    const isToday = selectedDate === formatDateInput(new Date());
+    const nowMinutes = new Date().getHours() * 60 + new Date().getMinutes();
+    const isPastToday = isToday && parseTime(slot) <= nowMinutes;
+    const exceedsClosing =
+      masterActiveHours.length > 0 &&
+      !masterActiveHours.some(
+        (interval) =>
+          parseTime(slot) >= parseTime(interval.start) &&
+          parseTime(slotEnd) <= parseTime(interval.end)
+      );
+    const overlapEntry = bookedRanges.find((range) =>
+      isOverlap(slot, slotEnd, range.start, range.end)
+    );
+    const isBusy = Boolean(overlapEntry) || isPastToday;
+    const statusLabel = isPastToday
+      ? "Vergangen"
+      : exceedsClosing
+      ? "Nicht verfügbar"
+      : overlapEntry?.status === "pending"
+        ? "Reserviert"
+        : overlapEntry
+          ? "Belegt"
+          : "";
+    return { isBusy, exceedsClosing, statusLabel };
+  };
+
+  useEffect(() => {
+    if (!selectedTime || !selectedService || !selectedMaster) return;
+    const { isBusy, exceedsClosing } = getSlotState(selectedTime);
+    if (isBusy || exceedsClosing) {
+      setSelectedTime(null);
+    }
+  }, [
+    selectedTime,
+    selectedService,
+    selectedMaster,
+    selectedDate,
+    bookedRanges,
+    masterActiveHours,
+  ]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!selectedService || !selectedTime || !selectedMaster) {
       setError("Bitte Service, Datum, Uhrzeit und Meister waehlen.");
+      return;
+    }
+    const slotState = getSlotState(selectedTime);
+    if (slotState.isBusy || slotState.exceedsClosing) {
+      setError("Dieser Termin ist bereits belegt. Bitte eine andere Zeit waehlen.");
       return;
     }
     if (!consent) {
@@ -609,32 +647,7 @@ export function ServiceBooking() {
                 ) : (
                   <div className={styles.slots__grid}>
                     {slots.map((slot) => {
-                      const duration = selectedService?.durationMin ?? 0;
-                      const slotEnd = addMinutes(slot, duration);
-                      const isToday = selectedDate === formatDateInput(new Date());
-                      const nowMinutes =
-                        new Date().getHours() * 60 + new Date().getMinutes();
-                      const isPastToday = isToday && parseTime(slot) <= nowMinutes;
-                      const exceedsClosing = closedAfter
-                        ? !masterActiveHours.some(
-                            (interval) =>
-                              parseTime(slot) >= parseTime(interval.start) &&
-                              parseTime(slotEnd) <= parseTime(interval.end)
-                          )
-                        : false;
-                      const overlapEntry = bookedRanges.find((range) =>
-                        isOverlap(slot, slotEnd, range.start, range.end)
-                      );
-                      const isBusy = Boolean(overlapEntry) || isPastToday;
-                      const statusLabel = isPastToday
-                        ? "Vergangen"
-                        : exceedsClosing
-                        ? "Nicht verfügbar"
-                        : overlapEntry?.status === "pending"
-                          ? "Reserviert"
-                          : overlapEntry
-                            ? "Belegt"
-                            : "";
+                      const { isBusy, exceedsClosing, statusLabel } = getSlotState(slot);
                       return (
                         <button
                           key={slot}
