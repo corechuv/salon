@@ -621,6 +621,37 @@
     font-size: 13px;
 }
 
+.successCard {
+    border: 1px solid #e4dfdd;
+    background: #ffffff;
+    padding: 16px;
+    display: grid;
+    gap: 8px;
+}
+
+.successCard__title {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 11px;
+    color: #2f6b46;
+}
+
+.successCard__text {
+    margin: 0;
+    font-size: 13px;
+    color: #5b5b5b;
+}
+
+.successCard__details {
+    display: grid;
+    gap: 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6b5a57;
+}
+
 .summary {
     margin-top: 6px;
     padding: 16px;

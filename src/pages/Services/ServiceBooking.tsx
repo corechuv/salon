@@ -778,8 +778,24 @@ export function ServiceBooking() {
                 </span>
               </label>
 
+              {success ? (
+                <div className={styles.successCard}>
+                  <p className={styles.successCard__title}>Gesendet</p>
+                  <p className={styles.successCard__text}>
+                    Wir haben deine Anfrage erhalten. Bitte bestätige den Termin per E-Mail.
+                  </p>
+                  <div className={styles.successCard__details}>
+                    <span>{selectedService?.title}</span>
+                    <span>
+                      {selectedDate} · {selectedTime}
+                    </span>
+                    <span>
+                      {masters.find((m) => m.id === selectedMaster)?.name || selectedMaster}
+                    </span>
+                  </div>
+                </div>
+              ) : null}
               {error ? <p className={styles.form__error}>{error}</p> : null}
-              {success ? <p className={styles.form__success}>{success}</p> : null}
 
               <div className={styles.form__actions}>
                 <Button type="submit" disabled={isSubmitting}>
