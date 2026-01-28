@@ -1,9 +1,9 @@
 /* Footer.module.scss */
 .footer {
-  --bg: #181818;
-  --card: rgba(255, 255, 255, 0.06);
+  --bg: #f9f9f9;
+  --card: ;
   --card2: rgba(255, 255, 255, 0.09);
-  --text: rgba(255, 255, 255, 0.92);
+  --text: #0a0a0a;
   --muted: rgba(255, 255, 255, 0.68);
   --line: rgba(255, 255, 255, 0.12);
   --accent: #ff5aa5;
@@ -17,6 +17,7 @@
 .container {
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;
+  color: var(--text);
 }
 
 .top {
@@ -63,13 +64,11 @@
 
 .metaLabel {
   font-size: 16px;
-  color: whitesmoke;
   font-weight: 400;
 }
 
 .metaValue {
   font-size: 14px;
-  color: rgb(255 255 255);
   font-weight: 300;
   letter-spacing: 1px;
 }
@@ -121,7 +120,6 @@
   font-weight: 100;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: whitesmoke;
 }
 
 .btn {
@@ -193,13 +191,11 @@
 
 
 .icon {
-  color: rgba(255, 255, 255, 0.88);
   flex: 0 0 auto;
 }
 
 .socialText {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.90);
   display: none;
 }
 
@@ -221,7 +217,6 @@
 }
 
 .copy {
-  color: whitesmoke;
   font-size: 14px;
   font-weight: 300;
 }
@@ -233,7 +228,6 @@
 }
 
 .bottomLink {
-  color: rgba(255, 255, 255, 0.70);
   font-size: 14px;
   font-weight: 300;
   text-decoration: none;
