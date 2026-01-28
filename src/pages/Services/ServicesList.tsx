@@ -22,23 +22,6 @@ type Master = {
   photo: string;
 };
 
-type Hours = {
-  day: string;
-  label: string;
-  weekday: number;
-  start: string;
-  end: string;
-  slotMinutes: number;
-};
-
-type MasterHour = {
-  masterId: string;
-  day: string;
-  label: string;
-  weekday: number;
-  start: string;
-  end: string;
-};
 
 const apiBase = import.meta.env.VITE_API_URL as string | undefined;
 
@@ -49,15 +32,6 @@ const formatCurrency = (value: number) =>
     maximumFractionDigits: 0,
   }).format(value);
 
-const parseTime = (time: string) => {
-  const [h, m] = time.split(":").map(Number);
-  return h * 60 + m;
-};
-
-const formatTimeLabel = (time: string) => {
-  const [h, m] = time.split(":").map(Number);
-  return `${h}:${String(m).padStart(2, "0")}`;
-};
 
 async function fetchServices(): Promise<Service[] | null> {
   if (!apiBase) return null;
@@ -73,26 +47,11 @@ async function fetchMasters(): Promise<Master[] | null> {
   return (await response.json()) as Master[];
 }
 
-async function fetchHours(): Promise<Hours[] | null> {
-  if (!apiBase) return null;
-  const response = await fetch(`${apiBase}/hours`);
-  if (!response.ok) return null;
-  return (await response.json()) as Hours[];
-}
-
-async function fetchMasterHours(): Promise<MasterHour[] | null> {
-  if (!apiBase) return null;
-  const response = await fetch(`${apiBase}/master-hours`);
-  if (!response.ok) return null;
-  return (await response.json()) as MasterHour[];
-}
 
 export function ServicesList() {
   const navigate = useNavigate();
   const [services, setServices] = useState<Service[]>([]);
   const [masters, setMasters] = useState<Master[]>([]);
-  const [hours, setHours] = useState<Hours[]>([]);
-  const [masterHours, setMasterHours] = useState<MasterHour[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("Alle");
   const [selectedMaster, setSelectedMaster] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -115,17 +74,15 @@ export function ServicesList() {
       setIsLoading(false);
       return;
     }
-    Promise.all([fetchServices(), fetchMasters(), fetchHours(), fetchMasterHours()])
-      .then(([servicesData, mastersData, hoursData, masterHoursData]) => {
+    Promise.all([fetchServices(), fetchMasters()])
+      .then(([servicesData, mastersData]) => {
         if (!active) return;
-        if (!servicesData || !mastersData || !hoursData || !masterHoursData) {
+        if (!servicesData || !mastersData) {
           setLoadError("Daten konnten nicht geladen werden.");
           return;
         }
         setServices(servicesData);
         setMasters(mastersData);
-        setHours(hoursData);
-        setMasterHours(masterHoursData);
         const iryna = mastersData.find(
           (master) => master.name.toLowerCase() === "iryna marinina"
         );
@@ -154,20 +111,6 @@ export function ServicesList() {
     return services.filter((service) => service.category === selectedCategory);
   }, [services, selectedCategory]);
 
-  const masterHoursByDay = useMemo(() => {
-    if (!selectedMaster) return new Map<number, MasterHour[]>();
-    const map = new Map<number, MasterHour[]>();
-    masterHours
-      .filter((entry) => entry.masterId === selectedMaster)
-      .sort((a, b) => parseTime(a.start) - parseTime(b.start))
-      .forEach((entry) => {
-        const list = map.get(entry.weekday) ?? [];
-        list.push(entry);
-        map.set(entry.weekday, list);
-      });
-    return map;
-  }, [masterHours, selectedMaster]);
-
   return (
     <div className={styles.page}>
       <div className={styles.banner} role="presentation" aria-hidden="true" />
@@ -178,35 +121,6 @@ export function ServicesList() {
             Transparente Preise, klare Ablaufe und persoenliche Betreuung. Waehlen
             Sie eine Leistung und buchen Sie Ihren Termin.
           </p>
-        </div>
-        <div className={styles.hero__panel}>
-          <div>
-            <p className={styles.hero__panelTitle}>Oeffnungszeiten</p>
-            <ul className={styles.hours}>
-              {hours.map((day) => {
-                const intervals = masterHoursByDay.get(day.weekday) ?? [];
-                return (
-                  <li key={day.day}>
-                    <span>{day.label}</span>
-                    <span>
-                      {intervals.length > 0
-                        ? intervals
-                            .map(
-                              (entry) =>
-                                `${formatTimeLabel(entry.start)} - ${formatTimeLabel(entry.end)}`
-                            )
-                            .join(" / ")
-                        : `${formatTimeLabel(day.start)} - ${formatTimeLabel(day.end)}`}
-                    </span>
-                  </li>
-                );
-              })}
-              <li className={styles.hours__closed}>
-                <span>Sonntag</span>
-                <span>geschlossen</span>
-              </li>
-            </ul>
-          </div>
         </div>
       </section>
 

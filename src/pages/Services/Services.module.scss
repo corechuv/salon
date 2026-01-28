@@ -53,40 +53,6 @@
     font-weight: 300;
 }
 
-.hero__panel {
-    max-width: 300px;
-    min-width: 300px;
-}
-
-.hero__panelTitle {
-    margin: 0 0 12px;
-    font-size: 16x;
-    font-weight: 300;
-    text-transform: uppercase;
-    margin: 0 0 12px;
-    letter-spacing: 1.2px;
-    color: #6b5a57;
-}
-
-.hours {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 10px;
-    font-size: 15px;
-    font-weight: 300;
-}
-
-.hours li {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.hours__closed {
-    color: #d09fb5;
-}
 
 .services {
     max-width: 1120px;
@@ -773,10 +739,6 @@
 }
 
 @media (max-width: 600px) {
-    .hero__panel {
-        padding: 16px;
-    }
-
     .booking__head {
         flex-direction: column;
         align-items: flex-start;
