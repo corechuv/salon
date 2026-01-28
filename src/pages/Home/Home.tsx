@@ -139,29 +139,10 @@ export function Home() {
           ) : (
             <div className={styles.location__mapFallback}>Karte wird geladen…</div>
           )}
-        <div className={styles.location__overlay}>
-          <div className={styles.location__info}>
-            <h2 className={styles.location__title}>Wir sind hier</h2>
-            <p className={styles.location__address}>
-              {addressLabel}
-            </p>
-            <div className={styles.location__hours}>
-              <p>Öffnungszeiten</p>
-              <ul>
-                {hours.map((day) => (
-                  <li key={day.weekday}>
-                    <span>{day.label}</span>
-                    <span>
-                      {formatTimeLabel(day.start)} – {formatTimeLabel(day.end)}
-                    </span>
-                  </li>
-                ))}
-                <li>
-                  <span>Sonntag</span>
-                  <span>geschlossen</span>
-                </li>
-              </ul>
-            </div>
+          <div className={styles.location__addressWrap}>
+            <span className={styles.location__addressText}>{addressLabel}</span>
+          </div>
+          <div className={styles.location__ctaWrap}>
             <a
               className={styles.location__cta}
               href={mapsUrl}
@@ -172,7 +153,6 @@ export function Home() {
             </a>
           </div>
         </div>
-      </div>
     </section>
   </div>;
 }
