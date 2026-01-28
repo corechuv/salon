@@ -648,14 +648,13 @@
         height: 100vh;
         width: min(320px, 78vw);
         background: #fff;
-        padding: 24px 18px;
+        padding: 0;
         transform: translateX(-110%);
         transition: transform 0.2s ease;
         z-index: 50;
         box-shadow: 20px 0 40px rgba(20, 10, 20, 0.15);
-        overflow-y: auto;
-        overscroll-behavior: contain;
-        -webkit-overflow-scrolling: touch;
+        display: flex;
+        flex-direction: column;
     }
 
     .categoryNav__open {
@@ -667,11 +666,11 @@
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-        position: sticky;
-        top: 0;
         background: #fff;
         z-index: 1;
-        padding-bottom: 12px;
+        padding: 18px 18px 12px;
+        border-bottom: 1px solid #f0eaea;
+        flex: 0 0 auto;
     }
 
     .categoryNav__close {
@@ -684,7 +683,13 @@
 
     .categoryNav__list {
         display: grid;
-        padding-bottom: 24px;
+        gap: 8px;
+        padding: 12px 18px 24px;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        flex: 1 1 auto;
+        min-height: 0;
     }
 
     .categoryNav__item {
