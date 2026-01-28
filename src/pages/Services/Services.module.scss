@@ -621,6 +621,45 @@
     font-size: 13px;
 }
 
+.summary {
+    margin-top: 6px;
+    padding: 16px;
+    border: 1px solid #ece8e6;
+    background: #fff;
+    display: grid;
+    gap: 10px;
+}
+
+.summary__title {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 11px;
+    color: #6b5a57;
+}
+
+.summary__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.summary__grid span {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6b5a57;
+}
+
+.summary__grid strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    color: #15131b;
+    margin-top: 4px;
+}
+
 @media (max-width: 900px) {
     .services__layout {
         grid-template-columns: 1fr;

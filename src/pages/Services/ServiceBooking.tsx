@@ -635,6 +635,32 @@ export function ServiceBooking() {
                 )}
               </div>
 
+              {selectedService && selectedMaster && selectedTime ? (
+                <div className={styles.summary}>
+                  <p className={styles.summary__title}>Dein Termin</p>
+                  <div className={styles.summary__grid}>
+                    <div>
+                      <span>Service</span>
+                      <strong>{selectedService.title}</strong>
+                    </div>
+                    <div>
+                      <span>Meister</span>
+                      <strong>
+                        {masters.find((m) => m.id === selectedMaster)?.name || selectedMaster}
+                      </strong>
+                    </div>
+                    <div>
+                      <span>Datum</span>
+                      <strong>{selectedDate}</strong>
+                    </div>
+                    <div>
+                      <span>Uhrzeit</span>
+                      <strong>{selectedTime}</strong>
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+
               <div className={styles.form__grid}>
                 <label>
                   Name
