@@ -794,17 +794,20 @@ export function ServiceBooking() {
                     </span>
                   </div>
                 </div>
-              ) : null}
-              {error ? <p className={styles.form__error}>{error}</p> : null}
+              ) : (
+                <>
+                  {error ? <p className={styles.form__error}>{error}</p> : null}
+                  <div className={styles.form__actions}>
+                    <Button type="submit" disabled={isSubmitting}>
+                      {isSubmitting ? "Senden..." : "Termin anfragen"}
+                    </Button>
+                    <span className={styles.form__hint}>
+                      Bestaetigung erfolgt per E-Mail.
+                    </span>
+                  </div>
+                </>
+              )}
 
-              <div className={styles.form__actions}>
-                <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting ? "Senden..." : "Termin anfragen"}
-                </Button>
-                <span className={styles.form__hint}>
-                  Bestaetigung erfolgt per E-Mail.
-                </span>
-              </div>
             </form>
           </div>
         </section>

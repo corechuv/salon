@@ -16,7 +16,7 @@ const NAV: NavItem[] = [
 export function Header() {
     const location = useLocation();
     const isServices =
-        location.pathname === "/services" ||
+        location.pathname.startsWith("/services") ||
         location.pathname === "/gift" ||
         location.pathname === "/";
     const [isScrolled, setIsScrolled] = useState(false);
