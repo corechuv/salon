@@ -53,7 +53,7 @@ export function ServicesList() {
   const [services, setServices] = useState<Service[]>([]);
   const [masters, setMasters] = useState<Master[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("Alle");
-  const [selectedMaster, setSelectedMaster] = useState<string | null>(null);
+  const [, setSelectedMaster] = useState<string | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
