@@ -71,6 +71,118 @@
     }
 }
 
+.location {
+    margin-top: clamp(36px, 8vw, 90px);
+}
+
+.location__map {
+    position: relative;
+    height: 400px;
+    width: 100%;
+    overflow: hidden;
+    background: transparent;
+}
+
+.location__map iframe {
+    border: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.location__leaflet {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.location__mapFallback {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    color: #6b5a57;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.location__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: stretch;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.location__info {
+    width: 40%;
+    background: linear-gradient(90deg, rgb(210 245 255 / 52%), transparent);
+    color: #000;
+    padding: 32px clamp(18px, 4vw, 36px);
+    display: grid;
+    gap: 16px;
+    pointer-events: auto;
+}
+
+.location__title {
+    margin: 0;
+    font-size: clamp(20px, 5vw, 72px);
+    letter-spacing: 0.08em;
+    font-weight: 300;
+    text-transform: uppercase;
+    color: #000;
+}
+
+.location__address {
+    margin: 0;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: none;
+    color: #000;
+}
+
+.location__hours p {
+    margin: 0 0 8px;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #000;
+}
+
+.location__hours ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 6px;
+    font-size: 13px;
+}
+
+.location__hours li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: #000;
+}
+
+.location__cta {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 18px;
+    background: #000;
+    color: whitesmoke;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 15px;
+    font-weight: 300;
+    height: 32px;
+    font-family: "Roboto", sans-serif;
+}
+
 /* на очень узких экранах чуть более «высокий» баннер */
 @media (max-width: 768px) {
     .ba {
@@ -80,6 +192,22 @@
     .ba__content {
         align-items: flex-end;
         padding-bottom: 24px;
+    }
+
+    .location__map {
+        height: 320px;
+    }
+
+    .location__overlay {
+        align-items: flex-start;
+        position: relative;
+        inset: auto;
+    }
+
+    .location__info {
+        width: 100%;
+        background: rgba(17, 14, 18, 0.72);
+        padding: 18px 16px;
     }
 
 }

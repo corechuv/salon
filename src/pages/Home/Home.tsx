@@ -1,13 +1,49 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CarouselSection } from "../../components/CarouselSection/CarouselSection";
 import { Button } from "../../components/UI/Button/Button";
+import { MapContainer, TileLayer, Marker, CircleMarker, ZoomControl } from "react-leaflet";
+import L from "leaflet";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import styles from "./Home.module.scss";
 
 export function Home() {
   const navigate = useNavigate();
   const [serviceTitles, setServiceTitles] = useState<string[]>([]);
+  const [hours, setHours] = useState<
+    Array<{ day: string; label: string; weekday: number; start: string; end: string }>
+  >([]);
   const apiBase = import.meta.env.VITE_API_URL as string | undefined;
+  const mapCenter: [number, number] = [53.552, 9.94];
+  const addressLabel = "Neuen Großen Bergstraße 7, 22767 Hamburg";
+  const mapsQuery = encodeURIComponent(addressLabel);
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+  const appleMapsUrl = `https://maps.apple.com/?q=${mapsQuery}`;
+  const isApple =
+    typeof navigator !== "undefined" &&
+    /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent);
+  const mapsUrl = isApple ? appleMapsUrl : googleMapsUrl;
+  const [mapReady, setMapReady] = useState(false);
+
+  const mapMarkerIcon = useMemo(
+    () =>
+      L.icon({
+        iconRetinaUrl: markerIcon2x,
+        iconUrl: markerIcon,
+        shadowUrl: markerShadow,
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41],
+      }),
+    []
+  );
+
+  useEffect(() => {
+    setMapReady(true);
+  }, []);
 
   useEffect(() => {
     if (!apiBase) return;
@@ -19,6 +55,21 @@ export function Home() {
       })
       .catch(() => undefined);
   }, [apiBase]);
+
+  useEffect(() => {
+    if (!apiBase) return;
+    fetch(`${apiBase}/hours`)
+      .then((res) => (res.ok ? res.json() : Promise.reject()))
+      .then((data: Array<{ day: string; label: string; weekday: number; start: string; end: string }>) => {
+        setHours(data);
+      })
+      .catch(() => undefined);
+  }, [apiBase]);
+
+  const formatTimeLabel = (time: string) => {
+    const [h, m] = time.split(":").map(Number);
+    return `${h}:${String(m).padStart(2, "0")}`;
+  };
 
   const certificateImages = [
     "/certificates/EMF (Hochfrequenzgeräte) in der Kosmetik_page-0001.jpg",
@@ -56,5 +107,72 @@ export function Home() {
       perView={3.5}
       speedPxPerSec={28}
     />
+    <section className={styles.location}>
+        <div className={styles.location__map}>
+          {mapReady ? (
+            <MapContainer
+              center={mapCenter}
+              zoom={17}
+              scrollWheelZoom={false}
+              zoomControl={false}
+              className={styles.location__leaflet}
+            >
+              <ZoomControl position="topright" />
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+                detectRetina
+                maxZoom={20}
+              />
+              <CircleMarker
+                center={mapCenter}
+                radius={18}
+                pathOptions={{
+                  color: "lightgray",
+                  weight: 1,
+                  fillColor: "lightgray",
+                  fillOpacity: 0.6,
+                }}
+              />
+              <Marker position={mapCenter} icon={mapMarkerIcon} />
+            </MapContainer>
+          ) : (
+            <div className={styles.location__mapFallback}>Karte wird geladen…</div>
+          )}
+        <div className={styles.location__overlay}>
+          <div className={styles.location__info}>
+            <h2 className={styles.location__title}>Wir sind hier</h2>
+            <p className={styles.location__address}>
+              {addressLabel}
+            </p>
+            <div className={styles.location__hours}>
+              <p>Öffnungszeiten</p>
+              <ul>
+                {hours.map((day) => (
+                  <li key={day.weekday}>
+                    <span>{day.label}</span>
+                    <span>
+                      {formatTimeLabel(day.start)} – {formatTimeLabel(day.end)}
+                    </span>
+                  </li>
+                ))}
+                <li>
+                  <span>Sonntag</span>
+                  <span>geschlossen</span>
+                </li>
+              </ul>
+            </div>
+            <a
+              className={styles.location__cta}
+              href={mapsUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Route öffnen
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>;
 }
