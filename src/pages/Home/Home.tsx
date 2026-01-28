@@ -12,9 +12,6 @@ import styles from "./Home.module.scss";
 export function Home() {
   const navigate = useNavigate();
   const [serviceTitles, setServiceTitles] = useState<string[]>([]);
-  const [hours, setHours] = useState<
-    Array<{ day: string; label: string; weekday: number; start: string; end: string }>
-  >([]);
   const apiBase = import.meta.env.VITE_API_URL as string | undefined;
   const mapCenter: [number, number] = [53.552, 9.94];
   const addressLabel = "Neuen Großen Bergstraße 7, 22767 Hamburg";
@@ -55,21 +52,6 @@ export function Home() {
       })
       .catch(() => undefined);
   }, [apiBase]);
-
-  useEffect(() => {
-    if (!apiBase) return;
-    fetch(`${apiBase}/hours`)
-      .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then((data: Array<{ day: string; label: string; weekday: number; start: string; end: string }>) => {
-        setHours(data);
-      })
-      .catch(() => undefined);
-  }, [apiBase]);
-
-  const formatTimeLabel = (time: string) => {
-    const [h, m] = time.split(":").map(Number);
-    return `${h}:${String(m).padStart(2, "0")}`;
-  };
 
   const certificateImages = [
     "/certificates/EMF (Hochfrequenzgeräte) in der Kosmetik_page-0001.jpg",
