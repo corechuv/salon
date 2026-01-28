@@ -171,7 +171,27 @@
 /* на очень узких экранах чуть более «высокий» баннер */
 @media (max-width: 768px) {
     .ba {
-        aspect-ratio: 16 / 14;
+        aspect-ratio: 16 / 12;
+    }
+
+    .ba__content {
+        align-items: flex-end;
+        padding-bottom: 24px;
+    }
+
+    .location__map {
+        height: 340px;
+    }
+
+    .location__map::before {
+        background: linear-gradient(180deg, rgba(17, 14, 18, 0.18), rgba(17, 14, 18, 0.04) 60%);
+    }
+
+}
+/* на очень узких экранах чуть более «высокий» баннер */
+@media (max-width: 520px) {
+    .ba {
+        aspect-ratio: 16 / 13;
     }
 
     .ba__content {
