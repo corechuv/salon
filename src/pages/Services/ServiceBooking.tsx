@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/UI/Button/Button";
 import styles from "./Services.module.scss";
 
@@ -219,6 +219,7 @@ async function sendBooking(payload: Booking): Promise<void> {
 
 export function ServiceBooking() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [services, setServices] = useState<Service[]>([]);
   const [masters, setMasters] = useState<Master[]>([]);
   const [masterHours, setMasterHours] = useState<MasterHour[]>([]);
@@ -543,10 +544,34 @@ export function ServiceBooking() {
             </div>
 
             <form className={styles.form} onSubmit={handleSubmit}>
-              <div className={styles.form__grid}>
-                <label>
-                  Datum
-                  <input
+              {success ? (
+                <div className={styles.successCard}>
+                  <p className={styles.successCard__title}>Gesendet</p>
+                  <p className={styles.successCard__text}>
+                    Wir haben deine Anfrage erhalten. Bitte bestätige den Termin per E-Mail.
+                  </p>
+                  <div className={styles.successCard__details}>
+                    <span>{selectedService?.title}</span>
+                    <span>
+                      {selectedDate} · {selectedTime}
+                    </span>
+                    <span>
+                      {masters.find((m) => m.id === selectedMaster)?.name || selectedMaster}
+                    </span>
+                  </div>
+                  <Button
+                    type="button"
+                    onClick={() => navigate("/services")}
+                  >
+                    Zurück zu Services
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <div className={styles.form__grid}>
+                  <label>
+                    Datum
+                    <input
                     type="date"
                     value={selectedDate}
                     onChange={(event) => setSelectedDate(event.target.value)}
@@ -778,24 +803,6 @@ export function ServiceBooking() {
                 </span>
               </label>
 
-              {success ? (
-                <div className={styles.successCard}>
-                  <p className={styles.successCard__title}>Gesendet</p>
-                  <p className={styles.successCard__text}>
-                    Wir haben deine Anfrage erhalten. Bitte bestätige den Termin per E-Mail.
-                  </p>
-                  <div className={styles.successCard__details}>
-                    <span>{selectedService?.title}</span>
-                    <span>
-                      {selectedDate} · {selectedTime}
-                    </span>
-                    <span>
-                      {masters.find((m) => m.id === selectedMaster)?.name || selectedMaster}
-                    </span>
-                  </div>
-                </div>
-              ) : (
-                <>
                   {error ? <p className={styles.form__error}>{error}</p> : null}
                   <div className={styles.form__actions}>
                     <Button type="submit" disabled={isSubmitting}>
@@ -807,7 +814,6 @@ export function ServiceBooking() {
                   </div>
                 </>
               )}
-
             </form>
           </div>
         </section>
