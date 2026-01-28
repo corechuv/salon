@@ -17,7 +17,7 @@
     width: 100%;
     height: clamp(220px, 32vw, 420px);
     background:
-        linear-gradient(90deg, rgba(18, 14, 20, 0.55), rgba(18, 14, 20, 0)),
+        linear-gradient(90deg, #97feff8c, #00000040 45%, #01656396 80%),
         url("/ba/IMG_1.png") center/cover no-repeat;
     margin-bottom: clamp(20px, 4vw, 48px);
 }
