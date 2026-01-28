@@ -87,7 +87,6 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, #ffedf599, transparent);
     z-index: 2;
     pointer-events: none;
 }
@@ -212,7 +211,6 @@
     }
 
     .location__map::before {
-        background: linear-gradient(180deg, #ffedf599, #ffedf599);
     }
 
     .location__overlay {
