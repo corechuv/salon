@@ -51,7 +51,7 @@
 .nav {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 26px;
 }
 
 .burger {
@@ -82,10 +82,10 @@
     text-transform: uppercase;
     letter-spacing: 1.2px;
     color: #a98899;
-    padding: 8px 10px;
+    padding: 8px 0;
     font-size: 13px;
     font-weight: 300;
-    border-bottom: 1px solid transparent;
+    border-bottom: 0.5px solid transparent;
 
     :hover {
         color: white;
@@ -93,7 +93,7 @@
 }
 
 .linkActive {
-    color: whitesmoke;
+    color: #ff6eaaa6;
     border-bottom-color: currentColor;
 }
 
@@ -103,7 +103,7 @@
 
 .headerServices .link:hover,
 .headerServices .linkActive {
-    color: #ffffff;
+    color: #ff6eaaa6;
 }
 
 .backdrop {
