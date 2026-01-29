@@ -458,12 +458,12 @@
 }
 
 .weekPicker__container {
-    padding: 10px var(--page-pad) 10px;
     background-color: #f9f9f9;
 }
 
 .weekPicker__list {
     display: flex;
+    margin: 10px var(--page-pad) 10px;
     gap: 10px;
     overflow-x: auto;
     scroll-snap-type: x proximity;
