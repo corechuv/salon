@@ -791,7 +791,9 @@ export function ServiceBooking() {
                           type="button"
                           className={`${styles.slot} ${
                             selectedTime === slot ? styles.slot__active : ""
-                          } ${isBusy || exceedsClosing ? styles.slot__busy : ""}`}
+                          } ${isBusy || exceedsClosing ? styles.slot__busy : ""} ${
+                            statusLabel ? "" : styles.slot__single
+                          }`}
                           onClick={() => {
                             if (isBusy || exceedsClosing) return;
                             setSelectedTime(slot);

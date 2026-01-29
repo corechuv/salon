@@ -638,6 +638,8 @@
     gap: 2px;
     justify-items: center;
     line-height: 1.1;
+    min-height: 48px;
+    align-content: start;
 }
 
 .slot__active {
@@ -663,6 +665,10 @@
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: #8a7a77;
+}
+
+.slot__single {
+    align-content: center;
 }
 
 .slots__closed {
