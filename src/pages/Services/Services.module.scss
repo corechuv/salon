@@ -389,6 +389,66 @@
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
+.weekPicker {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.weekPicker__range {
+    border: none;
+    background: transparent;
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--srv-ink);
+    cursor: pointer;
+    justify-self: center;
+}
+
+.weekPicker__list {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 6px 2px 2px;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+}
+
+.weekPicker__list::-webkit-scrollbar {
+    height: 0;
+}
+
+.weekPicker__item {
+    border: 1px solid #e9d2db;
+    background: #ffffff;
+    color: #353535;
+    padding: 8px 14px;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    letter-spacing: 1.2px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-radius: 999px;
+    scroll-snap-align: start;
+}
+
+.weekPicker__itemActive {
+    background: #e9d2db;
+    border-color: #e9d2db;
+}
+
+.weekPicker__input {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    height: 0;
+    width: 0;
+}
+
 .form__wide {
     display: grid;
     gap: 6px;

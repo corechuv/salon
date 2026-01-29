@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../components/UI/Button/Button";
 import styles from "./Services.module.scss";
@@ -78,6 +78,12 @@ const normalizeDateValue = (value: string) => value.split("T")[0];
 const normalizeTimeValue = (value: string) => {
   if (!value) return value;
   return value.slice(0, 5);
+};
+
+const addDays = (date: Date, days: number) => {
+  const next = new Date(date);
+  next.setDate(next.getDate() + days);
+  return next;
 };
 
 const parseTime = (time: string) => {
@@ -214,6 +220,7 @@ async function sendBooking(payload: Booking): Promise<void> {
 export function ServiceBooking() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const datePickerRef = useRef<HTMLInputElement | null>(null);
   const [services, setServices] = useState<Service[]>([]);
   const [masters, setMasters] = useState<Master[]>([]);
   const [masterHours, setMasterHours] = useState<MasterHour[]>([]);
@@ -330,6 +337,26 @@ export function ServiceBooking() {
     if (!selectedService) return masters;
     return masters.filter((master) => master.services.includes(selectedService.id));
   }, [selectedService, masters]);
+
+  const selectedDateObj = useMemo(() => new Date(selectedDate), [selectedDate]);
+
+  const weekDates = useMemo(() => {
+    const start = Number.isNaN(selectedDateObj.getTime())
+      ? new Date()
+      : selectedDateObj;
+    return Array.from({ length: 7 }, (_, index) => addDays(start, index));
+  }, [selectedDateObj]);
+
+  const rangeLabel = useMemo(() => {
+    if (weekDates.length === 0) return "";
+    const formatter = new Intl.DateTimeFormat("de-DE", {
+      day: "2-digit",
+      month: "short",
+    });
+    const first = formatter.format(weekDates[0]);
+    const last = formatter.format(weekDates[weekDates.length - 1]);
+    return `${first} – ${last}`;
+  }, [weekDates]);
 
   const bookedRanges = useMemo(() => {
     const serviceMap = new Map(services.map((s) => [s.id, s.durationMin]));
@@ -606,35 +633,71 @@ export function ServiceBooking() {
                 </div>
               ) : (
                 <>
-                  <div className={styles.form__grid}>
-                  <label>
-                    Datum
+                  <div className={styles.weekPicker}>
+                    <button
+                      type="button"
+                      className={styles.weekPicker__range}
+                      onClick={() => {
+                        if (datePickerRef.current?.showPicker) {
+                          datePickerRef.current.showPicker();
+                        } else {
+                          datePickerRef.current?.focus();
+                        }
+                      }}
+                    >
+                      {rangeLabel}
+                    </button>
+                    <div className={styles.weekPicker__list}>
+                      {weekDates.map((date) => {
+                        const value = formatDateInput(date);
+                        const isActive = value === selectedDate;
+                        const label = new Intl.DateTimeFormat("de-DE", {
+                          weekday: "short",
+                          day: "2-digit",
+                        }).format(date);
+                        return (
+                          <button
+                            key={value}
+                            type="button"
+                            className={`${styles.weekPicker__item} ${
+                              isActive ? styles.weekPicker__itemActive : ""
+                            }`}
+                            onClick={() => setSelectedDate(value)}
+                          >
+                            {label}
+                          </button>
+                        );
+                      })}
+                    </div>
                     <input
-                    type="date"
-                    value={selectedDate}
-                    onChange={(event) => setSelectedDate(event.target.value)}
-                    min={formatDateInput(new Date())}
-                    required
-                  />
-                </label>
-                <label>
-                  Meister
-                  <select
-                    value={selectedMaster ?? ""}
-                    onChange={(event) => setSelectedMaster(event.target.value)}
-                    required
-                  >
-                    <option value="" disabled>
-                      Bitte waehlen
-                    </option>
-                    {availableMasters.map((master) => (
-                      <option key={master.id} value={master.id}>
-                        {master.name}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
+                      ref={datePickerRef}
+                      className={styles.weekPicker__input}
+                      type="date"
+                      value={selectedDate}
+                      onChange={(event) => setSelectedDate(event.target.value)}
+                      min={formatDateInput(new Date())}
+                    />
+                  </div>
+
+                  <div className={styles.form__grid}>
+                    <label>
+                      Meister
+                      <select
+                        value={selectedMaster ?? ""}
+                        onChange={(event) => setSelectedMaster(event.target.value)}
+                        required
+                      >
+                        <option value="" disabled>
+                          Bitte waehlen
+                        </option>
+                        {availableMasters.map((master) => (
+                          <option key={master.id} value={master.id}>
+                            {master.name}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  </div>
 
               <div className={styles.slots}>
                 <p className={styles.slots__title}>Uhrzeit</p>
