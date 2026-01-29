@@ -123,6 +123,19 @@ export function ServicesList() {
     return services.filter((service) => service.category === selectedCategory);
   }, [services, selectedCategory]);
 
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category);
+    setIsCategoryOpen(false);
+    const params = new URLSearchParams(searchParams);
+    if (category === "Alle") {
+      params.delete("category");
+    } else {
+      params.set("category", category);
+    }
+    const query = params.toString();
+    navigate(`/services${query ? `?${query}` : ""}`, { replace: true });
+  };
+
   return (
     <div className={styles.page}>
       <div className={styles.banner} role="presentation" aria-hidden="true" />
@@ -182,10 +195,7 @@ export function ServicesList() {
                   className={`${styles.categoryNav__item} ${
                     selectedCategory === cat ? styles.categoryNav__itemActive : ""
                   }`}
-                  onClick={() => {
-                    setSelectedCategory(cat);
-                    setIsCategoryOpen(false);
-                  }}
+                  onClick={() => handleCategorySelect(cat)}
                 >
                   {cat}
                 </button>

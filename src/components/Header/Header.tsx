@@ -90,6 +90,26 @@ export function Header() {
                         className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ""}`}
                         aria-label="Main navigation"
                     >
+                        <div className={styles.navHeader}>
+                            <NavLink to="/" className={styles.navLogo}>
+                                <img src="/logo.png" />
+                            </NavLink>
+                            <button
+                                type="button"
+                                className={styles.navClose}
+                                onClick={() => setIsMenuOpen(false)}
+                                aria-label="Close menu"
+                            >
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <path
+                                        d="M6 6l12 12M18 6L6 18"
+                                        stroke="currentColor"
+                                        strokeWidth="1.6"
+                                        strokeLinecap="round"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
                         {NAV.map((item) => (
                             <NavLink
                                 key={item.to}
