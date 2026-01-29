@@ -408,7 +408,12 @@
     font-size: 18px;
     color: var(--srv-ink);
     cursor: pointer;
-    padding: 4px 6px;
+    padding: 0 6px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 .weekPicker__nav:disabled {
