@@ -395,6 +395,27 @@
     margin-bottom: 12px;
 }
 
+.weekPicker__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.weekPicker__nav {
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    color: var(--srv-ink);
+    cursor: pointer;
+    padding: 4px 6px;
+}
+
+.weekPicker__nav:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
 .weekPicker__range {
     border: none;
     background: transparent;

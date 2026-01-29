@@ -226,6 +226,7 @@ export function ServiceBooking() {
   const [masterHours, setMasterHours] = useState<MasterHour[]>([]);
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedDate, setSelectedDate] = useState(formatDateInput(new Date()));
+  const [weekStart, setWeekStart] = useState(formatDateInput(new Date()));
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedMaster, setSelectedMaster] = useState<string | null>(null);
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -338,14 +339,15 @@ export function ServiceBooking() {
     return masters.filter((master) => master.services.includes(selectedService.id));
   }, [selectedService, masters]);
 
-  const selectedDateObj = useMemo(() => new Date(selectedDate), [selectedDate]);
+  const selectedDateObj = useMemo(
+    () => new Date(`${selectedDate}T00:00:00`),
+    [selectedDate]
+  );
 
   const weekDates = useMemo(() => {
-    const start = Number.isNaN(selectedDateObj.getTime())
-      ? new Date()
-      : selectedDateObj;
-    return Array.from({ length: 7 }, (_, index) => addDays(start, index));
-  }, [selectedDateObj]);
+    const base = new Date(`${weekStart}T00:00:00`);
+    return Array.from({ length: 7 }, (_, index) => addDays(base, index));
+  }, [weekStart]);
 
   const rangeLabel = useMemo(() => {
     if (weekDates.length === 0) return "";
@@ -357,6 +359,23 @@ export function ServiceBooking() {
     const last = formatter.format(weekDates[weekDates.length - 1]);
     return `${first} – ${last}`;
   }, [weekDates]);
+
+  const todayValue = useMemo(() => formatDateInput(new Date()), []);
+  const canGoPrev = useMemo(() => {
+    const start = new Date(`${weekStart}T00:00:00`);
+    const today = new Date(`${todayValue}T00:00:00`);
+    return start.getTime() > today.getTime();
+  }, [weekStart, todayValue]);
+
+  useEffect(() => {
+    const start = new Date(`${weekStart}T00:00:00`);
+    const end = addDays(start, 6);
+    const today = new Date(`${todayValue}T00:00:00`);
+    if (selectedDateObj < start || selectedDateObj > end) {
+      const nextStart = selectedDateObj < today ? today : selectedDateObj;
+      setWeekStart(formatDateInput(nextStart));
+    }
+  }, [selectedDateObj, weekStart, todayValue]);
 
   const bookedRanges = useMemo(() => {
     const serviceMap = new Map(services.map((s) => [s.id, s.durationMin]));
@@ -623,19 +642,53 @@ export function ServiceBooking() {
               ) : (
                 <>
                   <div className={styles.weekPicker}>
-                    <button
-                      type="button"
-                      className={styles.weekPicker__range}
-                      onClick={() => {
-                        if (datePickerRef.current?.showPicker) {
-                          datePickerRef.current.showPicker();
-                        } else {
-                          datePickerRef.current?.focus();
-                        }
-                      }}
-                    >
-                      {rangeLabel}
-                    </button>
+                    <div className={styles.weekPicker__header}>
+                      <button
+                        type="button"
+                        className={styles.weekPicker__nav}
+                        onClick={() => {
+                          if (!canGoPrev) return;
+                          const start = new Date(`${weekStart}T00:00:00`);
+                          const nextStart = addDays(start, -7);
+                          const today = new Date(`${todayValue}T00:00:00`);
+                          const clamped = nextStart < today ? today : nextStart;
+                          const value = formatDateInput(clamped);
+                          setWeekStart(value);
+                          setSelectedDate(value);
+                        }}
+                        disabled={!canGoPrev}
+                        aria-label="Vorherige Woche"
+                      >
+                        ‹
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.weekPicker__range}
+                        onClick={() => {
+                          if (datePickerRef.current?.showPicker) {
+                            datePickerRef.current.showPicker();
+                          } else {
+                            datePickerRef.current?.focus();
+                          }
+                        }}
+                      >
+                        {rangeLabel}
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.weekPicker__nav}
+                        onClick={() => {
+                          const start = new Date(`${weekStart}T00:00:00`);
+                          const nextStart = addDays(start, 7);
+                          const value = formatDateInput(nextStart);
+                          setWeekStart(value);
+                          setSelectedDate(value);
+                        }}
+                        aria-label="Nächste Woche"
+                      >
+                        ›
+                      </button>
+                    </div>
                     <div className={styles.weekPicker__list}>
                       {weekDates.map((date) => {
                         const value = formatDateInput(date);
