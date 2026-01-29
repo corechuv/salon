@@ -640,8 +640,12 @@ export function ServiceBooking() {
                       {weekDates.map((date) => {
                         const value = formatDateInput(date);
                         const isActive = value === selectedDate;
-                        const label = new Intl.DateTimeFormat("de-DE", {
+                        const weekday = new Intl.DateTimeFormat("de-DE", {
                           weekday: "short",
+                        })
+                          .format(date)
+                          .toUpperCase();
+                        const dayNumber = new Intl.DateTimeFormat("de-DE", {
                           day: "2-digit",
                         }).format(date);
                         return (
@@ -653,7 +657,8 @@ export function ServiceBooking() {
                             }`}
                             onClick={() => setSelectedDate(value)}
                           >
-                            {label}
+                            <span className={styles.weekPicker__dow}>{weekday}</span>
+                            <span className={styles.weekPicker__day}>{dayNumber}</span>
                           </button>
                         );
                       })}
