@@ -5,21 +5,31 @@
     background: #0b0b0b;
     padding: 17px 0;
     transition: background 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(0);
 }
 
 .headerServices {
-    background: rgba(11, 11, 11, 0);
+    background: rgba(11, 11, 11, 0.08);
     box-shadow: none;
     position: fixed;
     left: 0;
     width: 100%;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }
 
 .headerScrolled {
-    background: rgb(18 10 17 / 86%);
+    background: rgb(18 10 17 / 70%);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+}
+
+.headerServices.headerScrolled {
+    background: rgb(18 10 17 / 70%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .headerMenuOpen {
