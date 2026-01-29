@@ -644,7 +644,8 @@ export function ServiceBooking() {
               ) : (
                 <>
                   <div className={styles.weekPicker}>
-                    <div className={styles.weekPicker__header}>
+                    <div className={styles.weekPicker__inner}>
+                      <div className={styles.weekPicker__header}>
                       <button
                         type="button"
                         className={styles.weekPicker__nav}
@@ -710,47 +711,48 @@ export function ServiceBooking() {
                           />
                         </svg>
                       </button>
+                      </div>
+                      <div className={styles.weekPicker__list}>
+                        {weekDates.map((date, index) => {
+                          const value = formatDateInput(date);
+                          const isActive = value === selectedDate;
+                          const weekday = new Intl.DateTimeFormat("de-DE", {
+                            weekday: "short",
+                          })
+                            .format(date)
+                            .toUpperCase();
+                          const dayNumber = new Intl.DateTimeFormat("de-DE", {
+                            day: "2-digit",
+                          }).format(date);
+                          return (
+                            <button
+                              key={value}
+                              type="button"
+                              className={`${styles.weekPicker__item} ${
+                                isActive ? styles.weekPicker__itemActive : ""
+                              }`}
+                              onClick={() => {
+                                setSelectedDate(value);
+                                if (index === weekDates.length - 1) {
+                                  setWeekLength((prev) => prev + 1);
+                                }
+                              }}
+                            >
+                              <span className={styles.weekPicker__dow}>{weekday}</span>
+                              <span className={styles.weekPicker__day}>{dayNumber}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <input
+                        ref={datePickerRef}
+                        className={styles.weekPicker__input}
+                        type="date"
+                        value={selectedDate}
+                        onChange={(event) => setSelectedDate(event.target.value)}
+                        min={formatDateInput(new Date())}
+                      />
                     </div>
-                    <div className={styles.weekPicker__list}>
-                      {weekDates.map((date, index) => {
-                        const value = formatDateInput(date);
-                        const isActive = value === selectedDate;
-                        const weekday = new Intl.DateTimeFormat("de-DE", {
-                          weekday: "short",
-                        })
-                          .format(date)
-                          .toUpperCase();
-                        const dayNumber = new Intl.DateTimeFormat("de-DE", {
-                          day: "2-digit",
-                        }).format(date);
-                        return (
-                          <button
-                            key={value}
-                            type="button"
-                            className={`${styles.weekPicker__item} ${
-                              isActive ? styles.weekPicker__itemActive : ""
-                            }`}
-                            onClick={() => {
-                              setSelectedDate(value);
-                              if (index === weekDates.length - 1) {
-                                setWeekLength((prev) => prev + 1);
-                              }
-                            }}
-                          >
-                            <span className={styles.weekPicker__dow}>{weekday}</span>
-                            <span className={styles.weekPicker__day}>{dayNumber}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                    <input
-                      ref={datePickerRef}
-                      className={styles.weekPicker__input}
-                      type="date"
-                      value={selectedDate}
-                      onChange={(event) => setSelectedDate(event.target.value)}
-                      min={formatDateInput(new Date())}
-                    />
                   </div>
 
                   <div className={styles.form__grid}>

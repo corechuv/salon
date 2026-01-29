@@ -393,9 +393,19 @@
 }
 
 .weekPicker {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    background: #f6f0f2;
+    padding: 16px 0;
+    margin-bottom: 12px;
+}
+
+.weekPicker__inner {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 var(--page-pad);
     display: grid;
     gap: 12px;
-    margin-bottom: 12px;
 }
 
 .weekPicker__header {
