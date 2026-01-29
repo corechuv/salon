@@ -227,6 +227,7 @@ export function ServiceBooking() {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedDate, setSelectedDate] = useState(formatDateInput(new Date()));
   const [weekStart, setWeekStart] = useState(formatDateInput(new Date()));
+  const [weekLength, setWeekLength] = useState(7);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedMaster, setSelectedMaster] = useState<string | null>(null);
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -346,8 +347,8 @@ export function ServiceBooking() {
 
   const weekDates = useMemo(() => {
     const base = new Date(`${weekStart}T00:00:00`);
-    return Array.from({ length: 7 }, (_, index) => addDays(base, index));
-  }, [weekStart]);
+    return Array.from({ length: weekLength }, (_, index) => addDays(base, index));
+  }, [weekStart, weekLength]);
 
   const rangeLabel = useMemo(() => {
     if (weekDates.length === 0) return "";
@@ -368,14 +369,15 @@ export function ServiceBooking() {
   }, [weekStart, todayValue]);
 
   useEffect(() => {
-    const start = new Date(`${weekStart}T00:00:00`);
-    const end = addDays(start, 6);
-    const today = new Date(`${todayValue}T00:00:00`);
-    if (selectedDateObj < start || selectedDateObj > end) {
-      const nextStart = selectedDateObj < today ? today : selectedDateObj;
-      setWeekStart(formatDateInput(nextStart));
-    }
-  }, [selectedDateObj, weekStart, todayValue]);
+      const start = new Date(`${weekStart}T00:00:00`);
+      const end = addDays(start, weekLength - 1);
+      const today = new Date(`${todayValue}T00:00:00`);
+      if (selectedDateObj < start || selectedDateObj > end) {
+        const nextStart = selectedDateObj < today ? today : selectedDateObj;
+        setWeekStart(formatDateInput(nextStart));
+        setWeekLength(7);
+      }
+  }, [selectedDateObj, weekStart, weekLength, todayValue]);
 
   const bookedRanges = useMemo(() => {
     const serviceMap = new Map(services.map((s) => [s.id, s.durationMin]));
@@ -655,6 +657,7 @@ export function ServiceBooking() {
                           const value = formatDateInput(clamped);
                           setWeekStart(value);
                           setSelectedDate(value);
+                          setWeekLength(7);
                         }}
                         disabled={!canGoPrev}
                         aria-label="Vorherige Woche"
@@ -664,7 +667,7 @@ export function ServiceBooking() {
                             d="M15 6l-6 6 6 6"
                             fill="none"
                             stroke="currentColor"
-                            strokeWidth="1.6"
+                            strokeWidth="1"
                             strokeLinecap="round"
                             strokeLinejoin="round"
                           />
@@ -692,6 +695,7 @@ export function ServiceBooking() {
                           const value = formatDateInput(nextStart);
                           setWeekStart(value);
                           setSelectedDate(value);
+                          setWeekLength(7);
                         }}
                         aria-label="Nächste Woche"
                       >
@@ -700,7 +704,7 @@ export function ServiceBooking() {
                             d="M9 6l6 6-6 6"
                             fill="none"
                             stroke="currentColor"
-                            strokeWidth="1.6"
+                            strokeWidth="1"
                             strokeLinecap="round"
                             strokeLinejoin="round"
                           />
@@ -708,7 +712,7 @@ export function ServiceBooking() {
                       </button>
                     </div>
                     <div className={styles.weekPicker__list}>
-                      {weekDates.map((date) => {
+                      {weekDates.map((date, index) => {
                         const value = formatDateInput(date);
                         const isActive = value === selectedDate;
                         const weekday = new Intl.DateTimeFormat("de-DE", {
@@ -726,7 +730,12 @@ export function ServiceBooking() {
                             className={`${styles.weekPicker__item} ${
                               isActive ? styles.weekPicker__itemActive : ""
                             }`}
-                            onClick={() => setSelectedDate(value)}
+                            onClick={() => {
+                              setSelectedDate(value);
+                              if (index === weekDates.length - 1) {
+                                setWeekLength((prev) => prev + 1);
+                              }
+                            }}
                           >
                             <span className={styles.weekPicker__dow}>{weekday}</span>
                             <span className={styles.weekPicker__day}>{dayNumber}</span>
