@@ -12,6 +12,7 @@ import styles from "./Home.module.scss";
 export function Home() {
   const navigate = useNavigate();
   const [serviceTitles, setServiceTitles] = useState<string[]>([]);
+  const [serviceCategories, setServiceCategories] = useState<string[]>([]);
   const apiBase = import.meta.env.VITE_API_URL as string | undefined;
   const mapCenter: [number, number] = [53.552, 9.94];
   const addressLabel = "Neuen Großen Bergstraße 7, 22767 Hamburg";
@@ -46,9 +47,13 @@ export function Home() {
     if (!apiBase) return;
     fetch(`${apiBase}/services`)
       .then((res) => (res.ok ? res.json() : Promise.reject()))
-      .then((data: Array<{ title: string }>) => {
+      .then((data: Array<{ title: string; category?: string }>) => {
         const titles = data.map((item) => item.title).filter(Boolean);
         setServiceTitles(titles.slice(0, 12));
+        const categories = Array.from(
+          new Set(data.map((item) => item.category).filter(Boolean))
+        ) as string[];
+        setServiceCategories(categories);
       })
       .catch(() => undefined);
   }, [apiBase]);
@@ -76,6 +81,25 @@ export function Home() {
         </div>
       </div>
     </div>
+    <section className={styles.categoryStrip}>
+      <div className={styles.categoryStrip__inner}>
+        <div className={styles.categoryStrip__list}>
+          {serviceCategories.map((category) => (
+            <button
+              key={category}
+              type="button"
+              className={styles.categoryStrip__chip}
+              onClick={() => navigate("/services")}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+        <Button type="button" onClick={() => navigate("/services")}>
+          Alle Services
+        </Button>
+      </div>
+    </section>
     <CarouselSection
       variant="line"
       title="Leistungen"
