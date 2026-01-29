@@ -122,6 +122,12 @@ export function Header() {
                                 {item.label}
                             </NavLink>
                         ))}
+                        <NavLink
+                            to="/services"
+                            className={styles.navFooterLink}
+                        >
+                            Alle Services
+                        </NavLink>
                     </nav>
                 </div>
             </header>
