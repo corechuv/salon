@@ -369,14 +369,14 @@ export function ServiceBooking() {
   }, [weekStart, todayValue]);
 
   useEffect(() => {
-      const start = new Date(`${weekStart}T00:00:00`);
-      const end = addDays(start, weekLength - 1);
-      const today = new Date(`${todayValue}T00:00:00`);
-      if (selectedDateObj < start || selectedDateObj > end) {
-        const nextStart = selectedDateObj < today ? today : selectedDateObj;
-        setWeekStart(formatDateInput(nextStart));
-        setWeekLength(7);
-      }
+    const start = new Date(`${weekStart}T00:00:00`);
+    const end = addDays(start, weekLength - 1);
+    const today = new Date(`${todayValue}T00:00:00`);
+    if (selectedDateObj < start || selectedDateObj > end) {
+      const nextStart = selectedDateObj < today ? today : selectedDateObj;
+      setWeekStart(formatDateInput(nextStart));
+      setWeekLength(7);
+    }
   }, [selectedDateObj, weekStart, weekLength, todayValue]);
 
   const bookedRanges = useMemo(() => {
@@ -413,12 +413,12 @@ export function ServiceBooking() {
     const statusLabel = isPastToday
       ? "Vergangen"
       : exceedsClosing
-      ? "Nicht verfügbar"
-      : overlapEntry?.status === "pending"
-        ? "Reserviert"
-        : overlapEntry
-          ? "Belegt"
-          : "";
+        ? "Nicht verfügbar"
+        : overlapEntry?.status === "pending"
+          ? "Reserviert"
+          : overlapEntry
+            ? "Belegt"
+            : "";
     return { isBusy, exceedsClosing, statusLabel };
   };
 
@@ -602,7 +602,7 @@ export function ServiceBooking() {
   return (
     <div className={styles.page}>
       <div className={styles.banner} role="presentation" aria-hidden="true" />
-      
+
       {isLoading ? <p className={styles.slots__closed}>Lade Daten...</p> : null}
       {loadError ? <p className={styles.form__error}>{loadError}</p> : null}
 
@@ -646,112 +646,113 @@ export function ServiceBooking() {
                   <div className={styles.weekPicker}>
                     <div className={styles.weekPicker__inner}>
                       <div className={styles.weekPicker__header}>
-                      <button
-                        type="button"
-                        className={styles.weekPicker__nav}
-                        onClick={() => {
-                          if (!canGoPrev) return;
-                          const start = new Date(`${weekStart}T00:00:00`);
-                          const nextStart = addDays(start, -7);
-                          const today = new Date(`${todayValue}T00:00:00`);
-                          const clamped = nextStart < today ? today : nextStart;
-                          const value = formatDateInput(clamped);
-                          setWeekStart(value);
-                          setSelectedDate(value);
-                          setWeekLength(7);
-                        }}
-                        disabled={!canGoPrev}
-                        aria-label="Vorherige Woche"
-                      >
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path
-                            d="M15 6l-6 6 6 6"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </button>
-                      <button
-                        type="button"
-                        className={styles.weekPicker__range}
-                        onClick={() => {
-                          if (datePickerRef.current?.showPicker) {
-                            datePickerRef.current.showPicker();
-                          } else {
-                            datePickerRef.current?.focus();
-                          }
-                        }}
-                      >
-                        {rangeLabel}
-                      </button>
-                      <button
-                        type="button"
-                        className={styles.weekPicker__nav}
-                        onClick={() => {
-                          const start = new Date(`${weekStart}T00:00:00`);
-                          const nextStart = addDays(start, 7);
-                          const value = formatDateInput(nextStart);
-                          setWeekStart(value);
-                          setSelectedDate(value);
-                          setWeekLength(7);
-                        }}
-                        aria-label="Nächste Woche"
-                      >
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                          <path
-                            d="M9 6l6 6-6 6"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </button>
+                        <button
+                          type="button"
+                          className={styles.weekPicker__nav}
+                          onClick={() => {
+                            if (!canGoPrev) return;
+                            const start = new Date(`${weekStart}T00:00:00`);
+                            const nextStart = addDays(start, -7);
+                            const today = new Date(`${todayValue}T00:00:00`);
+                            const clamped = nextStart < today ? today : nextStart;
+                            const value = formatDateInput(clamped);
+                            setWeekStart(value);
+                            setSelectedDate(value);
+                            setWeekLength(7);
+                          }}
+                          disabled={!canGoPrev}
+                          aria-label="Vorherige Woche"
+                        >
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                              d="M15 6l-6 6 6 6"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="1"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </button>
+                        <button
+                          type="button"
+                          className={styles.weekPicker__range}
+                          onClick={() => {
+                            if (datePickerRef.current?.showPicker) {
+                              datePickerRef.current.showPicker();
+                            } else {
+                              datePickerRef.current?.focus();
+                            }
+                          }}
+                        >
+                          {rangeLabel}
+                        </button>
+                        <button
+                          type="button"
+                          className={styles.weekPicker__nav}
+                          onClick={() => {
+                            const start = new Date(`${weekStart}T00:00:00`);
+                            const nextStart = addDays(start, 7);
+                            const value = formatDateInput(nextStart);
+                            setWeekStart(value);
+                            setSelectedDate(value);
+                            setWeekLength(7);
+                          }}
+                          aria-label="Nächste Woche"
+                        >
+                          <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                              d="M9 6l6 6-6 6"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="1"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </button>
                       </div>
-                      <div className={styles.weekPicker__list}>
-                        {weekDates.map((date, index) => {
-                          const value = formatDateInput(date);
-                          const isActive = value === selectedDate;
-                          const weekday = new Intl.DateTimeFormat("de-DE", {
-                            weekday: "short",
-                          })
-                            .format(date)
-                            .toUpperCase();
-                          const dayNumber = new Intl.DateTimeFormat("de-DE", {
-                            day: "2-digit",
-                          }).format(date);
-                          return (
-                            <button
-                              key={value}
-                              type="button"
-                              className={`${styles.weekPicker__item} ${
-                                isActive ? styles.weekPicker__itemActive : ""
-                              }`}
-                              onClick={() => {
-                                setSelectedDate(value);
-                                if (index === weekDates.length - 1) {
-                                  setWeekLength((prev) => prev + 1);
-                                }
-                              }}
-                            >
-                              <span className={styles.weekPicker__dow}>{weekday}</span>
-                              <span className={styles.weekPicker__day}>{dayNumber}</span>
-                            </button>
-                          );
-                        })}
+                      <div className={styles.weekPicker__container}>
+                        <div className={styles.weekPicker__list}>
+                          {weekDates.map((date, index) => {
+                            const value = formatDateInput(date);
+                            const isActive = value === selectedDate;
+                            const weekday = new Intl.DateTimeFormat("de-DE", {
+                              weekday: "short",
+                            })
+                              .format(date)
+                              .toUpperCase();
+                            const dayNumber = new Intl.DateTimeFormat("de-DE", {
+                              day: "2-digit",
+                            }).format(date);
+                            return (
+                              <button
+                                key={value}
+                                type="button"
+                                className={`${styles.weekPicker__item} ${isActive ? styles.weekPicker__itemActive : ""
+                                  }`}
+                                onClick={() => {
+                                  setSelectedDate(value);
+                                  if (index === weekDates.length - 1) {
+                                    setWeekLength((prev) => prev + 1);
+                                  }
+                                }}
+                              >
+                                <span className={styles.weekPicker__dow}>{weekday}</span>
+                                <span className={styles.weekPicker__day}>{dayNumber}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <input
+                          ref={datePickerRef}
+                          className={styles.weekPicker__input}
+                          type="date"
+                          value={selectedDate}
+                          onChange={(event) => setSelectedDate(event.target.value)}
+                          min={formatDateInput(new Date())}
+                        />
                       </div>
-                      <input
-                        ref={datePickerRef}
-                        className={styles.weekPicker__input}
-                        type="date"
-                        value={selectedDate}
-                        onChange={(event) => setSelectedDate(event.target.value)}
-                        min={formatDateInput(new Date())}
-                      />
                     </div>
                   </div>
 
@@ -794,11 +795,9 @@ export function ServiceBooking() {
                               <button
                                 key={slot}
                                 type="button"
-                                className={`${styles.slot} ${
-                                  selectedTime === slot ? styles.slot__active : ""
-                                } ${isBusy || exceedsClosing ? styles.slot__busy : ""} ${
-                                  statusLabel ? "" : styles.slot__single
-                                }`}
+                                className={`${styles.slot} ${selectedTime === slot ? styles.slot__active : ""
+                                  } ${isBusy || exceedsClosing ? styles.slot__busy : ""} ${statusLabel ? "" : styles.slot__single
+                                  }`}
                                 onClick={() => {
                                   if (isBusy || exceedsClosing) return;
                                   setSelectedTime(slot);
