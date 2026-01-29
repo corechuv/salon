@@ -755,216 +755,226 @@ export function ServiceBooking() {
                     </div>
                   </div>
 
-                  <div className={styles.form__grid}>
-                    <label>
-                      Meister
-                      <select
-                        value={selectedMaster ?? ""}
-                        onChange={(event) => setSelectedMaster(event.target.value)}
-                        required
-                      >
-                        <option value="" disabled>
-                          Bitte waehlen
-                        </option>
-                        {availableMasters.map((master) => (
-                          <option key={master.id} value={master.id}>
-                            {master.name}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                  </div>
-
-              <div className={styles.slots}>
-                <p className={styles.slots__title}>Uhrzeit</p>
-                {!selectedMaster ? (
-                  <p className={styles.slots__closed}>Bitte zuerst einen Meister waehlen.</p>
-                ) : masterActiveHours.length === 0 ? (
-                  <p className={styles.slots__closed}>
-                    Dieser Meister arbeitet an diesem Tag nicht.
-                  </p>
-                ) : (
-                  <div className={styles.slots__grid}>
-                    {slots.map((slot) => {
-                      const { isBusy, exceedsClosing, statusLabel } = getSlotState(slot);
-                      return (
-                        <button
-                          key={slot}
-                          type="button"
-                          className={`${styles.slot} ${
-                            selectedTime === slot ? styles.slot__active : ""
-                          } ${isBusy || exceedsClosing ? styles.slot__busy : ""} ${
-                            statusLabel ? "" : styles.slot__single
-                          }`}
-                          onClick={() => {
-                            if (isBusy || exceedsClosing) return;
-                            setSelectedTime(slot);
-                          }}
-                          disabled={isBusy || exceedsClosing}
-                          title={statusLabel ? `${slot} · ${statusLabel}` : slot}
+                  <div className={styles.form__wrap}>
+                    <div className={styles.form__grid}>
+                      <label>
+                        Meister
+                        <select
+                          value={selectedMaster ?? ""}
+                          onChange={(event) => setSelectedMaster(event.target.value)}
+                          required
                         >
-                          <span className={styles.slot__time}>{slot}</span>
-                          {statusLabel ? (
-                            <span className={styles.slot__label}>{statusLabel}</span>
-                          ) : null}
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+                          <option value="" disabled>
+                            Bitte waehlen
+                          </option>
+                          {availableMasters.map((master) => (
+                            <option key={master.id} value={master.id}>
+                              {master.name}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    </div>
 
-              {selectedService && selectedMaster && selectedTime ? (
-                <div className={styles.summary}>
-                  <p className={styles.summary__title}>Dein Termin</p>
-                  <div className={styles.summary__grid}>
-                    <div>
-                      <span>Service</span>
-                      <strong>{selectedService.title}</strong>
+                    <div className={styles.slots}>
+                      <p className={styles.slots__title}>Uhrzeit</p>
+                      {!selectedMaster ? (
+                        <p className={styles.slots__closed}>
+                          Bitte zuerst einen Meister waehlen.
+                        </p>
+                      ) : masterActiveHours.length === 0 ? (
+                        <p className={styles.slots__closed}>
+                          Dieser Meister arbeitet an diesem Tag nicht.
+                        </p>
+                      ) : (
+                        <div className={styles.slots__grid}>
+                          {slots.map((slot) => {
+                            const { isBusy, exceedsClosing, statusLabel } = getSlotState(slot);
+                            return (
+                              <button
+                                key={slot}
+                                type="button"
+                                className={`${styles.slot} ${
+                                  selectedTime === slot ? styles.slot__active : ""
+                                } ${isBusy || exceedsClosing ? styles.slot__busy : ""} ${
+                                  statusLabel ? "" : styles.slot__single
+                                }`}
+                                onClick={() => {
+                                  if (isBusy || exceedsClosing) return;
+                                  setSelectedTime(slot);
+                                }}
+                                disabled={isBusy || exceedsClosing}
+                                title={statusLabel ? `${slot} · ${statusLabel}` : slot}
+                              >
+                                <span className={styles.slot__time}>{slot}</span>
+                                {statusLabel ? (
+                                  <span className={styles.slot__label}>{statusLabel}</span>
+                                ) : null}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
-                    <div>
-                      <span>Meister</span>
-                      <strong>
-                        {masters.find((m) => m.id === selectedMaster)?.name || selectedMaster}
-                      </strong>
-                    </div>
-                    <div>
-                      <span>Datum</span>
-                      <strong>{selectedDate}</strong>
-                    </div>
-                    <div>
-                      <span>Uhrzeit</span>
-                      <strong>{selectedTime}</strong>
-                    </div>
-                  </div>
-                </div>
-              ) : null}
 
-              <div className={styles.form__grid}>
-                <label>
-                  Name
-                  <input name="name" type="text" placeholder="Ihr Name" required />
-                </label>
-                <label>
-                  Telefon
-                  <input name="phone" type="tel" placeholder="+49" required />
-                </label>
-                <label>
-                  E-Mail
-                  <input name="email" type="email" placeholder="name@mail.de" required />
-                </label>
-              </div>
+                    {selectedService && selectedMaster && selectedTime ? (
+                      <div className={styles.summary}>
+                        <p className={styles.summary__title}>Dein Termin</p>
+                        <div className={styles.summary__grid}>
+                          <div>
+                            <span>Service</span>
+                            <strong>{selectedService.title}</strong>
+                          </div>
+                          <div>
+                            <span>Meister</span>
+                            <strong>
+                              {masters.find((m) => m.id === selectedMaster)?.name ||
+                                selectedMaster}
+                            </strong>
+                          </div>
+                          <div>
+                            <span>Datum</span>
+                            <strong>{selectedDate}</strong>
+                          </div>
+                          <div>
+                            <span>Uhrzeit</span>
+                            <strong>{selectedTime}</strong>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
 
-              <label className={styles.form__wide}>
-                Gutschein-Codes (optional)
-                <div className={styles.form__giftList}>
-                  {giftCodes.map((code, index) => {
-                    const normalized = code.trim().toUpperCase();
-                    const item = giftValidation.items.find(
-                      (entry) => entry.code === normalized
-                    );
-                    return (
-                      <div key={`${index}-${code}`} className={styles.form__giftRow}>
-                        <input
-                          type="text"
-                          placeholder="GIFT-XXXX-XXX"
-                          value={code}
-                          onChange={(event) => updateGiftCode(index, event.target.value)}
-                        />
-                        {giftCodes.length > 1 ? (
-                          <button
-                            type="button"
-                            className={styles.form__giftRemove}
-                            onClick={() => removeGiftCode(index)}
-                            aria-label="Entfernen"
-                          >
-                            ✕
-                          </button>
-                        ) : null}
-                        {item?.balance ? (
-                          <span className={styles.form__giftOk}>
-                            Guthaben: {item.balance} EUR
-                          </span>
-                        ) : item?.reason ? (
-                          <span className={styles.form__giftError}>
-                            {item.reason === "rate_limited"
-                              ? "Zu viele Versuche. Bitte spaeter versuchen."
-                              : item.reason === "not_found"
-                                ? "Nicht gefunden"
-                                : item.reason === "not_available"
-                                  ? "Nicht gültig"
-                                  : item.reason === "empty"
-                                    ? "Kein Guthaben"
-                                    : "Fehler"}
-                          </span>
+                    <div className={styles.form__grid}>
+                      <label>
+                        Name
+                        <input name="name" type="text" placeholder="Ihr Name" required />
+                      </label>
+                      <label>
+                        Telefon
+                        <input name="phone" type="tel" placeholder="+49" required />
+                      </label>
+                      <label>
+                        E-Mail
+                        <input name="email" type="email" placeholder="name@mail.de" required />
+                      </label>
+                    </div>
+
+                    <label className={styles.form__wide}>
+                      Gutschein-Codes (optional)
+                      <div className={styles.form__giftList}>
+                        {giftCodes.map((code, index) => {
+                          const normalized = code.trim().toUpperCase();
+                          const item = giftValidation.items.find(
+                            (entry) => entry.code === normalized
+                          );
+                          return (
+                            <div key={`${index}-${code}`} className={styles.form__giftRow}>
+                              <input
+                                type="text"
+                                placeholder="GIFT-XXXX-XXX"
+                                value={code}
+                                onChange={(event) => updateGiftCode(index, event.target.value)}
+                              />
+                              {giftCodes.length > 1 ? (
+                                <button
+                                  type="button"
+                                  className={styles.form__giftRemove}
+                                  onClick={() => removeGiftCode(index)}
+                                  aria-label="Entfernen"
+                                >
+                                  ✕
+                                </button>
+                              ) : null}
+                              {item?.balance ? (
+                                <span className={styles.form__giftOk}>
+                                  Guthaben: {item.balance} EUR
+                                </span>
+                              ) : item?.reason ? (
+                                <span className={styles.form__giftError}>
+                                  {item.reason === "rate_limited"
+                                    ? "Zu viele Versuche. Bitte spaeter versuchen."
+                                    : item.reason === "not_found"
+                                      ? "Nicht gefunden"
+                                      : item.reason === "not_available"
+                                        ? "Nicht gültig"
+                                        : item.reason === "empty"
+                                          ? "Kein Guthaben"
+                                          : "Fehler"}
+                                </span>
+                              ) : null}
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div className={styles.form__giftActions}>
+                        <Button
+                          type="button"
+                          onClick={handleCheckGift}
+                          disabled={giftValidation.status === "checking"}
+                        >
+                          {giftValidation.status === "checking" ? "Prüfen..." : "Prüfen"}
+                        </Button>
+                      </div>
+                    </label>
+
+                    {selectedService ? (
+                      <div className={styles.form__price}>
+                        <span>Preis: {formatCurrency(selectedService.priceFrom)}</span>
+                        {giftValidation.status === "valid" ? (
+                          <>
+                            <span>
+                              Gutschein: -
+                              {formatCurrency(
+                                Math.min(totalGiftBalance, selectedService.priceFrom)
+                              )}
+                            </span>
+                            <span className={styles.form__priceStrong}>
+                              Zu zahlen:{" "}
+                              {formatCurrency(
+                                Math.max(0, selectedService.priceFrom - totalGiftBalance)
+                              )}
+                            </span>
+                          </>
                         ) : null}
                       </div>
-                    );
-                  })}
-                </div>
-                <div className={styles.form__giftActions}>
-                  <Button
-                    type="button"
-                    onClick={handleCheckGift}
-                    disabled={giftValidation.status === "checking"}
-                  >
-                    {giftValidation.status === "checking" ? "Prüfen..." : "Prüfen"}
-                  </Button>
-                </div>
-              </label>
+                    ) : null}
 
-              {selectedService ? (
-                <div className={styles.form__price}>
-                  <span>Preis: {formatCurrency(selectedService.priceFrom)}</span>
-                  {giftValidation.status === "valid" ? (
-                    <>
+                    <label className={styles.form__wide}>
+                      Notiz
+                      <textarea name="notes" placeholder="Wunsch oder Hinweis" rows={3} />
+                    </label>
+                    <label className={styles.form__wide}>
+                      Unterschrift (vollstaendiger Name)
+                      <input
+                        type="text"
+                        value={consentName}
+                        onChange={(event) => setConsentName(event.target.value)}
+                        placeholder="Vor- und Nachname"
+                        required
+                      />
+                    </label>
+                    <label className={styles.form__consent}>
+                      <input
+                        type="checkbox"
+                        checked={consent}
+                        onChange={(event) => setConsent(event.target.checked)}
+                        required
+                      />
                       <span>
-                        Gutschein: -
-                        {formatCurrency(Math.min(totalGiftBalance, selectedService.priceFrom))}
+                        Ich bestaetige, dass ich mit den Bedingungen und dem
+                        Behandlungsvertrag einverstanden bin.
                       </span>
-                      <span className={styles.form__priceStrong}>
-                        Zu zahlen: {formatCurrency(Math.max(0, selectedService.priceFrom - totalGiftBalance))}
+                    </label>
+
+                    {error ? <p className={styles.form__error}>{error}</p> : null}
+                    <div className={styles.form__actions}>
+                      <Button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Senden..." : "Termin anfragen"}
+                      </Button>
+                      <span className={styles.form__hint}>
+                        Bestaetigung erfolgt per E-Mail.
                       </span>
-                    </>
-                  ) : null}
-                </div>
-              ) : null}
-
-              <label className={styles.form__wide}>
-                Notiz
-                <textarea name="notes" placeholder="Wunsch oder Hinweis" rows={3} />
-              </label>
-              <label className={styles.form__wide}>
-                Unterschrift (vollstaendiger Name)
-                <input
-                  type="text"
-                  value={consentName}
-                  onChange={(event) => setConsentName(event.target.value)}
-                  placeholder="Vor- und Nachname"
-                  required
-                />
-              </label>
-              <label className={styles.form__consent}>
-                <input
-                  type="checkbox"
-                  checked={consent}
-                  onChange={(event) => setConsent(event.target.checked)}
-                  required
-                />
-                <span>
-                  Ich bestaetige, dass ich mit den Bedingungen und dem
-                  Behandlungsvertrag einverstanden bin.
-                </span>
-              </label>
-
-                  {error ? <p className={styles.form__error}>{error}</p> : null}
-                  <div className={styles.form__actions}>
-                    <Button type="submit" disabled={isSubmitting}>
-                      {isSubmitting ? "Senden..." : "Termin anfragen"}
-                    </Button>
-                    <span className={styles.form__hint}>
-                      Bestaetigung erfolgt per E-Mail.
-                    </span>
+                    </div>
                   </div>
                 </>
               )}

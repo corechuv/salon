@@ -357,7 +357,6 @@
     width: 100%;
     max-width: 1160px;
     margin: 0 auto;
-    padding: 0 var(--page-pad);
 }
 
 .form label {
@@ -390,6 +389,14 @@
     display: grid;
     gap: 12px;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.form__wrap {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 var(--page-pad);
+    display: grid;
+    gap: 16px;
 }
 
 .weekPicker {
