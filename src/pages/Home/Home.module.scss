@@ -79,9 +79,6 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 0 clamp(16px, 4vw, 32px);
 }
 
 .categoryStrip__list {
@@ -116,6 +113,11 @@
 
 .categoryStrip__chip:hover {
     background: #e9d2db;
+}
+
+.categoryStrip__inner button {
+    white-space: nowrap;
+    flex: 0 0 auto;
 }
 
 .location {
