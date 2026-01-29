@@ -416,6 +416,12 @@
     line-height: 1;
 }
 
+.weekPicker__nav svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
 .weekPicker__nav:disabled {
     opacity: 0.35;
     cursor: not-allowed;

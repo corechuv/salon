@@ -659,7 +659,16 @@ export function ServiceBooking() {
                         disabled={!canGoPrev}
                         aria-label="Vorherige Woche"
                       >
-                        ‹
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path
+                            d="M15 6l-6 6 6 6"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
                       </button>
                       <button
                         type="button"
@@ -686,7 +695,16 @@ export function ServiceBooking() {
                         }}
                         aria-label="Nächste Woche"
                       >
-                        ›
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path
+                            d="M9 6l6 6-6 6"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
                       </button>
                     </div>
                     <div className={styles.weekPicker__list}>
