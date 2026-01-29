@@ -313,11 +313,7 @@
     padding: 20px;
 }
 
-.bookingPage {
-    max-width: 1160px;
-    margin: clamp(20px, 5vw, 48px) auto 0;
-    padding: 0 var(--page-pad);
-}
+.bookingPage {}
 
 .booking__panel {
     position: relative;
@@ -329,9 +325,12 @@
 
 .booking__head {
     display: flex;
-    justify-content: space-between;
     gap: 12px;
+    width: 100%;
     align-items: center;
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 var(--page-pad);
 }
 
 .booking__title {
@@ -355,6 +354,10 @@
     display: grid;
     gap: 16px;
     font-family: "Roboto", "Helvetica Neue", sans-serif;
+    width: 100%;
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 var(--page-pad);
 }
 
 .form label {
