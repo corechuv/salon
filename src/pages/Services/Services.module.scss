@@ -872,6 +872,20 @@
 }
 
 @media (max-width: 600px) {
+    .weekPicker {
+        width: 100%;
+        margin-left: 0;
+        padding: 14px 0;
+    }
+
+    .booking__panel {
+        overflow-x: hidden;
+    }
+
+    .form {
+        width: 100%;
+    }
+
     .booking__head {
         flex-direction: column;
         align-items: flex-start;
