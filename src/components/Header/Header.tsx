@@ -110,6 +110,12 @@ export function Header() {
                                 </svg>
                             </button>
                         </div>
+                        <NavLink
+                            to="/services"
+                            className={styles.navFooterLink}
+                        >
+                            Alle Services
+                        </NavLink>
                         {NAV.map((item) => (
                             <NavLink
                                 key={item.to}
@@ -122,12 +128,6 @@ export function Header() {
                                 {item.label}
                             </NavLink>
                         ))}
-                        <NavLink
-                            to="/services"
-                            className={styles.navFooterLink}
-                        >
-                            Alle Services
-                        </NavLink>
                     </nav>
                 </div>
             </header>
