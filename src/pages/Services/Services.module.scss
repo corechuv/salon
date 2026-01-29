@@ -465,9 +465,12 @@
     display: flex;
     margin: 10px var(--page-pad) 10px;
     gap: 10px;
+    width: 100%;
     overflow-x: auto;
+    overflow-y: hidden;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
 }
 
 .weekPicker__list::-webkit-scrollbar {
