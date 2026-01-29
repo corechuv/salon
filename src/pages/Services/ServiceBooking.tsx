@@ -581,18 +581,7 @@ export function ServiceBooking() {
   return (
     <div className={styles.page}>
       <div className={styles.banner} role="presentation" aria-hidden="true" />
-      <section className={styles.hero}>
-        <div className={styles.hero__content}>
-          <h1 className={styles.hero__title}>Termin buchen</h1>
-          {selectedService ? (
-            <p className={styles.hero__text}>
-              {selectedService.title} · {formatCurrency(selectedService.priceFrom)} ·{" "}
-              {selectedService.durationMin} мин
-            </p>
-          ) : null}
-        </div>
-      </section>
-
+      
       {isLoading ? <p className={styles.slots__closed}>Lade Daten...</p> : null}
       {loadError ? <p className={styles.form__error}>{loadError}</p> : null}
 
