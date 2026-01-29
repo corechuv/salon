@@ -89,7 +89,7 @@ export function Home() {
               key={category}
               type="button"
               className={styles.categoryStrip__chip}
-              onClick={() => navigate("/services")}
+              onClick={() => navigate(`/services?category=${encodeURIComponent(category)}`)}
             >
               {category}
             </button>

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { SectionShell } from "../../components/SectionShell/SectionShell";
 import { Button } from "../../components/UI/Button/Button";
 import styles from "./Services.module.scss";
@@ -50,6 +50,7 @@ async function fetchMasters(): Promise<Master[] | null> {
 
 export function ServicesList() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [services, setServices] = useState<Service[]>([]);
   const [masters, setMasters] = useState<Master[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("Alle");
@@ -105,6 +106,17 @@ export function ServicesList() {
     const unique = Array.from(new Set(services.map((service) => service.category)));
     return ["Alle", ...unique];
   }, [services]);
+
+  useEffect(() => {
+    const param = searchParams.get("category");
+    if (!param || categories.length === 0) return;
+    const match = categories.find(
+      (category) => category.toLowerCase() === param.toLowerCase()
+    );
+    if (match) {
+      setSelectedCategory(match);
+    }
+  }, [categories, searchParams]);
 
   const filteredServices = useMemo(() => {
     if (selectedCategory === "Alle") return services;
