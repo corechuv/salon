@@ -459,18 +459,18 @@
 
 .weekPicker__container {
     background-color: #f9f9f9;
-}
-
-.weekPicker__list {
-    display: flex;
-    margin: 10px var(--page-pad) 10px;
-    gap: 10px;
     width: 100%;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x proximity;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-x;
+}
+
+.weekPicker__list {
+    display: flex;
+    margin: 10px var(--page-pad) 10px;
+    gap: 10px;
 }
 
 .weekPicker__list::-webkit-scrollbar {
