@@ -3,49 +3,49 @@ import styles from "./MiraProjects.module.scss";
 const PROJECTS = [
   {
     name: "INFO-Center",
-    accent: "#7cf2e4",
+    accent: "#000000",
     description:
       "Круглосуточные консультации, ответы на вопросы и поддержка через GPT‑чаты и экспертов.",
     url: "https://center-mira.com/info",
   },
   {
     name: "MIRA Academy",
-    accent: "#ffd27a",
+    accent: "#000000",
     description:
       "Обучение и повышение квалификации. Онлайн‑курсы, библиотека знаний и сопровождение.",
     url: "https://center-mira.com/academy",
   },
   {
     name: "MIRA Library",
-    accent: "#b6c3ff",
+    accent: "#000000",
     description:
       "База материалов и исследований по темам от дерматологии до аппаратной косметологии.",
     url: "https://center-mira.com/library",
   },
   {
     name: "MIRA Support",
-    accent: "#9fe6b8",
+    accent: "#000000",
     description:
       "Поддержка специалистов и партнёров: консультации, документы, сопровождение проектов.",
     url: "https://center-mira.com/support",
   },
   {
     name: "MIRA devices",
-    accent: "#ff9ec4",
+    accent: "#000000",
     description:
       "Оборудование и решения для современной косметологии, помощь с подбором и сервисом.",
     url: "https://center-mira.com/devices",
   },
   {
     name: "MIRA Store",
-    accent: "#9dd6ff",
+    accent: "#000000",
     description:
       "Маркетплейс товаров и услуг, обмена и продаж. Удобный старт для проектов.",
     url: "https://center-mira.com/store",
   },
   {
     name: "For Life & Peace",
-    accent: "#c5f08f",
+    accent: "#000000",
     description:
       "Благотворительная инициатива: помощь семьям и поддержка социальных проектов.",
     url: "https://center-mira.com/foundation",
