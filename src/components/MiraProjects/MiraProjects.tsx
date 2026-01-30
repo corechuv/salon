@@ -57,7 +57,8 @@ export function MiraProjects() {
     <section className={styles.projects}>
       <div className={styles.projects__inner}>
         <div className={styles.projects__header}>
-          <h2 className={styles.projects__title}>CENTER MIRA ECO‑SYSTEM</h2>
+          <h2 className={styles.projects__title}>CENTER MIRA</h2>
+          <h2 className={styles.projects__subtitle}>ECO‑SYSTEM</h2>
           <p className={styles.projects__lead}>
             Краткий обзор ключевых направлений. У каждого проекта — отдельная платформа и
             собственные материалы.

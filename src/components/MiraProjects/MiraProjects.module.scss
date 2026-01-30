@@ -24,6 +24,13 @@
     letter-spacing: 0.06em;
 }
 
+.projects__subtitle {
+    margin: 0;
+    font-size: clamp(26px, 5vw, 54px);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
 .projects__lead {
     margin: 0;
     max-width: 680px;
