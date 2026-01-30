@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CarouselSection } from "../../components/CarouselSection/CarouselSection";
+import { MiraProjects } from "../../components/MiraProjects/MiraProjects";
 import { Button } from "../../components/UI/Button/Button";
 import { MapContainer, TileLayer, Marker, CircleMarker, ZoomControl } from "react-leaflet";
 import L from "leaflet";
@@ -81,6 +82,7 @@ export function Home() {
         </div>
       </div>
     </div>
+    <MiraProjects />
     <section className={styles.categoryStrip}>
       <div className={styles.categoryStrip__inner}>
         <div className={styles.categoryStrip__list}>
