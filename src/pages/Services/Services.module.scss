@@ -395,12 +395,13 @@
 .form__wrap {
     display: grid;
     gap: 16px;
+    padding: 0 var(--page-pad);
 }
 
 .form__columns {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(18px, 3vw, 42px);
+    gap: clamp(18px, 3vw, 32px);
     align-items: start;
 }
 

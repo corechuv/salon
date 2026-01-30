@@ -90,7 +90,7 @@
     padding: 0;
 
     svg {
-    color: black;
+        color: black;
         width: 26px;
         height: 26px;
     }
@@ -160,6 +160,7 @@
     .burger {
         display: inline-flex;
     }
+
     .headerMenuOpen .logo,
     .headerMenuOpen .burger {
         opacity: 0;
