@@ -82,7 +82,6 @@ export function Home() {
         </div>
       </div>
     </div>
-    <MiraProjects />
     <section className={styles.categoryStrip}>
       <div className={styles.categoryStrip__inner}>
         <div className={styles.categoryStrip__list}>
@@ -102,6 +101,7 @@ export function Home() {
         </Button>
       </div>
     </section>
+    <MiraProjects />
     <CarouselSection
       variant="line"
       title="Leistungen"
