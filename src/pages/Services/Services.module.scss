@@ -357,6 +357,7 @@
     width: 100%;
     max-width: 1160px;
     margin: 0 auto;
+    padding: 0 var(--page-pad);
 }
 
 .form label {
@@ -392,7 +393,6 @@
 }
 
 .form__wrap {
-    padding: 0 var(--page-pad);
     display: grid;
     gap: 16px;
 }
