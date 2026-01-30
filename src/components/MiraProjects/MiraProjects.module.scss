@@ -7,7 +7,6 @@
 .projects__inner {
     max-width: 1120px;
     margin: 0 auto;
-    padding: 0 clamp(16px, 4vw, 32px);
     display: grid;
     gap: clamp(24px, 4vw, 44px);
 }
@@ -16,6 +15,7 @@
     display: grid;
     justify-content: center;
     gap: 12px;
+    padding: 0 clamp(16px, 4vw, 32px);
 }
 
 .projects__title {
@@ -60,10 +60,7 @@
 .project {
     position: relative;
     margin-left: clamp(26px, 4vw, 44px);
-    padding: 18px 20px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 9px 20px;
     backdrop-filter: blur(6px);
 }
 
