@@ -364,19 +364,21 @@ export function ServiceBooking() {
   }, [weekDates]);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    const win = window as Window;
     const el = weekListRef.current;
     if (!el) return;
     const update = () => {
       setIsWeekScrollable(el.scrollWidth > el.clientWidth + 1);
     };
     update();
-    if ("ResizeObserver" in window) {
+    if ("ResizeObserver" in win) {
       const observer = new ResizeObserver(update);
       observer.observe(el);
       return () => observer.disconnect();
     }
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
+    win.addEventListener("resize", update);
+    return () => win.removeEventListener("resize", update);
   }, [weekDates.length]);
 
   const todayValue = useMemo(() => formatDateInput(new Date()), []);
