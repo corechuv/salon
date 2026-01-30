@@ -139,15 +139,6 @@ export function ServicesList() {
   return (
     <div className={styles.page}>
       <div className={styles.banner} role="presentation" aria-hidden="true" />
-      <section className={styles.hero}>
-        <div className={styles.hero__content}>
-          <h1 className={styles.hero__title}>Unsere Services</h1>
-          <p className={styles.hero__text}>
-            Transparente Preise, klare Ablaufe und persoenliche Betreuung. Waehlen
-            Sie eine Leistung und buchen Sie Ihren Termin.
-          </p>
-        </div>
-      </section>
 
       <section className={styles.services}>
         {isLoading ? <p className={styles.slots__closed}>Lade Daten...</p> : null}
