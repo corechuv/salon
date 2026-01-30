@@ -480,10 +480,19 @@
 
 .weekPicker__list {
     display: flex;
-    width: max-content;
-    min-width: 100%;
-    margin: 10px auto;
     gap: 10px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.weekPicker__listCentered {
+    justify-content: center;
+}
+
+.weekPicker__listScrollable {
+    justify-content: flex-start;
+    padding-left: var(--page-pad);
+    padding-right: var(--page-pad);
 }
 
 .weekPicker__list::-webkit-scrollbar {

@@ -221,6 +221,8 @@ export function ServiceBooking() {
   const { id } = useParams();
   const navigate = useNavigate();
   const datePickerRef = useRef<HTMLInputElement | null>(null);
+  const weekListRef = useRef<HTMLDivElement | null>(null);
+  const [isWeekScrollable, setIsWeekScrollable] = useState(false);
   const [services, setServices] = useState<Service[]>([]);
   const [masters, setMasters] = useState<Master[]>([]);
   const [masterHours, setMasterHours] = useState<MasterHour[]>([]);
@@ -360,6 +362,22 @@ export function ServiceBooking() {
     const last = formatter.format(weekDates[weekDates.length - 1]);
     return `${first} – ${last}`;
   }, [weekDates]);
+
+  useEffect(() => {
+    const el = weekListRef.current;
+    if (!el) return;
+    const update = () => {
+      setIsWeekScrollable(el.scrollWidth > el.clientWidth + 1);
+    };
+    update();
+    if ("ResizeObserver" in window) {
+      const observer = new ResizeObserver(update);
+      observer.observe(el);
+      return () => observer.disconnect();
+    }
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [weekDates.length]);
 
   const todayValue = useMemo(() => formatDateInput(new Date()), []);
   const canGoPrev = useMemo(() => {
@@ -687,8 +705,13 @@ export function ServiceBooking() {
                     </svg>
                   </button>
                 </div>
-                <div className={styles.weekPicker__container}>
-                  <div className={styles.weekPicker__list}>
+                  <div className={styles.weekPicker__container}>
+                    <div
+                      ref={weekListRef}
+                      className={`${styles.weekPicker__list} ${
+                        isWeekScrollable ? styles.weekPicker__listScrollable : styles.weekPicker__listCentered
+                      }`}
+                    >
                     {weekDates.map((date, index) => {
                       const value = formatDateInput(date);
                       const isActive = value === selectedDate;
