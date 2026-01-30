@@ -78,15 +78,21 @@
 
 .categoryToggle {
     border: none;
-    background: #e9d2db;
-    color: #353535;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     padding: 10px 18px;
+    background: #000;
+    color: #f5f5f5;
+    text-decoration: none;
     text-transform: uppercase;
-    font-size: 12px;
-    font-family: "Roboto", sans-serif;
+    letter-spacing: .16em;
+    font-size: 16px;
     font-weight: 300;
-    letter-spacing: 1.6px;
+    height: 52px;
+    font-family: Roboto, sans-serif;
     cursor: pointer;
+    width: 100%;
 }
 
 .categoryCurrent {
@@ -829,6 +835,8 @@
 
     .categoryMobileBar {
         display: flex;
+        flex-direction: column;
+        gap: 20px;
     }
 
     .categoryOverlay {
