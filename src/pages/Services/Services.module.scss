@@ -392,9 +392,20 @@
 }
 
 .form__wrap {
-    max-width: 1160px;
-    margin: 0 auto;
     padding: 0 var(--page-pad);
+    display: grid;
+    gap: 16px;
+}
+
+.form__columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(18px, 3vw, 42px);
+    align-items: start;
+}
+
+.form__left,
+.form__right {
     display: grid;
     gap: 16px;
 }
@@ -880,6 +891,10 @@
 }
 
 @media (max-width: 600px) {
+    .form__columns {
+        grid-template-columns: 1fr;
+    }
+
     .weekPicker {
         width: 100%;
         margin-left: 0;
